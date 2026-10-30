@@ -37,6 +37,24 @@ Transcripts include the exit status of every binary. The renderer environment
 is pinned by the script (`LIBGL_ALWAYS_SOFTWARE=1`, `GALLIUM_DRIVER=llvmpipe`)
 and the Python tests run with `OPENMT2_AUDIO_BACKEND=null`.
 
+## Coverage baseline (TA.7)
+
+`coverage-baseline.txt` is not part of `golden-check.sh`. It records the
+covered line count per module (`src/<Package>`) for the Debug coverage build,
+and `scripts/coverage.sh --check` fails when a module covers fewer lines than
+the baseline. Percentages are informational: there is no absolute target, and
+adding uncovered code does not trip the ratchet.
+
+```bash
+# rebuild, test and compare with golden/coverage-baseline.txt
+docker run ... -c 'cd /workspace && ./scripts/coverage.sh --check'
+```
+
+Refresh it deliberately with `--update`; `--update` refuses to write after a
+failing check, and `--force` is required to accept a recorded regression. When
+Wave B merges packages the module names change: refresh the baseline in the
+same move-only PR and state that the total covered line count is unchanged.
+
 ## Refreshing a golden
 
 Only refresh after reviewing the change. `--update` refuses to write a new

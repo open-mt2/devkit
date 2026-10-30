@@ -61,12 +61,12 @@ follow-ups: <new tasks or "none">
 
 - [x] Plan v0.3 written (`docs/planning/windows-parity.md`)
 - [x] Decisions settled (see §2)
-- [~] Wave A complete
+- [x] Wave A complete
 - [ ] Wave B complete (optional)
 - [ ] Waves 0–4 complete
 - [ ] Wave 5 scoped only (not executed)
 
-Progress: **7 / 37 tasks**, **16 / 16 decisions**.
+Progress: **8 / 37 tasks**, **16 / 16 decisions**.
 
 ---
 
@@ -238,8 +238,10 @@ directly.
   - verify: `ctest -R "python|scriptlib"`
   - risk: highest-value safety net before T2.4
 
-- [ ] **TA.7 — Coverage ratchet**
+- [x] **TA.7 — Coverage ratchet**
   - wave: A · repo: devkit · profile: standard
+  - owner: agent-06
+  - evidence: evidence/TA.7.md
   - agent: 0.5 d · human: 1 d
   - deps: TA.2
   - scope: per-module baselines; CI fails on regression only.

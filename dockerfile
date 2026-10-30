@@ -149,7 +149,11 @@ RUN chmod +x /workspace/scripts/*.sh /usr/local/bin/openmt2-entrypoint \
 # ---------------------------------------------------------------------------
 ARG PKG_ORG=open-mt2
 ARG PKG_REF=main
-RUN PKG_ORG="${PKG_ORG}" PKG_REF="${PKG_REF}" /workspace/scripts/fetch-packages.sh /workspace
+# Changing this value (CI passes the run id) invalidates the source layer, so a
+# cached image never pins stale package commits.
+ARG PKG_CACHE_BUST=0
+RUN echo "[packages] source cache bust: ${PKG_CACHE_BUST}" \
+    && PKG_ORG="${PKG_ORG}" PKG_REF="${PKG_REF}" /workspace/scripts/fetch-packages.sh /workspace
 
 # pkg_eterbase currently references <Platform/stb_image.h> but does not ship
 # the header in its repository. Provide the same copy as the reference tree

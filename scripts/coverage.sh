@@ -1,38 +1,59 @@
 #!/usr/bin/env bash
 # ======================================================
-# OpenMT2 client - line coverage for the CTest suites
+# OpenMT2 client - line coverage and per-module ratchet
 # ======================================================
 #
 # Builds the tree with gcov instrumentation, runs every test, and reports line
-# coverage per source file. Uses gcov only: no extra dependency in the image.
+# coverage per module (src/<Package>) and per source file. Uses gcov only: no
+# extra dependency in the image.
+#
+# The ratchet (TA.7) compares covered line counts per module against
+# golden/coverage-baseline.txt and fails only on a regression. It never sets an
+# absolute percentage target, so adding uncovered code does not turn CI red
+# while losing covered lines does.
 #
 # Usage:
 #   scripts/coverage.sh                 # build, test, report
 #   scripts/coverage.sh --no-build      # reuse an existing build directory
-#   scripts/coverage.sh --check         # fail if below the recorded baseline
+#   scripts/coverage.sh --check         # fail if any module regressed
+#   scripts/coverage.sh --update        # rewrite the committed baseline
+#   scripts/coverage.sh --update --force  # accept recorded regressions
 #
 # Environment:
-#   BUILD_DIR       build directory (default: <root>/build-coverage)
-#   COVERAGE_DIR    output directory (default: <root>/coverage)
-#   JOBS            parallel build jobs (default: nproc)
-#   MIN_COVERAGE    absolute floor for --check, in percent (default: 0)
+#   BUILD_DIR          build directory (default: <root>/build-coverage)
+#   COVERAGE_DIR       output directory (default: <root>/coverage)
+#   COVERAGE_BASELINE  ratchet baseline (default: <root>/golden/coverage-baseline.txt)
+#   JOBS               parallel build jobs (default: nproc)
+#
+# The script pins LC_ALL=C, OPENMT2_AUDIO_BACKEND=null and the llvmpipe
+# renderer so the counts do not depend on the host's audio or GL devices.
 
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT="$(dirname "$SCRIPT_DIR")"
+TOOL="$SCRIPT_DIR/coverage-ratchet.py"
 
 BUILD="${BUILD_DIR:-$ROOT/build-coverage}"
 OUT="${COVERAGE_DIR:-$ROOT/coverage}"
+BASELINE="${COVERAGE_BASELINE:-$ROOT/golden/coverage-baseline.txt}"
 JOBS="${JOBS:-$(nproc 2>/dev/null || echo 4)}"
-MIN_COVERAGE="${MIN_COVERAGE:-0}"
 
 build=1
-check=0
+mode=report
+force=0
 for argument in "$@"; do
     case "$argument" in
         --no-build) build=0 ;;
-        --check) check=1 ;;
+        --check)
+            [ "$mode" = report ] || { echo "error: --check and --update are exclusive" >&2; exit 2; }
+            mode=check
+            ;;
+        --update)
+            [ "$mode" = report ] || { echo "error: --check and --update are exclusive" >&2; exit 2; }
+            mode=update
+            ;;
+        --force) force=1 ;;
         -h|--help)
             awk 'NR > 1 && /^#/ { sub(/^# ?/, ""); print; next } NR > 1 { exit }' "${BASH_SOURCE[0]}"
             exit 0
@@ -43,6 +64,21 @@ for argument in "$@"; do
             ;;
     esac
 done
+
+if [ "$force" = 1 ] && [ "$mode" != update ]; then
+    echo "error: --force only applies to --update" >&2
+    exit 2
+fi
+
+[ -f "$TOOL" ] || { echo "error: $TOOL not found" >&2; exit 2; }
+
+# Pin the same deterministic environment as scripts/golden-check.sh. Without
+# these, audio and GL probing depend on the host's devices and change which
+# lines run (MilesLib varied by 31 covered lines between a workstation and CI).
+export LC_ALL=C
+export OPENMT2_AUDIO_BACKEND=null
+export LIBGL_ALWAYS_SOFTWARE=1
+export GALLIUM_DRIVER=llvmpipe
 
 if [ "$build" = 1 ]; then
     echo "[coverage] configuring $BUILD"
@@ -56,6 +92,10 @@ if [ "$build" = 1 ]; then
     cmake --build "$BUILD" --parallel "$JOBS" >/dev/null
 fi
 
+# Start from zero counters: stale .gcda files from an earlier run would report
+# coverage for code this run never executed.
+find "$BUILD" -name '*.gcda' -delete 2>/dev/null || true
+
 echo "[coverage] running tests"
 ctest --test-dir "$BUILD" --output-on-failure
 
@@ -67,70 +107,38 @@ fi
 
 echo "[coverage] collecting gcov data (${#gcda[@]} objects)"
 mkdir -p "$OUT"
-( cd "$BUILD" && gcov -j -b "${gcda[@]}" >/dev/null 2>&1 || true )
+# gcov -j names its JSON after the source basename (Type.cpp.gcov.json.gz), so
+# running it for every object in one directory lets same-named files overwrite
+# each other (EterLib/Resource.cpp vs ScriptLib/Resource.cpp). Give every
+# object its own directory instead: one JSON per translation unit.
+find "$BUILD" -name '*.gcov.json.gz' -delete 2>/dev/null || true
+rm -rf "$BUILD/gcov-json"
+mkdir -p "$BUILD/gcov-json"
+index=0
+for object in "${gcda[@]}"; do
+    index=$((index + 1))
+    mkdir -p "$BUILD/gcov-json/$index"
+    ( cd "$BUILD/gcov-json/$index" && gcov -j -b "$object" >/dev/null 2>&1 || true )
+done
 
-python3 - "$BUILD" "$OUT" "$MIN_COVERAGE" "$check" <<'PY'
-import gzip
-import json
-import pathlib
-import sys
+python3 "$TOOL" collect --build "$BUILD" --root "$ROOT" \
+    --out "$OUT/summary.txt" --files "$OUT/files.txt"
 
-build, out = pathlib.Path(sys.argv[1]), pathlib.Path(sys.argv[2])
-minimum, check = float(sys.argv[3]), sys.argv[4] == "1"
+echo "[coverage] 10 least covered files:"
+sed -n '2,11p' "$OUT/files.txt" | sed 's/^/  /'
+echo "[coverage] full report: $OUT/files.txt"
 
-files = {}
-for path in build.rglob("*.gcov.json.gz"):
-    try:
-        data = json.load(gzip.open(path, "rt"))
-    except Exception:
-        continue
-    for entry in data.get("files", []):
-        source = entry.get("file", "")
-        # Keep only project sources: drop system headers and the build tree.
-        if not source.startswith(str(build.parent)) or source.startswith(str(build) + "/"):
-            continue
-        lines = [l for l in entry.get("lines", []) if isinstance(l.get("count"), int)]
-        if not lines:
-            continue
-        total = len(lines)
-        hit = sum(1 for l in lines if l["count"] > 0)
-        old = files.get(source, (0, 0))
-        files[source] = (old[0] + hit, old[1] + total)
-
-if not files:
-    print("[coverage] no gcov JSON produced", file=sys.stderr)
-    sys.exit(1)
-
-rows = [(hit / total * 100.0, hit, total, src) for src, (hit, total) in files.items()]
-rows.sort()
-hit = sum(r[1] for r in rows)
-total = sum(r[2] for r in rows)
-pct = hit / total * 100.0 if total else 0.0
-
-summary = out / "summary.txt"
-with summary.open("w") as fh:
-    fh.write(f"TOTAL {pct:.1f}% ({hit}/{total} lines)\n")
-    for file_pct, file_hit, file_total, src in rows:
-        fh.write(f"{file_pct:6.1f}% {file_hit:6d}/{file_total:<6d} {src}\n")
-
-print(f"[coverage] total {pct:.1f}% ({hit}/{total} lines)")
-print(f"[coverage] 10 least covered files:")
-for file_pct, file_hit, file_total, src in rows[:10]:
-    print(f"  {file_pct:6.1f}%  {src}")
-print(f"[coverage] full report: {summary}")
-
-baseline = out / "baseline.txt"
-if check:
-    floor = minimum
-    if baseline.exists():
-        try:
-            floor = max(floor, float(baseline.read_text().split()[1].rstrip("%")))
-        except Exception:
-            pass
-    if pct + 1e-9 < floor:
-        print(f"[coverage] FAIL: {pct:.1f}% < {floor:.1f}%", file=sys.stderr)
-        sys.exit(1)
-    print(f"[coverage] OK: {pct:.1f}% >= {floor:.1f}%")
-else:
-    baseline.write_text(f"TOTAL {pct:.1f}%\n")
-PY
+case "$mode" in
+    report)
+        ;;
+    check)
+        python3 "$TOOL" check --current "$OUT/summary.txt" --baseline "$BASELINE"
+        ;;
+    update)
+        if [ "$force" = 1 ]; then
+            python3 "$TOOL" check --current "$OUT/summary.txt" --baseline "$BASELINE" --update --force
+        else
+            python3 "$TOOL" check --current "$OUT/summary.txt" --baseline "$BASELINE" --update
+        fi
+        ;;
+esac
