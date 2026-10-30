@@ -4,6 +4,7 @@
 - date: 2026-10-31
 - command: `scripts/coverage.sh --check`
 - issue: https://github.com/open-mt2/devkit/issues/48
+- pr: https://github.com/open-mt2/devkit/pull/87
 - before: `scripts/coverage.sh --check` compared one `TOTAL` percentage with
   `coverage/baseline.txt`, a file excluded by `.gitignore` and overwritten by
   every non-check run. A clean checkout therefore had no baseline, the check
