@@ -76,6 +76,7 @@ RUN dpkg --add-architecture i386 \
         clang \
         lld \
         gcc-mingw-w64-i686 \
+        g++-mingw-w64-x86-64 \
         wine \
         wine32 \
         libwine-dev:i386 \
@@ -135,6 +136,8 @@ WORKDIR /workspace
 
 COPY docker/root/CMakeLists.txt /workspace/CMakeLists.txt
 COPY docker/root/cmake/Platform.cmake /workspace/cmake/Platform.cmake
+COPY cmake/toolchain-i686-windows-gnu.cmake /workspace/cmake/toolchain-i686-windows-gnu.cmake
+COPY CMakePresets.json /workspace/CMakePresets.json
 COPY scripts/ /workspace/scripts/
 COPY docker/vendor/ /opt/openmt2/vendor/
 COPY docker/entrypoint.sh /usr/local/bin/openmt2-entrypoint

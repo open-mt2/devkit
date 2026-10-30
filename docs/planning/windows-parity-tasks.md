@@ -319,7 +319,8 @@ directly.
   - verify: `scripts/spike-windows.sh > evidence/T0.1.log`
   - risk: results may reshape Wave 1 — that is the point
 
-- [ ] **T0.2 — Build harness**
+- [~] **T0.2 — Build harness**
+  - owner: Codex
   - wave: 0 · repo: devkit · profile: standard
   - agent: 1.5 d (1–2) · human: 4 d (3–6)
   - deps: D7, D8, TB.3 (soft)
