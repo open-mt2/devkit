@@ -125,3 +125,20 @@ tests: <n> added, <n> updated — `ctest` <pass/total>
 evidence: evidence/<ID>.md
 follow-ups: <new tasks or "none">
 ```
+
+## Agent skills
+
+### Issue tracker
+
+Issues live in GitHub Issues on `open-mt2/devkit`, driven through the `.local/gh`
+wrapper — never plain `gh`. See `docs/agents/issue-tracker.md`.
+
+### Triage labels
+
+Default five-role vocabulary: `needs-triage`, `needs-info`, `ready-for-agent`,
+`ready-for-human`, `wontfix`. See `docs/agents/triage-labels.md`.
+
+### Domain docs
+
+Single-context: one `GLOSSARY.md` plus `docs/adr/` at the repo root.
+See `docs/agents/domain.md`.
