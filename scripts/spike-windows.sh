@@ -30,18 +30,29 @@ if [[ -z "${SPIKE_CMAKE:-}" ]] && ! command -v "$cmake" >/dev/null 2>&1; then
     echo 'i686-w64-mingw32-cmake absent; using explicit MinGW CMake arguments'
 fi
 printf 'Configure command: %s; renderer: GL\nLogs: %s\n' "$cmake" "$run"
+infrastructure_failure=0
+if [[ -z "${SPIKE_CMAKE:-}" ]]; then
+    for tool in i686-w64-mingw32-gcc i686-w64-mingw32-g++ ninja cmake; do
+        if ! command -v "$tool" >/dev/null 2>&1; then
+            printf 'Missing required tool: %s\n' "$tool"
+            infrastructure_failure=2
+        fi
+    done
+fi
 printf 'package\tstatus\tlog\n'
 while IFS='=' read -r repo package; do
     [[ "$repo" == pkg_* ]] || continue
     log="$run/$package.log"
     if [[ ! -f "$src/$package/CMakeLists.txt" ]]; then
         status=source-missing
+        infrastructure_failure=2
         echo "Missing $src/$package/CMakeLists.txt" > "$log"
     elif ! command -v "$cmake" >/dev/null 2>&1; then
         status=tool-missing
+        infrastructure_failure=2
         echo "Missing command: $cmake" > "$log"
-    elif "${configure[@]}" -S "$src/$package" -B "$run/$package" -DOPENMT2_RENDERER=GL -DBUILD_TESTS=OFF -DBUILD_TESTING=OFF > "$log" 2>&1; then
-        if cmake --build "$run/$package" --parallel 2 >> "$log" 2>&1; then
+    elif "${configure[@]}" -G Ninja -S "$src/$package" -B "$run/$package" -DOPENMT2_RENDERER=GL -DBUILD_TESTS=OFF -DBUILD_TESTING=OFF > "$log" 2>&1; then
+        if cmake --build "$run/$package" --parallel 2 -- -k 0 >> "$log" 2>&1; then
             status=build-passed
         else
             status=build-failed
@@ -55,3 +66,5 @@ while IFS='=' read -r repo package; do
     fi
     cat "$log"
 done < "$map"
+
+exit "$infrastructure_failure"

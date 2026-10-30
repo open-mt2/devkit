@@ -66,7 +66,7 @@ follow-ups: <new tasks or "none">
 - [ ] Waves 0–4 complete
 - [ ] Wave 5 scoped only (not executed)
 
-Progress: **5 / 37 tasks**, **16 / 16 decisions**.
+Progress: **6 / 37 tasks**, **16 / 16 decisions**.
 
 ---
 
@@ -301,8 +301,10 @@ directly.
 
 ## 6. Wave 0 — Foundation
 
-- [~] **T0.1 — Toolchain spike (read-only)**
+- [x] **T0.1 — Toolchain spike (read-only)**
   - owner: W-Kanzashi / Codex
+  - evidence: evidence/T0.1.md
+  - commit: 849322e (implementation; final evidence in this branch)
   - wave: 0 · repo: devkit · profile: design
   - agent: 1 d (1–2) · human: 2.5 d (2–4)
   - deps: D8

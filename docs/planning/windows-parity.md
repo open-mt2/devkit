@@ -92,6 +92,35 @@ Counts: **39 files** contain `__LINUX__` gates, **82 files** contain `_WIN32`
 branches. The D3D9 API surface itself is not the problem — the renderer headers
 (`GrpBase.h`, `GrpDevice.cpp`, …) already compile against the compat shim on Linux.
 
+### T0.1 measured Windows blockers (2026-10-30)
+
+The diagnostic i686 run is recorded in `evidence/T0.1.log`, with reproduction
+instructions in `evidence/T0.1.md`. D10 still selects x86_64 for shipping. This
+probe does not establish 64-bit compatibility or runtime/rendering parity.
+
+Ranked by the earliest observed gate and package reach:
+
+1. **Toolchain (T0.2):** the unmodified image lacks both the cross-CMake wrapper
+   and MinGW C++. All 16 packages fail configuration. The probe provides explicit
+   CMake cross arguments when the wrapper is absent. Adding only
+   `g++-mingw-w64-i686` in a disposable diagnostic image exposes the next gates.
+2. **Target LZO (T2.3):** 11 packages stop at `EterBase/CMakeLists.txt:34`:
+   EterBase, EterLib, MilesLib, EterGrnLib, SpeedTreeLib, PRTerrainLib, EffectLib,
+   ScriptLib, EterPythonLib, GameLib, UserInterface. These are configuration
+   blockers, not eleven independently observed compiler defects.
+3. **Target libzip (T2.3):** EterPack stops at its CMake dependency check. Host
+   pkg-config directories are excluded from the probe.
+4. **DirectX SDK headers (T1.1/T1.5/T4.1):** SphereLib configures but all four
+   compilation units fail on `directxsdk/d3dx9.h`. Keep-going compilation records
+   every attempted unit. Passing `OPENMT2_RENDERER=GL` alone does not enable the
+   future shared renderer path; current packages report the variable unused.
+
+EterLocale, EterImageLib and CWebBrowser build static libraries successfully.
+These are standalone package results, not an integrated executable/link test.
+Remaining SDL/OpenGL, Python, audio, image and platform-code risks in §3.2–3.3
+remain **unmeasured behind these gates**. Repeat this inventory after T2.3;
+do not infer that packages blocked at configure time have clean source code.
+
 ### 3.3 Dependency inventory
 
 | Dependency | Linux source | Windows source today | Licence | Direction |

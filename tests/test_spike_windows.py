@@ -18,7 +18,7 @@ class SpikeTests(unittest.TestCase):
                        SPIKE_MAP=str(root / 'map'))
             result = subprocess.run(['bash', str(SCRIPT), str(root / 'src'), str(root / 'out')],
                                     env=env, text=True, capture_output=True)
-            self.assertEqual(result.returncode, 0, result.stderr)
+            self.assertEqual(result.returncode, 2, result.stderr)
             self.assertIn('A\ttool-missing', result.stdout)
             self.assertIn('B\ttool-missing', result.stdout)
             self.assertIn('nonexistent-cross-cmake', result.stdout)
