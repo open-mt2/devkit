@@ -5,3 +5,5 @@ bin/
 src/
 tools/
 treecache/
+build-coverage/
+coverage/
