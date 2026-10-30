@@ -44,3 +44,22 @@ docker run --rm --user "$(id -u):$(id -g)" -e HOME=/tmp \
 
 - Roll `tests/support/TestAssert.h` + `-UNDEBUG` out to the other 15 packages.
 - Wire `coverage --check` into CI once a baseline is recorded.
+
+## Rollout (15 packages)
+
+Each package received its own copy of `tests/support/TestAssert.h` and the
+`-UNDEBUG` compile option, through branch `task/TA.1-rollout`:
+
+`pkg_cwebbrowser`, `pkg_effectlib`, `pkg_etergrnlib`, `pkg_eterimagelib`,
+`pkg_eterlib`, `pkg_eterlocale`, `pkg_eterpack`, `pkg_eterpythonlib`,
+`pkg_gamelib`, `pkg_mileslib`, `pkg_prterrainlib`, `pkg_scriptlib`,
+`pkg_speedtreelib`, `pkg_spherelib`, `pkg_userinterface`.
+
+Verified together in the image (Debug, asserts active): 22/22 CTest pass.
+
+## CI fallout
+
+Two repos (`pkg_eterlib`, `pkg_prterrainlib`) had failing workflows: the runners
+only installed lzo/zip/jpeg, so `find_package(OpenGL REQUIRED)` in the fetched
+EterBase dependency failed. Fixed by adding `libgl1-mesa-dev`, `libglu1-mesa-dev`,
+`libsdl2-dev` and `libfreetype-dev` to their install steps.
