@@ -66,7 +66,7 @@ follow-ups: <new tasks or "none">
 - [ ] Waves 0–4 complete
 - [ ] Wave 5 scoped only (not executed)
 
-Progress: **8 / 37 tasks**, **16 / 16 decisions**.
+Progress: **9 / 37 tasks**, **16 / 16 decisions**.
 
 ---
 
@@ -327,7 +327,9 @@ directly.
   - verify: `docker run --rm openmt2/client windows`
   - risk: preset duplication — one preset file, two targets
 
-- [ ] **T0.3 — Data-width audit**
+- [x] **T0.3 — Data-width audit**
+  - owner: Codex
+  - evidence: evidence/T0.3.md
   - wave: 0 · repo: all · profile: standard
   - agent: 1 d (0.5–1.5) · human: 2.5 d (2–4)
   - deps: D10
