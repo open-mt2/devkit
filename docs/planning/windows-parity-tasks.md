@@ -66,7 +66,7 @@ follow-ups: <new tasks or "none">
 - [ ] Waves 0–4 complete
 - [ ] Wave 5 scoped only (not executed)
 
-Progress: **4 / 37 tasks**, **16 / 16 decisions**.
+Progress: **5 / 37 tasks**, **16 / 16 decisions**.
 
 ---
 
@@ -216,8 +216,10 @@ directly.
   - verify: `ctest -R render` and `scripts/render-diff.sh <a> <b>`
   - risk: golden flakiness — pin container and driver versions, use perceptual tolerance
 
-- [ ] **TA.5 — Headless audio / effect / model**
+- [x] **TA.5 — Headless audio / effect / model**
   - wave: A · repo: MilesLib, EffectLib, EterGrnLib · profile: standard
+  - owner: agent-03
+  - evidence: evidence/TA.5.md
   - agent: 1.5 d (1.5–2) · human: 4 d (3–6)
   - deps: TA.1
   - scope: miniaudio `ma_backend_null`; deterministic effect update; skinning/animation math against reference values.
