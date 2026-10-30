@@ -61,6 +61,10 @@ case "${1:-}" in
         shift
         exec "$(require_script bake-trees.sh)" "$@"
         ;;
+    coverage)
+        shift
+        exec "$(require_script coverage.sh)" "$@"
+        ;;
     fetch)
         shift
         "$(require_script fetch-packages.sh)" "$@"
