@@ -204,6 +204,15 @@ RUN if [ "${BAKE_TREES}" = "1" ]; then \
     fi
 
 # ---------------------------------------------------------------------------
+# Fuzzing support (TA.3)
+# ---------------------------------------------------------------------------
+# Debian's `clang` package does not pull compiler-rt, so -fsanitize=fuzzer and
+# -fsanitize=address fail at link time without this.
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends libclang-rt-14-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+# ---------------------------------------------------------------------------
 # Runtime
 # ---------------------------------------------------------------------------
 ENV OPENMT2_WORKSPACE=/workspace
