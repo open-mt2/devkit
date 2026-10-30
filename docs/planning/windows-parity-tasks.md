@@ -330,6 +330,7 @@ directly.
 - [x] **T0.3 — Data-width audit**
   - owner: Codex
   - evidence: evidence/T0.3.md
+  - commit: https://github.com/open-mt2/devkit/commit/1313980c8d315a566e71bb64cadb8276223f8f43
   - wave: 0 · repo: all · profile: standard
   - agent: 1 d (0.5–1.5) · human: 2.5 d (2–4)
   - deps: D10
