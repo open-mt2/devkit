@@ -1,0 +1,307 @@
+{
+  "issues": {
+    "4": {
+      "number": 44,
+      "url": "https://github.com/open-mt2/devkit/issues/44",
+      "id": 6127294315
+    },
+    "5": {
+      "number": 45,
+      "url": "https://github.com/open-mt2/devkit/issues/45",
+      "id": 6127295325
+    },
+    "6": {
+      "number": 46,
+      "url": "https://github.com/open-mt2/devkit/issues/46",
+      "id": 6127296236
+    },
+    "7": {
+      "number": 47,
+      "url": "https://github.com/open-mt2/devkit/issues/47",
+      "id": 6127297264
+    },
+    "8": {
+      "number": 48,
+      "url": "https://github.com/open-mt2/devkit/issues/48",
+      "id": 6127298250
+    },
+    "9": {
+      "number": 49,
+      "url": "https://github.com/open-mt2/devkit/issues/49",
+      "id": 6127299152
+    },
+    "10": {
+      "number": 50,
+      "url": "https://github.com/open-mt2/devkit/issues/50",
+      "id": 6127301497
+    },
+    "11": {
+      "number": 51,
+      "url": "https://github.com/open-mt2/devkit/issues/51",
+      "id": 6127302606
+    },
+    "12": {
+      "number": 52,
+      "url": "https://github.com/open-mt2/devkit/issues/52",
+      "id": 6127303797
+    },
+    "13": {
+      "number": 53,
+      "url": "https://github.com/open-mt2/devkit/issues/53",
+      "id": 6127305256
+    },
+    "14": {
+      "number": 54,
+      "url": "https://github.com/open-mt2/devkit/issues/54",
+      "id": 6127306227
+    },
+    "15": {
+      "number": 55,
+      "url": "https://github.com/open-mt2/devkit/issues/55",
+      "id": 6127306933
+    },
+    "16": {
+      "number": 56,
+      "url": "https://github.com/open-mt2/devkit/issues/56",
+      "id": 6127307744
+    },
+    "17": {
+      "number": 57,
+      "url": "https://github.com/open-mt2/devkit/issues/57",
+      "id": 6127308520
+    },
+    "18": {
+      "number": 58,
+      "url": "https://github.com/open-mt2/devkit/issues/58",
+      "id": 6127309654
+    },
+    "19": {
+      "number": 59,
+      "url": "https://github.com/open-mt2/devkit/issues/59",
+      "id": 6127310969
+    },
+    "20": {
+      "number": 60,
+      "url": "https://github.com/open-mt2/devkit/issues/60",
+      "id": 6127312258
+    },
+    "23": {
+      "number": 61,
+      "url": "https://github.com/open-mt2/devkit/issues/61",
+      "id": 6127313965
+    },
+    "21": {
+      "number": 62,
+      "url": "https://github.com/open-mt2/devkit/issues/62",
+      "id": 6127315186
+    },
+    "22": {
+      "number": 63,
+      "url": "https://github.com/open-mt2/devkit/issues/63",
+      "id": 6127316460
+    },
+    "24": {
+      "number": 64,
+      "url": "https://github.com/open-mt2/devkit/issues/64",
+      "id": 6127317349
+    },
+    "25": {
+      "number": 65,
+      "url": "https://github.com/open-mt2/devkit/issues/65",
+      "id": 6127318230
+    },
+    "26": {
+      "number": 66,
+      "url": "https://github.com/open-mt2/devkit/issues/66",
+      "id": 6127318994
+    },
+    "27": {
+      "number": 67,
+      "url": "https://github.com/open-mt2/devkit/issues/67",
+      "id": 6127320033
+    },
+    "28": {
+      "number": 68,
+      "url": "https://github.com/open-mt2/devkit/issues/68",
+      "id": 6127321413
+    },
+    "29": {
+      "number": 69,
+      "url": "https://github.com/open-mt2/devkit/issues/69",
+      "id": 6127322211
+    },
+    "30": {
+      "number": 70,
+      "url": "https://github.com/open-mt2/devkit/issues/70",
+      "id": 6127323158
+    },
+    "31": {
+      "number": 71,
+      "url": "https://github.com/open-mt2/devkit/issues/71",
+      "id": 6127324458
+    },
+    "32": {
+      "number": 72,
+      "url": "https://github.com/open-mt2/devkit/issues/72",
+      "id": 6127325686
+    },
+    "33": {
+      "number": 73,
+      "url": "https://github.com/open-mt2/devkit/issues/73",
+      "id": 6127326574
+    },
+    "34": {
+      "number": 74,
+      "url": "https://github.com/open-mt2/devkit/issues/74",
+      "id": 6127327757
+    },
+    "35": {
+      "number": 75,
+      "url": "https://github.com/open-mt2/devkit/issues/75",
+      "id": 6127328839
+    },
+    "36": {
+      "number": 76,
+      "url": "https://github.com/open-mt2/devkit/issues/76",
+      "id": 6127329864
+    },
+    "37": {
+      "number": 77,
+      "url": "https://github.com/open-mt2/devkit/issues/77",
+      "id": 6127331057
+    },
+    "38": {
+      "number": 78,
+      "url": "https://github.com/open-mt2/devkit/issues/78",
+      "id": 6127331874
+    },
+    "41": {
+      "number": 79,
+      "url": "https://github.com/open-mt2/devkit/issues/79",
+      "id": 6127333128
+    }
+  },
+  "linked": [
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    23,
+    21,
+    22,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30,
+    31,
+    32,
+    33,
+    34,
+    35,
+    36,
+    37,
+    38,
+    41
+  ],
+  "edges": [
+    "44:2",
+    "45:2",
+    "46:2",
+    "47:2",
+    "48:3",
+    "49:3",
+    "49:44",
+    "49:45",
+    "49:46",
+    "49:47",
+    "50:49",
+    "51:50",
+    "52:50",
+    "52:51",
+    "53:52",
+    "57:55",
+    "58:57",
+    "59:57",
+    "60:58",
+    "61:60",
+    "62:60",
+    "62:61",
+    "63:58",
+    "64:59",
+    "66:65",
+    "67:55",
+    "69:55",
+    "70:67",
+    "70:68",
+    "71:70",
+    "71:45",
+    "72:71",
+    "73:62",
+    "73:65",
+    "74:70",
+    "75:61",
+    "76:64",
+    "76:75",
+    "77:76",
+    "78:71",
+    "78:45"
+  ],
+  "comments": {
+    "1": "https://github.com/open-mt2/devkit/issues/1#issuecomment-6533979245",
+    "2": "https://github.com/open-mt2/devkit/issues/2#issuecomment-6533979553",
+    "3": "https://github.com/open-mt2/devkit/issues/3#issuecomment-6533979832",
+    "4": "https://github.com/open-mt2/devkit/issues/4#issuecomment-6533980154",
+    "5": "https://github.com/open-mt2/devkit/issues/5#issuecomment-6533980510",
+    "6": "https://github.com/open-mt2/devkit/issues/6#issuecomment-6533980814",
+    "7": "https://github.com/open-mt2/devkit/issues/7#issuecomment-6533981149",
+    "8": "https://github.com/open-mt2/devkit/issues/8#issuecomment-6533981478",
+    "9": "https://github.com/open-mt2/devkit/issues/9#issuecomment-6533981813",
+    "10": "https://github.com/open-mt2/devkit/issues/10#issuecomment-6533982189",
+    "11": "https://github.com/open-mt2/devkit/issues/11#issuecomment-6533982514",
+    "12": "https://github.com/open-mt2/devkit/issues/12#issuecomment-6533982879",
+    "13": "https://github.com/open-mt2/devkit/issues/13#issuecomment-6533983211",
+    "14": "https://github.com/open-mt2/devkit/issues/14#issuecomment-6533983481",
+    "15": "https://github.com/open-mt2/devkit/issues/15#issuecomment-6533983790",
+    "16": "https://github.com/open-mt2/devkit/issues/16#issuecomment-6533984089",
+    "17": "https://github.com/open-mt2/devkit/issues/17#issuecomment-6533984414",
+    "18": "https://github.com/open-mt2/devkit/issues/18#issuecomment-6533984780",
+    "19": "https://github.com/open-mt2/devkit/issues/19#issuecomment-6533985120",
+    "20": "https://github.com/open-mt2/devkit/issues/20#issuecomment-6533985546",
+    "21": "https://github.com/open-mt2/devkit/issues/21#issuecomment-6533986033",
+    "22": "https://github.com/open-mt2/devkit/issues/22#issuecomment-6533986355",
+    "23": "https://github.com/open-mt2/devkit/issues/23#issuecomment-6533986698",
+    "24": "https://github.com/open-mt2/devkit/issues/24#issuecomment-6533987121",
+    "25": "https://github.com/open-mt2/devkit/issues/25#issuecomment-6533987530",
+    "26": "https://github.com/open-mt2/devkit/issues/26#issuecomment-6533987974",
+    "27": "https://github.com/open-mt2/devkit/issues/27#issuecomment-6533988586",
+    "28": "https://github.com/open-mt2/devkit/issues/28#issuecomment-6533989089",
+    "29": "https://github.com/open-mt2/devkit/issues/29#issuecomment-6533989501",
+    "30": "https://github.com/open-mt2/devkit/issues/30#issuecomment-6533989876",
+    "31": "https://github.com/open-mt2/devkit/issues/31#issuecomment-6533990280",
+    "32": "https://github.com/open-mt2/devkit/issues/32#issuecomment-6533990665",
+    "33": "https://github.com/open-mt2/devkit/issues/33#issuecomment-6533991241",
+    "34": "https://github.com/open-mt2/devkit/issues/34#issuecomment-6533991848",
+    "35": "https://github.com/open-mt2/devkit/issues/35#issuecomment-6533992358",
+    "36": "https://github.com/open-mt2/devkit/issues/36#issuecomment-6533992757",
+    "37": "https://github.com/open-mt2/devkit/issues/37#issuecomment-6533993334",
+    "38": "https://github.com/open-mt2/devkit/issues/38#issuecomment-6533993815",
+    "39": "https://github.com/open-mt2/devkit/issues/39#issuecomment-6533994130",
+    "41": "https://github.com/open-mt2/devkit/issues/41#issuecomment-6533994500"
+  }
+}

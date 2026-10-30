@@ -82,16 +82,23 @@ Rules for container runs:
 - vendor markers: the image has `i686-w64-mingw32-gcc` only (no C++ cross compiler),
   Wine 8.0, Python 2.7, CMake 3.25, Ninja.
 
-GitHub CLI: the keyring hangs on this machine, so **use the wrapper** (it injects
-`GH_TOKEN` from `~/.config/openmt2/gh-token`):
+GitHub CLI: use plain `gh` with the existing authentication. Check access with a
+bounded read-only request before GitHub work:
 
 ```bash
-.local/gh repo view open-mt2/devkit
-.local/gh pr create ...
+timeout 20s gh api user --jq .login
+gh repo view open-mt2/devkit
 ```
 
-Plain `gh` will hang on any auth command — do not use it, and do not remove
-`~/.config/gh/hosts.yml` unless asked.
+If the request succeeds, continue with `gh`. A missing `.local/gh` wrapper or
+`GH_TOKEN` environment variable does not mean authentication is unavailable.
+If authentication fails or times out, use `.local/gh` only when it exists and
+`~/.config/openmt2/gh-token` is available; the wrapper supplies `GH_TOKEN` to
+bypass the keyring. Otherwise report the actual error and request authentication
+setup. Preserve `~/.config/gh/hosts.yml` unless the user asks to change it.
+
+This authentication policy also applies to `.local/gh` examples in
+`docs/agents/issue-tracker.md`: use `gh` when the access check succeeds.
 
 Git: SSH works (`git@github.com` as `PoNo1101`). Remotes must use SSH, not HTTPS.
 
@@ -130,8 +137,8 @@ follow-ups: <new tasks or "none">
 
 ### Issue tracker
 
-Issues live in GitHub Issues on `open-mt2/devkit`, driven through the `.local/gh`
-wrapper — never plain `gh`. See `docs/agents/issue-tracker.md`.
+Issues live in GitHub Issues on `open-mt2/devkit`. Follow the GitHub CLI
+authentication policy above; see `docs/agents/issue-tracker.md` for tracker operations.
 
 ### Triage labels
 
