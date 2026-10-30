@@ -8,6 +8,7 @@
 #
 # Commands:
 #   build [build.sh options]   Compile and assemble dist/ (default)
+#   windows [options]          Cross-build Windows client and assemble dist/
 #   shell                      Open an interactive shell
 #   bake [bake.py options]     Build/run the SpeedTree geometry baker
 #   fetch                      Refresh pkg_* sources and bin/ assets
@@ -52,6 +53,10 @@ case "${1:-}" in
     build)
         shift
         exec "$(require_script build.sh)" "$@"
+        ;;
+    windows)
+        shift
+        exec "$(require_script build-windows.sh)" "$@"
         ;;
     shell|bash|sh)
         shift
