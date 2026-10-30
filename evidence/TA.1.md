@@ -40,10 +40,10 @@ docker run --rm --user "$(id -u):$(id -g)" -e HOME=/tmp \
   - `pkg_prterrainlib` — fixture used `long` (8 bytes on LP64) for the on-disk
     `LONG` water heights. PR: https://github.com/open-mt2/pkg_prterrainlib/pull/1
 
-## Remaining for TA.1
+## Status
 
-- Roll `tests/support/TestAssert.h` + `-UNDEBUG` out to the other 15 packages.
-- Wire `coverage --check` into CI once a baseline is recorded.
+Complete. The 16 PRs are merged. The coverage ratchet in CI is tracked by TA.7
+(`coverage --check` with `coverage/baseline.txt`).
 
 ## Rollout (15 packages)
 

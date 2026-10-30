@@ -61,12 +61,12 @@ follow-ups: <new tasks or "none">
 
 - [x] Plan v0.3 written (`docs/planning/windows-parity.md`)
 - [x] Decisions settled (see §2)
-- [ ] Wave A complete
+- [~] Wave A complete
 - [ ] Wave B complete (optional)
 - [ ] Waves 0–4 complete
 - [ ] Wave 5 scoped only (not executed)
 
-Progress: **0 / 37 tasks**, **16 / 16 decisions**.
+Progress: **1 / 37 tasks**, **16 / 16 decisions**.
 
 ---
 
@@ -172,9 +172,10 @@ directly.
 
 > Gate: TA.1–TA.4 + TA.8. TA.5–TA.7 are the coverage tail and must not block Wave 0.
 
-- [~] **TA.1 — Test harness + CI baseline**
+- [x] **TA.1 — Test harness + CI baseline**
   - wave: A · repo: all, devkit · profile: standard
   - owner: agent-01
+  - evidence: evidence/TA.1.md
   - agent: 0.5 d (0.5–1) · human: 1.5 d (1–2)
   - deps: D15
   - scope: shared `tests/support/TestAssert.h`; make `ctest` runnable locally and in the image; coverage report (`llvm-cov`/`gcov`) per package.
