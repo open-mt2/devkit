@@ -45,6 +45,7 @@ jobs:
             WITH_SPEEDTREE=0
             BUILD_SPEEDTREE_DUMPER=0
             BAKE_TREES=0
+            PKG_CACHE_BUST=${{ github.run_id }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
