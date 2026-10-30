@@ -66,7 +66,7 @@ follow-ups: <new tasks or "none">
 - [ ] Waves 0–4 complete
 - [ ] Wave 5 scoped only (not executed)
 
-Progress: **1 / 37 tasks**, **16 / 16 decisions**.
+Progress: **2 / 37 tasks**, **16 / 16 decisions**.
 
 ---
 
@@ -183,9 +183,10 @@ directly.
   - verify: `ctest --output-on-failure` and `scripts/coverage.sh`
   - risk: none
 
-- [~] **TA.2 — Pure-logic characterization tests**
+- [x] **TA.2 — Pure-logic characterization tests**
   - wave: A · repo: EterBase, EterLocale, SphereLib, EterImageLib, EterLib · profile: standard
   - owner: agent-01
+  - evidence: evidence/TA.2.md
   - agent: 2 d (1.5–3) · human: 5 d (4–7)
   - deps: TA.1
   - scope: CRC32, TEA, LZO round-trip, `FileBase`/`MappedFile`, timer, locale tables, `GrpMath`, ray/OBB (`GrpDetector`), DXT codecs.
