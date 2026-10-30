@@ -304,7 +304,7 @@ directly.
 - [x] **T0.1 — Toolchain spike (read-only)**
   - owner: W-Kanzashi / Codex
   - evidence: evidence/T0.1.md
-  - commit: 849322e (implementation; final evidence in this branch)
+  - PR: https://github.com/open-mt2/devkit/pull/86 (base: docs/parity-issue-review)
   - wave: 0 · repo: devkit · profile: design
   - agent: 1 d (1–2) · human: 2.5 d (2–4)
   - deps: D8
