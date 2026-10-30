@@ -15,7 +15,7 @@ scripts/build.sh          Linux build + dist packaging
 scripts/build.bat         historical Windows/MSVC script (being retired)
 scripts/fetch-*.sh        source and asset fetchers
 scripts/bake-trees.sh     SpeedTree geometry cache baker (needs Wine)
-.local/                   planning docs (gitignored), see below
+docs/planning/            the parity plan and the task sheet (tracked)
 src/                      materialized client sources (gitignored)
 bin/                      client assets (gitignored, ~2.3 GB)
 build/ dist/ treecache/   generated (gitignored)
@@ -25,12 +25,14 @@ build/ dist/ treecache/   generated (gitignored)
 
 Before doing any work, read:
 
-1. `.local/windows-parity.md` — the cross-platform / no-proprietary plan.
-2. `.local/windows-parity-tasks.md` — the **execution source of truth**: 37 tasks,
-   16 decisions, per-task size, dependencies, verification command, evidence rules.
+1. `docs/planning/windows-parity.md` — the cross-platform / no-proprietary plan.
+2. `docs/planning/windows-parity-tasks.md` — the **execution source of truth**: 37
+   tasks, 16 decisions, per-task size, dependencies, verification command, evidence
+   rules.
 
-If those files are missing (fresh clone), stop and ask the user for them. They are
-intentionally not committed.
+Update the task sheet as you work: tick decisions, claim tasks with `- [~]` +
+`owner:`, close them with `- [x]` + the evidence path, and keep the counters in
+§1 accurate.
 
 ## Hard rules
 
