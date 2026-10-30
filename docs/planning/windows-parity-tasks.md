@@ -66,7 +66,7 @@ follow-ups: <new tasks or "none">
 - [ ] Waves 0–4 complete
 - [ ] Wave 5 scoped only (not executed)
 
-Progress: **6 / 37 tasks**, **16 / 16 decisions**.
+Progress: **7 / 37 tasks**, **16 / 16 decisions**.
 
 ---
 
@@ -247,8 +247,10 @@ directly.
   - verify: `scripts/coverage.sh --check`
   - risk: do not set absolute targets
 
-- [ ] **TA.8 — Pre-refactor snapshots**
+- [x] **TA.8 — Pre-refactor snapshots**
   - wave: A · repo: all · profile: standard
+  - owner: agent-05
+  - evidence: evidence/TA.8.md
   - agent: 0.5 d (0.5–1) · human: 1.5 d (1–2)
   - deps: TA.2–TA.6
   - scope: freeze render hashes, pack transcripts, model/collision outputs, API surface into `golden/`.

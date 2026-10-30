@@ -1,0 +1,106 @@
+# TA.8 — Pre-refactor snapshots
+
+- agent: agent-05
+- date: 2026-10-30
+- command: `scripts/golden-check.sh`
+- pr: https://github.com/open-mt2/devkit/pull/85 (stacked on TA.6 #84)
+- before: no `golden/` tree and no `scripts/golden-check.sh`. The artefacts the refactor must preserve lived only next to the tests that owned them: 12 render PNGs under `src/EterLib/tests/golden/render/` (TA.4), three Python API text files under `src/*/tests/data/` (TA.6), and the pack/model/collision expectations only existed as assertions inside TA.2/TA.3/TA.5 binaries. Nothing tied them to one pre-refactor baseline, so a later wave could move, drop or silently rewrite one of them and still show a green test run.
+- after: `golden/` is committed with hashed render and API artefacts, a 41-test CTest inventory, and deterministic pack/model/collision/packet transcripts. `scripts/golden-check.sh` runs 11 checks and passes: render hashes 12/12, Python API hashes 3/3, the render golden binary, the three API import tests, four transcripts and the inventory. Four negative controls fail as intended (mutated render PNG, mutated API snapshot, appended transcript line, invented test name).
+- notes: files below. Golden updates are deliberate (`--update` refuses to write after a failing check). The inventory includes TA.3's `test_packet`, which merged before this baseline was frozen.
+
+## What is frozen
+
+| Golden | Content | Origin |
+|---|---|---|
+| `golden/render.sha256` | SHA-256 of the 12 committed render PNGs | TA.4 |
+| `golden/api.sha256` | SHA-256 of the three Python API surfaces | TA.6 |
+| `golden/ctest-tests.txt` | sorted CTest names, 41 entries | TA.1–TA.6 |
+| `golden/transcripts/pack.txt` | `test_pack_formats`, `test_eterpack` output + exit status | TA.3 |
+| `golden/transcripts/model.txt` | `test_gr2_reader`, `test_grn_reference` output + exit status | TA.3/TA.5 |
+| `golden/transcripts/collision.txt` | `test_detector`, `test_grpmath` output + exit status | TA.2 |
+| `golden/transcripts/packet.txt` | `test_packet` output + exit status | TA.3 |
+
+`golden/README.md` documents the scope, the update procedure and the
+"no refresh to hide a regression" rule.
+
+## Commands and output
+
+```
+$ scripts/golden-check.sh
+[check] verifying pre-refactor goldens
+PASS  render hashes (12 artefacts)
+PASS  Python API hashes (3 artefacts)
+PASS  render goldens
+PASS  Python API: ScriptLib
+PASS  Python API: EterPythonLib
+PASS  Python API: client
+PASS  transcript pack
+PASS  transcript model
+PASS  transcript collision
+PASS  CTest inventory (41 tests)
+
+11 checks passed, 0 failed
+```
+
+Update mode (used to create the initial baseline; all tests had to pass first):
+
+```
+$ scripts/golden-check.sh --update
+[update] regenerating golden manifests and transcripts
+[update] keeping Python API snapshots (set OPENMT2_UPDATE_PYTHON_API=1 to rewrite them)
+PASS  render goldens (updated)
+PASS  Python API: ScriptLib
+PASS  Python API: EterPythonLib
+PASS  Python API: client
+PASS  transcript pack (updated)
+PASS  transcript model (updated)
+PASS  transcript collision (updated)
+PASS  transcript packet (updated)
+PASS  CTest inventory (updated)
+
+9 checks passed, 0 failed
+```
+
+Negative controls:
+
+```
+# replace clear.png with depth_test.png
+FAIL  render hashes: 'src/EterLib/tests/golden/render/clear.png' changed (expected 1c3c71ab3a50, got 68d20f54439f)
+[FAIL] clear                similarity= 43.67% max_delta=204 mae=38.337 pixels=19200 raw=0b868a81a9f6f58b
+FAIL  render goldens (exit 1)
+9 checks passed, 2 failed
+```
+
+```
+# append a binding to the ScriptLib API snapshot
+FAIL  Python API hashes: 'src/ScriptLib/tests/data/python_api_scriptlib.txt' changed (expected 1566c7193ec8, got 807e87b56879)
+[FAIL] API snapshot differs at line 38; actual surface written to .../python_api_scriptlib.txt.actual
+FAIL  Python API: ScriptLib (exit 134)
+
+# append a line to the pack transcript
+FAIL  transcript pack differs
+
+# invent a test in the inventory
+FAIL  CTest inventory changed
+
+7 checks passed, 4 failed
+```
+
+## Notes / follow-ups
+
+- Depends on the three TA.6 package PRs (`pkg_scriptlib#2`,
+  `pkg_eterpythonlib#2`, `pkg_userinterface#3`) merging, because `api.sha256`
+  hashes their committed snapshots. This PR is stacked on #84 for that reason.
+- The script does not build; it expects a configured build directory
+  (`OPENMT2_BUILD_DIR`, default `build/`). The devkit image build already
+  produces it.
+- Render output is still compared by the owning TA.4 test (tolerance 2/255).
+  The golden check hashes the committed PNGs and runs that test; it does not
+  hash the freshly rendered PNGs, which would be brittle across Mesa versions.
+- CTest numbering is not frozen, only the sorted names, so CMake ordering
+  changes in Wave B do not create false positives.
+- The pack transcript covers the pack/provider fixtures; packet wire-format
+  coverage is pinned separately in `transcripts/packet.txt` because TA.3's
+  `pkg_userinterface` PR merged before this baseline was frozen.
+- No game assets are committed or hashed. The transcript fixtures are
+  generated by code (TA.3) and the render PNGs are synthetic scenes (TA.4).
