@@ -66,6 +66,7 @@ RUN dpkg --add-architecture i386 \
         libsdl2-dev \
         libfreetype-dev \
         libgl-dev \
+        libegl-dev \
         libglu1-mesa-dev \
         libzip-dev \
         libdevil-dev \
@@ -202,6 +203,15 @@ RUN if [ "${BAKE_TREES}" = "1" ]; then \
         /workspace/scripts/bake-trees.sh --force \
         || echo "warning: tree baking failed; treecache/ will be empty"; \
     fi
+
+# ---------------------------------------------------------------------------
+# Fuzzing support (TA.3)
+# ---------------------------------------------------------------------------
+# Debian's `clang` package does not pull compiler-rt, so -fsanitize=fuzzer and
+# -fsanitize=address fail at link time without this.
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends libclang-rt-14-dev \
+    && rm -rf /var/lib/apt/lists/*
 
 # ---------------------------------------------------------------------------
 # Runtime

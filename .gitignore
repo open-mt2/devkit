@@ -6,4 +6,6 @@ src/
 tools/
 treecache/
 build-coverage/
+build-fuzz/
+fuzz-corpus/
 coverage/
