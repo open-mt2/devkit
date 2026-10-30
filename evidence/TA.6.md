@@ -14,7 +14,7 @@
 | `pkg_scriptlib` | [#2](https://github.com/open-mt2/pkg_scriptlib/pull/2) | `PythonApiSnapshot.h`, `test_python_scriptlib_api`, golden `tests/data/python_api_scriptlib.txt` |
 | `pkg_eterpythonlib` | [#2](https://github.com/open-mt2/pkg_eterpythonlib/pull/2) | `test_python_eterpythonlib_api`, golden `tests/data/python_api_eterpythonlib.txt` |
 | `pkg_userinterface` | [#3](https://github.com/open-mt2/pkg_userinterface/pull/3) | `test_python_client_api`, golden `tests/data/python_api_client.txt` |
-| `devkit` | — | task sheet, evidence |
+| `devkit` | [#84](https://github.com/open-mt2/devkit/pull/84) | task sheet, evidence |
 
 ## Commands and output
 
