@@ -5,7 +5,7 @@
 - command: `ctest -R "python|scriptlib"` (plus full `ctest` and a golden-file negative control)
 - before: `ctest -R "python|scriptlib"` matched **zero** tests: the existing suites were `ScriptLib_SmokeTests` and `EterPythonLib_SmokeTests` (case-sensitive `-R`), and `UserInterface` had no Python test at all. Nothing booted the full client interpreter, imported the registered modules, or pinned the exposed API, so a removed/renamed binding could ship unnoticed. Baseline on this branch: `ctest` 37/37 (the `test_packet` case from TA.3 lives on a separate open PR, not on `main`).
 - after: `ctest -R "python|scriptlib"` runs 3/3 (`test_python_scriptlib_api`, `test_python_eterpythonlib_api`, `test_python_client_api`). Full suite 40/40. The interpreter boots headless (`Py_NoSiteFlag=1`, no display and no game assets) and every registered module imports. Committed snapshots: ScriptLib 3 modules / 32 attributes, EterPythonLib 5 / 269, full client 35 / 2155. A deliberately corrupted golden fails with the first differing line and writes the actual surface.
-- notes: files and follow-ups below. No production behaviour changed; tests only.
+- notes: files and follow-ups below. No production behaviour changed; tests and CI dependency setup only.
 
 ## Slices
 
@@ -15,6 +15,11 @@
 | `pkg_eterpythonlib` | [#2](https://github.com/open-mt2/pkg_eterpythonlib/pull/2) | `test_python_eterpythonlib_api`, golden `tests/data/python_api_eterpythonlib.txt` |
 | `pkg_userinterface` | [#3](https://github.com/open-mt2/pkg_userinterface/pull/3) | `test_python_client_api`, golden `tests/data/python_api_client.txt` |
 | `devkit` | [#84](https://github.com/open-mt2/devkit/pull/84) | task sheet, evidence |
+
+Each package PR also updates `.github/workflows/ci.yml` with the sibling
+dependency setup the standalone builds now need: OpenGL/SDL2/freetype headers,
+and miniaudio 0.11.25 built from source with the same pkg-config file as the
+Docker image.
 
 ## Commands and output
 
@@ -114,4 +119,10 @@ the shipping default so `PythonNetworkStreamModule` links.
   regenerate `python_api_client.txt`; otherwise the import set silently lags
   production.
 - Standalone CI already runs `ctest` in all three packages, so the boot is now a
-  gate on every push/PR (both GCC and Clang, Debug and Release).
+  gate on every push/PR (both GCC and Clang, Debug and Release) **once the
+  pre-existing EterBase standalone build is restored** (issue #79, recorded in
+  `evidence/TA.4.md`). The package CI runs added the missing OpenGL/SDL/freetype
+  and miniaudio setup steps uncovered while validating the PRs; they currently
+  stop at the same `pkg_eterbase` blocker (`Platform/stb_image.h` missing,
+  `GLuint` unknown in `DirectXMathCompat.h`), which is outside TA.6's scope.
+  The in-image build above is green.
