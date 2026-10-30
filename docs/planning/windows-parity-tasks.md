@@ -11,6 +11,10 @@
 > - Both are point estimates with a range. Assume ±50% before T0.1 has run.
 > - Rollups may differ by ±1 day from §8 of the plan (which rounds).
 
+> Each task is mirrored as a GitHub issue in `open-mt2/devkit`, with one milestone
+> per wave (`Wave A` … `Wave 5`); PRs close them with `Closes #<n>`. Issue #1 holds
+> the D1–D16 decisions.
+
 ---
 
 ## 0. How to work this file

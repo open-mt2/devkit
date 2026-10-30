@@ -34,6 +34,17 @@ Update the task sheet as you work: tick decisions, claim tasks with `- [~]` +
 `owner:`, close them with `- [x]` + the evidence path, and keep the counters in
 §1 accurate.
 
+## Tracking
+
+Every task is mirrored as an issue in `open-mt2/devkit`, titled `[<ID>] <title>`,
+with one milestone per wave and the `parity` label. The task sheet remains the
+source of truth for scope and state; the issues are the progress view and the
+place PRs close (`Closes #<n>`). Assign the issue to yourself when you claim a
+task, and keep the sheet's checkbox, owner and counters in sync.
+
+Blocked/undecided work is tracked in issue #1 (D1–D16). Deferred work carries the
+`deferred` label.
+
 ## Hard rules
 
 1. **Decisions gate tasks.** A task whose `deps` include an unchecked `D*` decision
