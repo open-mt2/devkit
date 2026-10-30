@@ -26,6 +26,7 @@ test_lzo
 test_lzo_invariants
 test_miles_headless
 test_pack_formats
+test_packet
 test_poly
 test_python_client_api
 test_python_eterpythonlib_api

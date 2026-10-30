@@ -228,6 +228,8 @@ if [ "$UPDATE" = true ]; then
     run_transcript collision \
         src/EterLib/tests/test_detector \
         src/EterLib/tests/test_grpmath
+    run_transcript packet \
+        src/UserInterface/tests/test_packet
 
     collect_inventory > "$GOLDEN/ctest-tests.txt"
     inventory_total="$(cd "$BUILD_DIR" && ctest -N 2>/dev/null | sed -n 's/^Total Tests: //p')"
@@ -257,6 +259,8 @@ else
     run_transcript collision \
         src/EterLib/tests/test_detector \
         src/EterLib/tests/test_grpmath
+    run_transcript packet \
+        src/UserInterface/tests/test_packet
 
     collect_inventory > "$tmpdir/ctest-tests.txt"
     inventory_total="$(cd "$BUILD_DIR" && ctest -N 2>/dev/null | sed -n 's/^Total Tests: //p')"
