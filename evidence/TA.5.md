@@ -11,10 +11,10 @@
 
 | Repository | PR | Result |
 |---|---|---|
-| `pkg_mileslib` | see PR link | `OPENMT2_AUDIO_BACKEND=null` forces `ma_context` to `ma_backend_null`; `test_miles_headless` |
-| `pkg_effectlib` | see PR link | read-only particle accessors; `test_effect_determinism` |
-| `pkg_etergrnlib` | see PR link | `test_grn_reference` (world pose, skinning, curves, animation) |
-| `devkit` | this PR | task sheet, evidence |
+| `pkg_mileslib` | [#2](https://github.com/open-mt2/pkg_mileslib/pull/2) | `OPENMT2_AUDIO_BACKEND=null` forces `ma_context` to `ma_backend_null`; `test_miles_headless` |
+| `pkg_effectlib` | [#2](https://github.com/open-mt2/pkg_effectlib/pull/2) | read-only particle accessors; `test_effect_determinism` |
+| `pkg_etergrnlib` | [#3](https://github.com/open-mt2/pkg_etergrnlib/pull/3) | `test_grn_reference` (world pose, skinning, curves, animation) |
+| `devkit` | [#83](https://github.com/open-mt2/devkit/pull/83) | task sheet, evidence |
 
 ## Commands and output
 
