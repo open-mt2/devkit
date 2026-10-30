@@ -62,6 +62,10 @@ $ wc -l src/*/tests/data/python_api_*.txt
  2192 src/UserInterface/tests/data/python_api_client.txt
 ```
 
+The same goldens pass in Release/GCC, Debug/GCC and Release/Clang (both full
+builds of the three test targets), so the snapshot has no `NDEBUG` or compiler
+dependence.
+
 Negative control — a golden with one binding removed is rejected:
 
 ```
