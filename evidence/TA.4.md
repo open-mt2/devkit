@@ -98,3 +98,9 @@ output PNG; `sha256sum -c tests/golden/render/manifest.sha256` passes.
   mode.
 - The EGL/GLX path is Linux-only; the Windows target will need its own
   offscreen context (or a D3D readback) when T1.5/T1.7 land.
+- **`pkg_eterlib` CI is red on `main` too** (issue #79): the standalone build
+  clones `pkg_eterbase`, which does not ship `Platform/stb_image.h`, so
+  `ImageLoaderCompat.cpp` fails to compile before any test runs. This predates
+  TA.4 and is independent of it; the canonical devkit image, which installs the
+  vendored header, runs the new test green (35/35). `ubuntu:24.04` with Mesa
+  25.2.8 was used to confirm the goldens are not tied to the image's Mesa 22.3.6.
