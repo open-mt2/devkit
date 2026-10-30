@@ -18,10 +18,10 @@
   module covers fewer lines than the baseline, and
   `.github/workflows/coverage.yml` runs it for every push and pull request.
   Debug suite is green (41/41), `--check` passes:
-  19.3% (19 628 / 101 859 lines). Adding uncovered code does not fail the
+  19.3% (19 807 / 102 566 lines). Adding uncovered code does not fail the
   ratchet; losing a covered module or covered lines does.
-- notes: files, harness contract, negative controls and the two prerequisite
-  package fixes below.
+- notes: files, harness contract, determinism fixes, negative controls and the
+  two prerequisite package fixes below.
 
 ## What changed
 
@@ -54,21 +54,36 @@ Full run and baseline creation:
 $ scripts/coverage.sh --update
 100% tests passed, 0 tests failed out of 41
 [coverage] collecting gcov data (333 objects)
-[coverage] 16 modules, 19628/101859 lines (19.3%)
+[coverage] 16 modules, 19807/102566 lines (19.3%)
 [coverage] baseline written to '/workspace/golden/coverage-baseline.txt'
 ```
 
-Ratchet:
+Ratchet (second clean build, identical module summary):
 
 ```
-$ scripts/coverage.sh --check --no-build
+$ scripts/coverage.sh --check
   CWebBrowser       96.3%     52/54     lines  (baseline 52)
-  EffectLib         46.8%   1675/3581   lines  (baseline 1675)
+  EffectLib         46.5%   1675/3604   lines  (baseline 1675)
   ...
   UserInterface      5.9%   1576/26879  lines  (baseline 1576)
-[coverage] 16 modules, 19628/101859 lines (19.3%)
+[coverage] 16 modules, 19807/102566 lines (19.3%)
 [coverage] OK: no per-module regression
 ```
+
+Determinism: the first CI run measured MilesLib 1153/1969 instead of
+1184/2040. Two environment-dependent defects were found and fixed:
+
+1. `gcov -j` names its JSON after the source *basename*, so running it for all
+   333 objects in one directory made `EterLib/Resource.cpp` and
+   `ScriptLib/Resource.cpp` (and the three `Type.cpp`) overwrite each other;
+   which one survived depended on filesystem order. Coverage now runs gcov per
+   object in its own directory.
+2. MilesLib coverage depended on whether the host exposed an audio device. The
+   script now pins the same environment as `golden-check.sh` (`LC_ALL=C`,
+   `OPENMT2_AUDIO_BACKEND=null`, llvmpipe).
+
+Two independent clean builds after the fix produced byte-identical
+`coverage/summary.txt` (19 807 / 102 566 lines).
 
 Self-test (no build required):
 
@@ -81,7 +96,7 @@ Negative control — one covered line added to the `EterBase` baseline entry:
 
 ```
 $ COVERAGE_BASELINE=/tmp/baseline-regressed.txt scripts/coverage.sh --check --no-build
-FAIL  EterBase: covered lines 2162 < 2163 (-1)
+FAIL  EterBase: covered lines 2171 < 2172 (-1)
 [coverage] FAIL ...
 $ echo $?
 1
@@ -91,7 +106,7 @@ $ echo $?
 
 ```
 $ COVERAGE_BASELINE=/tmp/baseline-regressed.txt scripts/coverage.sh --update --no-build
-FAIL  EterBase: covered lines 2162 < 2163 (-1)
+FAIL  EterBase: covered lines 2171 < 2172 (-1)
 error: refusing to rewrite the baseline after a failing check; review the regressions and pass --force to accept them
 ```
 
