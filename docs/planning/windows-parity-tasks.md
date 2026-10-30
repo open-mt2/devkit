@@ -66,7 +66,7 @@ follow-ups: <new tasks or "none">
 - [ ] Waves 0–4 complete
 - [ ] Wave 5 scoped only (not executed)
 
-Progress: **3 / 37 tasks**, **16 / 16 decisions**.
+Progress: **4 / 37 tasks**, **16 / 16 decisions**.
 
 ---
 
@@ -205,8 +205,10 @@ directly.
   - verify: `ctest -R "pack|gr2|treecache|packet"` and `scripts/fuzz-smoke.sh`
   - risk: fixture licensing — generate, never copy assets
 
-- [ ] **TA.4 — Headless renderer goldens**
+- [x] **TA.4 — Headless renderer goldens**
   - wave: A · repo: EterBase, EterLib, devkit · profile: standard
+  - owner: agent-02
+  - evidence: evidence/TA.4.md
   - agent: 3.5 d (3–4) · human: 8.5 d (7–10)
   - deps: TA.1
   - scope: scripted offscreen scenes under llvmpipe/OSMesa; PNG hashes committed; `glReadPixels` based now, `Readback()` formalises it in T1.7; image-diff tool reused by T3.2/T5.4.

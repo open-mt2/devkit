@@ -66,6 +66,7 @@ RUN dpkg --add-architecture i386 \
         libsdl2-dev \
         libfreetype-dev \
         libgl-dev \
+        libegl-dev \
         libglu1-mesa-dev \
         libzip-dev \
         libdevil-dev \
