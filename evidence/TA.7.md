@@ -118,8 +118,11 @@ Debug coverage build.
 builds the development image (`WITH_BIN=0`, `WITH_SPEEDTREE=0` — assets are
 irrelevant to coverage), mounts the checkout's `scripts/`, `golden/` and a
 `build-coverage/` directory, and runs `coverage --check`. The report is uploaded
-as an artifact. This PR is stacked on the two package PRs above because the
-image fetches `main` from the package repositories.
+as an artifact. The image fetches package sources at build time, so the
+workflow passes `PKG_CACHE_BUST=<run id>` to keep that layer fresh; otherwise a
+cached image would measure a stale `main`. This PR is stacked on the two
+package PRs above because the image fetches `main` from the package
+repositories.
 
 ## Notes / follow-ups
 
