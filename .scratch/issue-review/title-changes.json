@@ -1,0 +1,382 @@
+[
+  {
+    "number": 79,
+    "before": "[CI] pkg_eterbase cannot be built standalone (missing stb_image.h, __LINUX__ not propagated) \u2014 implementation ticket",
+    "after": "[CI] Restore standalone pkg_eterbase builds and affected CI workflows"
+  },
+  {
+    "number": 78,
+    "before": "[T5.4] Cross-backend conformance harness \u2014 implementation ticket",
+    "after": "[T5.4] Compare rendering output across backends"
+  },
+  {
+    "number": 77,
+    "before": "[T5.3] Full Vulkan backend \u2014 implementation ticket",
+    "after": "[T5.3] Complete the Vulkan rendering backend"
+  },
+  {
+    "number": 76,
+    "before": "[T5.2] Program synthesis + shader translation \u2014 implementation ticket",
+    "after": "[T5.2] Synthesize Vulkan programs and translate legacy shaders"
+  },
+  {
+    "number": 75,
+    "before": "[T5.1] Vulkan backend spike \u2014 implementation ticket",
+    "after": "[T5.1] Render a textured quad with a Vulkan backend prototype"
+  },
+  {
+    "number": 74,
+    "before": "[T4.2] CI + docs \u2014 implementation ticket",
+    "after": "[T4.2] Build both targets in CI and document the workflow"
+  },
+  {
+    "number": 73,
+    "before": "[T4.1] Delete legacy surface \u2014 implementation ticket",
+    "after": "[T4.1] Remove legacy platform and proprietary SDK references"
+  },
+  {
+    "number": 72,
+    "before": "[T3.3] Parity audit \u2014 implementation ticket",
+    "after": "[T3.3] Audit Windows/Linux behavioral parity"
+  },
+  {
+    "number": 71,
+    "before": "[T3.2] Automated smoke test \u2014 implementation ticket",
+    "after": "[T3.2] Detect client crashes and black screens in CI"
+  },
+  {
+    "number": 70,
+    "before": "[T3.1] Windows packaging \u2014 implementation ticket",
+    "after": "[T3.1] Package the Windows client with matching assets"
+  },
+  {
+    "number": 69,
+    "before": "[T2.5] CMake platform hygiene \u2014 implementation ticket",
+    "after": "[T2.5] Make CMake dependencies platform-aware"
+  },
+  {
+    "number": 68,
+    "before": "[T2.4] Python 2.7 for Windows \u2014 implementation ticket",
+    "after": "[T2.4] Run Python 2.7 and client bytecode on Windows"
+  },
+  {
+    "number": 67,
+    "before": "[T2.3] Cross-build Windows dependencies \u2014 implementation ticket",
+    "after": "[T2.3] Cross-build the Windows dependency set"
+  },
+  {
+    "number": 66,
+    "before": "[T2.2] libjpeg audit \u2014 implementation ticket",
+    "after": "[T2.2] Audit libjpeg usage and document its disposition"
+  },
+  {
+    "number": 65,
+    "before": "[T2.1] Remove DevIL \u2014 implementation ticket",
+    "after": "[T2.1] Remove the DevIL dependency"
+  },
+  {
+    "number": 64,
+    "before": "[T1.8] Fixed-function feature matrix \u2014 implementation ticket",
+    "after": "[T1.8] Document the fixed-function rendering feature matrix"
+  },
+  {
+    "number": 63,
+    "before": "[T1.6] IME / text input \u2014 implementation ticket",
+    "after": "[T1.6] Unify IME and text input across platforms"
+  },
+  {
+    "number": 62,
+    "before": "[T1.5] Enable compat renderer on Windows \u2014 implementation ticket",
+    "after": "[T1.5] Run the GL compatibility renderer on Windows"
+  },
+  {
+    "number": 61,
+    "before": "[T1.7] Renderer seam skeleton \u2014 implementation ticket",
+    "after": "[T1.7] Isolate OpenGL behind a renderer backend interface"
+  },
+  {
+    "number": 60,
+    "before": "[T1.4] GL function loader for Windows \u2014 implementation ticket",
+    "after": "[T1.4] Load OpenGL functions on Windows"
+  },
+  {
+    "number": 59,
+    "before": "[T1.3] SDL2 input \u2014 implementation ticket",
+    "after": "[T1.3] Replace DirectInput with SDL2 input"
+  },
+  {
+    "number": 58,
+    "before": "[T1.2] SDL2 window and event loop on both targets \u2014 implementation ticket",
+    "after": "[T1.2] Use SDL2 windows and events on both platforms"
+  },
+  {
+    "number": 57,
+    "before": "[T1.1] Replace `__LINUX__` with explicit macros \u2014 implementation ticket",
+    "after": "[T1.1] Introduce explicit platform and renderer macros"
+  },
+  {
+    "number": 56,
+    "before": "[T0.3] Data-width audit \u2014 implementation ticket",
+    "after": "[T0.3] Audit data widths for the Windows target"
+  },
+  {
+    "number": 55,
+    "before": "[T0.2] Build harness \u2014 implementation ticket",
+    "after": "[T0.2] Add the Windows cross-build harness"
+  },
+  {
+    "number": 54,
+    "before": "[T0.1] Toolchain spike (read-only) \u2014 implementation ticket",
+    "after": "[T0.1] Identify Windows cross-compilation blockers"
+  },
+  {
+    "number": 53,
+    "before": "[TB.4] Archive old repositories \u2014 implementation ticket",
+    "after": "[TB.4] Archive the superseded package repositories"
+  },
+  {
+    "number": 52,
+    "before": "[TB.3] Compatibility shims + devkit rewire \u2014 implementation ticket",
+    "after": "[TB.3] Build the consolidated repositories with compatibility shims"
+  },
+  {
+    "number": 51,
+    "before": "[TB.2] Create `neoeter-python` and `client` \u2014 implementation ticket",
+    "after": "[TB.2] Separate Python bindings and game code into repositories"
+  },
+  {
+    "number": 50,
+    "before": "[TB.1] Merge engine layers L0\u2013L3 into `neoeter` \u2014 implementation ticket",
+    "after": "[TB.1] Consolidate engine layers L0\u2013L3 into neoeter"
+  },
+  {
+    "number": 49,
+    "before": "[TA.8] Pre-refactor snapshots \u2014 implementation ticket",
+    "after": "[TA.8] Capture behavior snapshots before refactoring"
+  },
+  {
+    "number": 48,
+    "before": "[TA.7] Coverage ratchet \u2014 implementation ticket",
+    "after": "[TA.7] Prevent coverage regressions in CI"
+  },
+  {
+    "number": 47,
+    "before": "[TA.6] Python binding smoke tests \u2014 implementation ticket",
+    "after": "[TA.6] Smoke-test Python bindings and capture the API"
+  },
+  {
+    "number": 46,
+    "before": "[TA.5] Headless audio / effect / model \u2014 implementation ticket",
+    "after": "[TA.5] Test audio, effects and models without hardware"
+  },
+  {
+    "number": 45,
+    "before": "[TA.4] Headless renderer goldens \u2014 implementation ticket",
+    "after": "[TA.4] Capture headless renderer golden images"
+  },
+  {
+    "number": 44,
+    "before": "[TA.3] Binary formats, fixtures, fuzzing \u2014 implementation ticket",
+    "after": "[TA.3] Test binary formats with fixtures and fuzzing"
+  },
+  {
+    "number": 41,
+    "before": "[CI] pkg_eterbase cannot be built standalone (missing stb_image.h, __LINUX__ not propagated)",
+    "after": "[CI] Restore standalone pkg_eterbase builds and affected CI workflows"
+  },
+  {
+    "number": 39,
+    "before": "Parity tracker \u2014 Windows/Linux",
+    "after": "Track Windows/Linux parity delivery"
+  },
+  {
+    "number": 38,
+    "before": "[T5.4] Cross-backend conformance harness",
+    "after": "[T5.4] Compare rendering output across backends"
+  },
+  {
+    "number": 37,
+    "before": "[T5.3] Full Vulkan backend",
+    "after": "[T5.3] Complete the Vulkan rendering backend"
+  },
+  {
+    "number": 36,
+    "before": "[T5.2] Program synthesis + shader translation",
+    "after": "[T5.2] Synthesize Vulkan programs and translate legacy shaders"
+  },
+  {
+    "number": 35,
+    "before": "[T5.1] Vulkan backend spike",
+    "after": "[T5.1] Render a textured quad with a Vulkan backend prototype"
+  },
+  {
+    "number": 34,
+    "before": "[T4.2] CI + docs",
+    "after": "[T4.2] Build both targets in CI and document the workflow"
+  },
+  {
+    "number": 33,
+    "before": "[T4.1] Delete legacy surface",
+    "after": "[T4.1] Remove legacy platform and proprietary SDK references"
+  },
+  {
+    "number": 32,
+    "before": "[T3.3] Parity audit",
+    "after": "[T3.3] Audit Windows/Linux behavioral parity"
+  },
+  {
+    "number": 31,
+    "before": "[T3.2] Automated smoke test",
+    "after": "[T3.2] Detect client crashes and black screens in CI"
+  },
+  {
+    "number": 30,
+    "before": "[T3.1] Windows packaging",
+    "after": "[T3.1] Package the Windows client with matching assets"
+  },
+  {
+    "number": 29,
+    "before": "[T2.5] CMake platform hygiene",
+    "after": "[T2.5] Make CMake dependencies platform-aware"
+  },
+  {
+    "number": 28,
+    "before": "[T2.4] Python 2.7 for Windows",
+    "after": "[T2.4] Run Python 2.7 and client bytecode on Windows"
+  },
+  {
+    "number": 27,
+    "before": "[T2.3] Cross-build Windows dependencies",
+    "after": "[T2.3] Cross-build the Windows dependency set"
+  },
+  {
+    "number": 26,
+    "before": "[T2.2] libjpeg audit",
+    "after": "[T2.2] Audit libjpeg usage and document its disposition"
+  },
+  {
+    "number": 25,
+    "before": "[T2.1] Remove DevIL",
+    "after": "[T2.1] Remove the DevIL dependency"
+  },
+  {
+    "number": 24,
+    "before": "[T1.8] Fixed-function feature matrix",
+    "after": "[T1.8] Document the fixed-function rendering feature matrix"
+  },
+  {
+    "number": 23,
+    "before": "[T1.7] Renderer seam skeleton",
+    "after": "[T1.7] Isolate OpenGL behind a renderer backend interface"
+  },
+  {
+    "number": 22,
+    "before": "[T1.6] IME / text input",
+    "after": "[T1.6] Unify IME and text input across platforms"
+  },
+  {
+    "number": 21,
+    "before": "[T1.5] Enable compat renderer on Windows",
+    "after": "[T1.5] Run the GL compatibility renderer on Windows"
+  },
+  {
+    "number": 20,
+    "before": "[T1.4] GL function loader for Windows",
+    "after": "[T1.4] Load OpenGL functions on Windows"
+  },
+  {
+    "number": 19,
+    "before": "[T1.3] SDL2 input",
+    "after": "[T1.3] Replace DirectInput with SDL2 input"
+  },
+  {
+    "number": 18,
+    "before": "[T1.2] SDL2 window and event loop on both targets",
+    "after": "[T1.2] Use SDL2 windows and events on both platforms"
+  },
+  {
+    "number": 17,
+    "before": "[T1.1] Replace `__LINUX__` with explicit macros",
+    "after": "[T1.1] Introduce explicit platform and renderer macros"
+  },
+  {
+    "number": 16,
+    "before": "[T0.3] Data-width audit",
+    "after": "[T0.3] Audit data widths for the Windows target"
+  },
+  {
+    "number": 15,
+    "before": "[T0.2] Build harness",
+    "after": "[T0.2] Add the Windows cross-build harness"
+  },
+  {
+    "number": 14,
+    "before": "[T0.1] Toolchain spike (read-only)",
+    "after": "[T0.1] Identify Windows cross-compilation blockers"
+  },
+  {
+    "number": 13,
+    "before": "[TB.4] Archive old repositories",
+    "after": "[TB.4] Archive the superseded package repositories"
+  },
+  {
+    "number": 12,
+    "before": "[TB.3] Compatibility shims + devkit rewire",
+    "after": "[TB.3] Build the consolidated repositories with compatibility shims"
+  },
+  {
+    "number": 11,
+    "before": "[TB.2] Create `neoeter-python` and `client`",
+    "after": "[TB.2] Separate Python bindings and game code into repositories"
+  },
+  {
+    "number": 10,
+    "before": "[TB.1] Merge engine layers L0\u2013L3 into `neoeter`",
+    "after": "[TB.1] Consolidate engine layers L0\u2013L3 into neoeter"
+  },
+  {
+    "number": 9,
+    "before": "[TA.8] Pre-refactor snapshots",
+    "after": "[TA.8] Capture behavior snapshots before refactoring"
+  },
+  {
+    "number": 8,
+    "before": "[TA.7] Coverage ratchet",
+    "after": "[TA.7] Prevent coverage regressions in CI"
+  },
+  {
+    "number": 7,
+    "before": "[TA.6] Python binding smoke tests",
+    "after": "[TA.6] Smoke-test Python bindings and capture the API"
+  },
+  {
+    "number": 6,
+    "before": "[TA.5] Headless audio / effect / model",
+    "after": "[TA.5] Test audio, effects and models without hardware"
+  },
+  {
+    "number": 5,
+    "before": "[TA.4] Headless renderer goldens",
+    "after": "[TA.4] Capture headless renderer golden images"
+  },
+  {
+    "number": 4,
+    "before": "[TA.3] Binary formats, fixtures, fuzzing",
+    "after": "[TA.3] Test binary formats with fixtures and fuzzing"
+  },
+  {
+    "number": 3,
+    "before": "[TA.2] Pure-logic characterization tests",
+    "after": "[TA.2] Characterize pure-logic behavior"
+  },
+  {
+    "number": 2,
+    "before": "[TA.1] Test harness + CI baseline",
+    "after": "[TA.1] Establish the test harness and CI baseline"
+  },
+  {
+    "number": 1,
+    "before": "Decisions \u2014 Windows/Linux parity (D1\u2013D16)",
+    "after": "Track Windows/Linux parity decisions D1\u2013D16"
+  }
+]
