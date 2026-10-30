@@ -24,6 +24,9 @@
 #   COVERAGE_DIR       output directory (default: <root>/coverage)
 #   COVERAGE_BASELINE  ratchet baseline (default: <root>/golden/coverage-baseline.txt)
 #   JOBS               parallel build jobs (default: nproc)
+#
+# The script pins LC_ALL=C, OPENMT2_AUDIO_BACKEND=null and the llvmpipe
+# renderer so the counts do not depend on the host's audio or GL devices.
 
 set -euo pipefail
 
@@ -69,6 +72,14 @@ fi
 
 [ -f "$TOOL" ] || { echo "error: $TOOL not found" >&2; exit 2; }
 
+# Pin the same deterministic environment as scripts/golden-check.sh. Without
+# these, audio and GL probing depend on the host's devices and change which
+# lines run (MilesLib varied by 31 covered lines between a workstation and CI).
+export LC_ALL=C
+export OPENMT2_AUDIO_BACKEND=null
+export LIBGL_ALWAYS_SOFTWARE=1
+export GALLIUM_DRIVER=llvmpipe
+
 if [ "$build" = 1 ]; then
     echo "[coverage] configuring $BUILD"
     cmake -S "$ROOT" -B "$BUILD" -G Ninja \
@@ -96,7 +107,19 @@ fi
 
 echo "[coverage] collecting gcov data (${#gcda[@]} objects)"
 mkdir -p "$OUT"
-( cd "$BUILD" && gcov -j -b "${gcda[@]}" >/dev/null 2>&1 || true )
+# gcov -j names its JSON after the source basename (Type.cpp.gcov.json.gz), so
+# running it for every object in one directory lets same-named files overwrite
+# each other (EterLib/Resource.cpp vs ScriptLib/Resource.cpp). Give every
+# object its own directory instead: one JSON per translation unit.
+find "$BUILD" -name '*.gcov.json.gz' -delete 2>/dev/null || true
+rm -rf "$BUILD/gcov-json"
+mkdir -p "$BUILD/gcov-json"
+index=0
+for object in "${gcda[@]}"; do
+    index=$((index + 1))
+    mkdir -p "$BUILD/gcov-json/$index"
+    ( cd "$BUILD/gcov-json/$index" && gcov -j -b "$object" >/dev/null 2>&1 || true )
+done
 
 python3 "$TOOL" collect --build "$BUILD" --root "$ROOT" \
     --out "$OUT/summary.txt" --files "$OUT/files.txt"
