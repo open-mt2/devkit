@@ -3,6 +3,7 @@
 - agent: agent-05
 - date: 2026-10-30
 - command: `scripts/golden-check.sh`
+- pr: https://github.com/open-mt2/devkit/pull/85 (stacked on TA.6 #84)
 - before: no `golden/` tree and no `scripts/golden-check.sh`. The artefacts the refactor must preserve lived only next to the tests that owned them: 12 render PNGs under `src/EterLib/tests/golden/render/` (TA.4), three Python API text files under `src/*/tests/data/` (TA.6), and the pack/model/collision expectations only existed as assertions inside TA.2/TA.3/TA.5 binaries. Nothing tied them to one pre-refactor baseline, so a later wave could move, drop or silently rewrite one of them and still show a green test run.
 - after: `golden/` is committed with hashed render and API artefacts, a 40-test CTest inventory, and deterministic pack/model/collision transcripts. `scripts/golden-check.sh` runs 10 checks and passes: render hashes 12/12, Python API hashes 3/3, the render golden binary, the three API import tests, three transcripts and the inventory. Four negative controls fail as intended (mutated render PNG, mutated API snapshot, appended transcript line, invented test name).
 - notes: files below. Golden updates are deliberate (`--update` refuses to write after a failing check). The snapshot must be refreshed once the still-open TA.3 UserInterface PR lands, because it adds `test_packet` (40 → 41 tests).
@@ -85,6 +86,9 @@ FAIL  CTest inventory changed
 
 ## Notes / follow-ups
 
+- Depends on the three TA.6 package PRs (`pkg_scriptlib#2`,
+  `pkg_eterpythonlib#2`, `pkg_userinterface#3`) merging, because `api.sha256`
+  hashes their committed snapshots. This PR is stacked on #84 for that reason.
 - The script does not build; it expects a configured build directory
   (`OPENMT2_BUILD_DIR`, default `build/`). The devkit image build already
   produces it.
