@@ -60,13 +60,13 @@ follow-ups: <new tasks or "none">
 ## 1. Status
 
 - [x] Plan v0.3 written (`docs/planning/windows-parity.md`)
-- [ ] Decisions settled (see §2)
+- [x] Decisions settled (see §2)
 - [ ] Wave A complete
 - [ ] Wave B complete (optional)
 - [ ] Waves 0–4 complete
 - [ ] Wave 5 scoped only (not executed)
 
-Progress: **0 / 37 tasks**, **0 / 16 decisions**.
+Progress: **0 / 37 tasks**, **16 / 16 decisions**.
 
 ---
 
@@ -74,67 +74,67 @@ Progress: **0 / 37 tasks**, **0 / 16 decisions**.
 
 Settle these before starting the tasks they block. Tick and record in the plan's §11.
 
-- [ ] **D1 — Renderer policy**
+- [x] **D1 — Renderer policy**
   - options: (a) GL compat everywhere · (b) dual backend, D3D9 on Windows
   - recommended: **a**
   - blocks: T1.4, T1.5, T4.1
-- [ ] **D2 — Window/input policy**
+- [x] **D2 — Window/input policy**
   - options: (a) SDL2 everywhere · (b) keep Win32 + DirectInput on Windows
   - recommended: **a**
   - blocks: T1.2, T1.3
-- [ ] **D3 — Python 2.7 on Windows**
+- [x] **D3 — Python 2.7 on Windows**
   - options: (a) vendor PSF `python27.dll` + `dlltool` import lib · (b) cross-build CPython 2.7 · (c) per-platform interpreters
   - recommended: **a**
   - blocks: T2.4
-- [ ] **D4 — DevIL**
+- [x] **D4 — DevIL**
   - options: (a) replace with stb_image/stb_image_write · (b) keep
   - recommended: **a**
   - blocks: T2.1
-- [ ] **D5 — libjpeg**
+- [x] **D5 — libjpeg**
   - options: (a) keep · (b) replace with stb
   - recommended: **a**, pending T2.2 audit
   - blocks: T2.2
-- [ ] **D6 — IME / CJK input**
+- [x] **D6 — IME / CJK input**
   - options: (a) SDL2 text input on both · (b) no-op on Linux + IMM on Windows
   - recommended: **a**, may ship after parity
   - blocks: T1.6
-- [ ] **D7 — Build logic location**
+- [x] **D7 — Build logic location**
   - options: (a) devkit only · (b) presets in every `pkg_*`
   - recommended: **a**
   - blocks: T0.2
-- [ ] **D8 — Cross toolchain**
+- [x] **D8 — Cross toolchain**
   - options: (a) MinGW-w64 · (b) clang-cl + xwin + MSVC-built `extern/`
   - recommended: **a**
   - blocks: T0.1, T2.3
-- [ ] **D9 — Path / case handling**
+- [x] **D9 — Path / case handling**
   - options: (a) normalise in the VFS · (b) per-OS behaviour
   - recommended: **a**
   - blocks: T3.3
-- [ ] **D10 — Bitness**
+- [x] **D10 — Bitness**
   - options: (a) 64-bit both · (b) 32-bit both · (c) as-is
   - recommended: **a**
   - blocks: T0.3, Wave 2
-- [ ] **D11 — Renderer abstraction style**
+- [x] **D11 — Renderer abstraction style**
   - options: (a) custom `IRenderBackend` under the D3D9 façade · (b) bgfx/sokol/Diligent/wgpu · (c) D3D9→Vulkan translator
   - recommended: **a**
   - blocks: T1.7, Wave 5
-- [ ] **D12 — Shader strategy**
+- [x] **D12 — Shader strategy**
   - options: (a) synthesise from fixed-function state · (b) D3D9 bytecode → SPIR-V · (c) both
   - recommended: **c**
   - blocks: T5.2
-- [ ] **D13 — Current shader no-op**
+- [x] **D13 — Current shader no-op**
   - options: (a) ignore · (b) log/count and record parity delta · (c) implement on GL now
   - recommended: **b** now, (c) inside T5.2
   - blocks: T1.8
-- [ ] **D14 — Repository topology**
+- [x] **D14 — Repository topology**
   - options: (a) single monorepo · (b) 3-layer split · (c) 2 repos · (d) 16 + superbuild
   - recommended: **b** (§4.5 of the plan)
   - blocks: TB.1
-- [ ] **D15 — Test framework**
+- [x] **D15 — Test framework**
   - options: (a) hand-rolled `TEST_ASSERT` + shared header · (b) doctest/Catch2 · (c) GoogleTest
   - recommended: **a**
   - blocks: TA.1
-- [ ] **D16 — Change ordering**
+- [x] **D16 — Change ordering**
   - options: (a) tests → merge → parity · (b) parity first · (c) another order
   - recommended: **a**
   - blocks: all waves
@@ -172,8 +172,9 @@ directly.
 
 > Gate: TA.1–TA.4 + TA.8. TA.5–TA.7 are the coverage tail and must not block Wave 0.
 
-- [ ] **TA.1 — Test harness + CI baseline**
+- [~] **TA.1 — Test harness + CI baseline**
   - wave: A · repo: all, devkit · profile: standard
+  - owner: agent-01
   - agent: 0.5 d (0.5–1) · human: 1.5 d (1–2)
   - deps: D15
   - scope: shared `tests/support/TestAssert.h`; make `ctest` runnable locally and in the image; coverage report (`llvm-cov`/`gcov`) per package.

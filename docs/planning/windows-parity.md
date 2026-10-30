@@ -1,6 +1,6 @@
 # Windows / Linux parity plan
 
-> **Status:** draft v0.3 — for review, no code changes yet
+> **Status:** v0.4 — decisions accepted, execution started — for review, no code changes yet
 > **Date:** 2026-10-30
 > **Scope:** OpenMT2 client (`open-mt2/pkg_*`), devkit build image, and the `speedtreebkr` baker
 > **Owner:** TBD
@@ -622,6 +622,22 @@ Other useful comparisons:
 | 2026-10-30 | — | Plan opened, audit recorded in §3 | Baseline for iteration |
 | 2026-10-30 | — | v0.2: renderer seam added as a socle (§4.4, T1.7–T1.8, Wave 5); D11–D13 opened | Keep a Vulkan backend possible without an app rewrite |
 | 2026-10-30 | — | v0.3: test baseline (Wave A) and repository consolidation (Wave B, §4.5) added; D14–D16 opened | Tests make the refactor provable; 3 repos make it affordable |
+| 2026-10-30 | D1 | accepted (a) GL compat everywhere | parity goal; removes the DirectX SDK from the graph |
+| 2026-10-30 | D2 | accepted (a) SDL2 everywhere | one window/input implementation |
+| 2026-10-30 | D3 | accepted (a) vendor PSF python27.dll + dlltool import lib | fastest; licence-clean; no CPython fork |
+| 2026-10-30 | D4 | accepted (a) replace DevIL with stb_image/stb_image_write | removes an unmaintained dependency |
+| 2026-10-30 | D5 | accepted (a) keep libjpeg for now | pending the T2.2 audit |
+| 2026-10-30 | D6 | accepted (a) SDL2 text input on both targets | may ship after parity |
+| 2026-10-30 | D7 | accepted (a) build logic in the devkit | single pipeline, per-package CMake fixes as needed |
+| 2026-10-30 | D8 | accepted (a) MinGW-w64 | only option that removes every MSVC-produced binary |
+| 2026-10-30 | D9 | accepted (a) normalise paths in the VFS | otherwise identical asset trees diverge |
+| 2026-10-30 | D10 | accepted (a) 64-bit on both targets | GrannyCompat is 64-bit safe; data-width audit in T0.3 |
+| 2026-10-30 | D11 | accepted (a) custom IRenderBackend under the D3D9 facade | no new dependency; the facade already exists |
+| 2026-10-30 | D12 | accepted (c) synthesise programs and translate D3D9 bytecode | covers fixed-function and the real shader effects |
+| 2026-10-30 | D13 | accepted (b) log/count ignored shaders now | makes the existing limitation measurable |
+| 2026-10-30 | D14 | accepted (b) three-layer split: neoeter / neoeter-python / client | follows the dependency graph |
+| 2026-10-30 | D15 | accepted (a) hand-rolled TEST_ASSERT + shared tests/support header | zero new dependency |
+| 2026-10-30 | D16 | accepted (a) tests, then consolidation, then parity | the baseline makes later steps provable |
 
 ---
 
