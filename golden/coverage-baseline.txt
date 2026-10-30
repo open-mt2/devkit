@@ -1,19 +1,19 @@
 # OpenMT2 coverage baseline (TA.7)
 # schema: 1
 CWebBrowser 52 54 96.3
-EffectLib 1675 3581 46.8
-EterBase 2162 7511 28.8
+EffectLib 1675 3604 46.5
+EterBase 2171 7525 28.9
 EterGrnLib 2829 6205 45.6
 EterImageLib 785 939 83.6
-EterLib 4909 28818 17.0
+EterLib 5045 29203 17.3
 EterLocale 143 572 25.0
 EterPack 509 581 87.6
 EterPythonLib 501 5568 9.0
-GameLib 525 13937 3.8
+GameLib 525 14171 3.7
 MilesLib 1184 2040 58.0
 PRTerrainLib 384 504 76.2
-ScriptLib 320 1025 31.2
+ScriptLib 354 1076 32.9
 SpeedTreeLib 1468 2496 58.8
 SphereLib 606 1149 52.7
 UserInterface 1576 26879 5.9
-TOTAL 19628 101859 19.3
+TOTAL 19807 102566 19.3
