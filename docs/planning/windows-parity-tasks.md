@@ -301,7 +301,8 @@ directly.
 
 ## 6. Wave 0 — Foundation
 
-- [ ] **T0.1 — Toolchain spike (read-only)**
+- [~] **T0.1 — Toolchain spike (read-only)**
+  - owner: W-Kanzashi / Codex
   - wave: 0 · repo: devkit · profile: design
   - agent: 1 d (1–2) · human: 2.5 d (2–4)
   - deps: D8
