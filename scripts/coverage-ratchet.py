@@ -184,22 +184,17 @@ def compare(current: dict[str, list[int]], baseline: dict[str, list[int]]) -> tu
 
 
 def _report_rows(current: dict[str, list[int]], baseline: dict[str, list[int]]) -> None:
-    for name in sorted(set(current) | set(baseline)):
-        if name == "TOTAL":
-            continue
-        hit, total = current.get(name, [0, 0])
-        base = baseline.get(name)
-        if base is None:
-            state = "new"
-        elif name not in current:
-            state = "MISSING"
-        elif hit < base[0]:
-            state = f"regressed from {base[0]}"
+    rows = [name for name in baseline if name != "TOTAL"]
+    for name in sorted(rows):
+        base_hit = baseline[name][0]
+        if name in current:
+            hit, total = current[name]
+            state = "regressed" if hit < base_hit else f"baseline {base_hit}"
+            print(
+                f"  {name:<16} {_percent(hit, total):5.1f}% {hit:6d}/{total:<6d} lines  ({state})"
+            )
         else:
-            state = f"baseline {base[0]}"
-        print(
-            f"  {name:<16} {_percent(hit, total):5.1f}% {hit:6d}/{total:<6d} lines  ({state})"
-        )
+            print(f"  {name:<16} {'-':>5} {'missing':>13}  (baseline {base_hit})")
 
 
 def command_collect(args: argparse.Namespace) -> int:
