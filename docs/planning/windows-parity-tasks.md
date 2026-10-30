@@ -183,8 +183,9 @@ directly.
   - verify: `ctest --output-on-failure` and `scripts/coverage.sh`
   - risk: none
 
-- [ ] **TA.2 — Pure-logic characterization tests**
+- [~] **TA.2 — Pure-logic characterization tests**
   - wave: A · repo: EterBase, EterLocale, SphereLib, EterImageLib, EterLib · profile: standard
+  - owner: agent-01
   - agent: 2 d (1.5–3) · human: 5 d (4–7)
   - deps: TA.1
   - scope: CRC32, TEA, LZO round-trip, `FileBase`/`MappedFile`, timer, locale tables, `GrpMath`, ray/OBB (`GrpDetector`), DXT codecs.
