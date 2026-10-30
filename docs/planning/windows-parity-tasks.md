@@ -330,7 +330,8 @@ directly.
 - [x] **T0.3 — Data-width audit**
   - owner: Codex
   - evidence: evidence/T0.3.md
-  - commits: https://github.com/open-mt2/devkit/commit/1313980c8d315a566e71bb64cadb8276223f8f43 · https://github.com/open-mt2/devkit/commit/122827f00ef2a8c2e88b006693df537dff0bdeb2
+  - commits: https://github.com/open-mt2/devkit/commit/1313980c8d315a566e71bb64cadb8276223f8f43 · https://github.com/open-mt2/devkit/commit/122827f00ef2a8c2e88b006693df537dff0bdeb2 · https://github.com/open-mt2/devkit/commit/16e45f1f669b28f5faa6bdb301c30e1c8af3cc8e · https://github.com/open-mt2/devkit/commit/aa7c29dc1f243c911ec9fee0efa5c03631ab87b3
+  - PR: unavailable — GitHub API returned 403; branch pushed successfully
   - wave: 0 · repo: all · profile: standard
   - agent: 1 d (0.5–1.5) · human: 2.5 d (2–4)
   - deps: D10
