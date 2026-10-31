@@ -63,10 +63,10 @@ follow-ups: <new tasks or "none">
 - [x] Decisions settled (see §2)
 - [x] Wave A complete
 - [ ] Wave B complete (optional)
-- [ ] Waves 0–4 complete
+- [x] Waves 0–4 complete
 - [ ] Wave 5 scoped only (not executed)
 
-Progress: **27 / 38 tasks**, **16 / 16 decisions**.
+Progress: **30 / 38 tasks**, **16 / 16 decisions**.
 
 ---
 
