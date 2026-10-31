@@ -10,6 +10,7 @@ if(WIN32)
     message(STATUS "Target Platform: Windows")
     add_compile_definitions(
         OPENMT2_PLATFORM_WINDOWS=1
+        OPENMT2_SDL_WINDOW=1
         WIN32
         _WINDOWS
         _CRT_SECURE_NO_WARNINGS
