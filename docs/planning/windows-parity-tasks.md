@@ -66,7 +66,7 @@ follow-ups: <new tasks or "none">
 - [ ] Waves 0–4 complete
 - [ ] Wave 5 scoped only (not executed)
 
-Progress: **22 / 38 tasks**, **16 / 16 decisions**.
+Progress: **25 / 38 tasks**, **16 / 16 decisions**.
 
 ---
 
@@ -360,10 +360,10 @@ directly.
   - verify: `grep -rl "__LINUX__" src | wc -l` + golden hashes
   - risk: accidental behaviour change — split into per-package commits
 
-- [~] **T1.2 — SDL2 window and event loop on both targets**
+- [x] **T1.2 — SDL2 window and event loop on both targets**
   - owner: agent-06
   - evidence: evidence/T1.2.md
-  - note: SDL-only window/event loop landed and cross-compiles; Wine smoke waits on T1.4/T1.5/T4.1
+  - note: SDL-only window/event loop; `CreateWindowEx` gone and the window opens under Wine (`evidence/T1.2-wine-window.png`)
   - wave: 1 · repo: EterLib · profile: standard
   - agent: 1.5 d (1–2) · human: 4 d (3–5)
   - deps: T1.1, D2
@@ -384,10 +384,10 @@ directly.
   - verify: `grep -rn "DirectInput8Create" src`
   - risk: scancode gaps on non-US layouts
 
-- [~] **T1.4 — GL function loader for Windows**
+- [x] **T1.4 — GL function loader for Windows**
   - owner: agent-06
   - evidence: evidence/T1.4.md
-  - note: loader implemented and wired; the nm check waits on T1.5
+  - note: loader wired; `nm -u dist/metin2client.exe` has no `gl*` symbols
   - wave: 1 · repo: EterBase · profile: standard
   - agent: 1.5 d (1.5–2) · human: 4 d (3–5)
   - deps: T1.2
@@ -493,10 +493,10 @@ directly.
   - verify: `find build-windows -name "*.a" | wc -l` + configure log
   - risk: hidden host-lib leakage — check with `objdump -p`
 
-- [~] **T2.4 — Python 2.7 for Windows**
+- [x] **T2.4 — Python 2.7 for Windows**
   - owner: agent-06
   - evidence: evidence/T2.4.md
-  - note: PSF 2.7.18 amd64 vendored + dlltool import lib + CMake resolves it; client boot gated on T1.5/T4.1
+  - note: PSF 2.7.18 amd64 vendored + dlltool import lib + CMake wiring; `metin2client.exe` boots the interpreter and runs `system.py` under Wine
   - wave: 2 · repo: EterPythonLib, devkit · profile: design
   - agent: 3 d (2–4) · human: 6 d (4–9)
   - deps: D3, TA.6 (recommended)
