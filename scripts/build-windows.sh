@@ -46,6 +46,14 @@ if [ ! -f "$DIST_DIR/metin2client.exe" ]; then
     exit 1
 fi
 
+# Python 2.7 runtime (T2.4): the vendored PSF build from the image.
+WIN64_PREFIX="${OPENMT2_WIN64_DEPS_PREFIX:-/opt/openmt2/win64}"
+for dll in python27.dll msvcr90.dll; do
+    if [ -f "$WIN64_PREFIX/bin/$dll" ]; then
+        cp "$WIN64_PREFIX/bin/$dll" "$DIST_DIR/"
+    fi
+done
+
 # Keep asset layout shared with Linux; Windows runtime DLLs remain in bin/.
 if [ -d bin ]; then
     find bin -maxdepth 1 -type f ! -iname '*.dll' ! -name '.gitignore' -exec cp {} "$DIST_DIR/" \;

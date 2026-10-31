@@ -50,6 +50,7 @@ RUN dpkg --add-architecture i386 \
         unzip \
         zip \
         p7zip-full \
+        msitools \
         build-essential \
         cmake \
         ninja-build \
@@ -154,6 +155,8 @@ RUN chmod +x /workspace/scripts/*.sh /usr/local/bin/openmt2-entrypoint \
 ARG WIN64_DEPS_PREFIX=/opt/openmt2/win64
 RUN /workspace/scripts/build-windows-deps.sh --prefix "${WIN64_DEPS_PREFIX}" --work /tmp/openmt2-win64-deps \
     && rm -rf /tmp/openmt2-win64-deps
+RUN /workspace/scripts/fetch-windows-python.sh --prefix "${WIN64_DEPS_PREFIX}" --work /tmp/openmt2-win64-python \
+    && rm -rf /tmp/openmt2-win64-python
 
 # ---------------------------------------------------------------------------
 # Client packages (src/<Package>)
