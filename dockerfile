@@ -73,6 +73,7 @@ RUN dpkg --add-architecture i386 \
         libdevil-dev \
         libasound2-dev \
         xvfb \
+        xauth \
         libgl1-mesa-dri \
         clang \
         lld \
@@ -81,6 +82,7 @@ RUN dpkg --add-architecture i386 \
         g++-mingw-w64-x86-64 \
         wine \
         wine32 \
+        wine64 \
         libwine-dev:i386 \
     && rm -rf /var/lib/apt/lists/*
 
