@@ -25,6 +25,7 @@ test_locale
 test_locale_codecs
 test_lzo
 test_lzo_invariants
+test_mark_image
 test_miles_headless
 test_pack_formats
 test_packet

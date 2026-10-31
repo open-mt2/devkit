@@ -66,7 +66,7 @@ follow-ups: <new tasks or "none">
 - [ ] Waves 0–4 complete
 - [ ] Wave 5 scoped only (not executed)
 
-Progress: **12 / 37 tasks**, **16 / 16 decisions**.
+Progress: **13 / 37 tasks**, **16 / 16 decisions**.
 
 ---
 
@@ -427,7 +427,10 @@ directly.
 
 ## 8. Wave 2 — Dependency convergence
 
-- [ ] **T2.1 — Remove DevIL**
+- [x] **T2.1 — Remove DevIL**
+  - owner: agent-06
+  - evidence: evidence/T2.1.md
+  - PR: https://github.com/open-mt2/devkit/pull/96 (base: main)
   - wave: 2 · repo: UserInterface · profile: standard
   - agent: 1.5 d (1–2) · human: 4 d (3–5)
   - deps: D4
