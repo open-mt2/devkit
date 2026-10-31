@@ -66,7 +66,7 @@ follow-ups: <new tasks or "none">
 - [ ] Waves 0–4 complete
 - [ ] Wave 5 scoped only (not executed)
 
-Progress: **18 / 37 tasks**, **16 / 16 decisions**.
+Progress: **18 / 38 tasks**, **16 / 16 decisions**.
 
 ---
 
@@ -429,6 +429,18 @@ directly.
   - verify: `scripts/golden-check.sh`
   - risk: time-box — any feature work here is out of scope
 
+- [~] **T1.9 — Windows compile tail**
+  - owner: agent-07
+  - evidence: evidence/T1.9.md
+  - note: min/max + EterLib GL headers fixed (129 → 109 failing targets); the rest is Python-header location (T2.4), 64-bit IME casts (T1.6) and LLP64 pointer types
+  - wave: 1 · repo: all · profile: standard
+  - agent: 0.5 d · human: 1 d
+  - deps: T1.5, T4.1
+  - scope: make `cmake --preset windows` compile the client: platform min/max, GL headers in EterLib, LLP64 pointer/`DWORD` mismatches, vendored Python header selection.
+  - done: `docker run --rm openmt2/client windows` builds the client.
+  - verify: `docker run --rm openmt2/client windows`
+  - risk: the tail is only visible by building; do not fold feature work in
+
 - [ ] **T1.8 — Fixed-function feature matrix**
   - wave: 1 · repo: all · profile: standard
   - agent: 0.5 d · human: 1.5 d (1–2)
@@ -612,12 +624,12 @@ directly.
 | A — tail (TA.5–TA.7) | 3 | +3.5 | +9 |
 | B — consolidation | 4 | 5 | 13.5 |
 | 0 — foundation | 3 | 3.5 | 9 |
-| 1 — platform unification | 8 | 10.25 | 26.5 |
+| 1 — platform unification | 9 | 10.75 | 27.5 |
 | 2 — dependency convergence | 5 | 7.5 | 17 |
 | 3 — parity and packaging | 3 | 4.5 | 10.5 |
 | 4 — removal | 2 | 1 | 2.5 |
-| **Total (minimum baseline + B)** | **30** | **41.75** | **105.5** |
-| **Total (full baseline + B)** | **33** | **45.25** | **114.5** |
+| **Total (minimum baseline + B)** | **31** | **42.25** | **106.5** |
+| **Total (full baseline + B)** | **34** | **45.75** | **115.5** |
 | 5 — Vulkan (deferred, excluded) | 4 | 17 | 35 |
 
 ### Calendar view
