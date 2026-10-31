@@ -1,0 +1,10 @@
+# OpenMT2 consolidated sources.
+#
+# Ordered list of repositories cloned from the open-mt2 organization into
+# src/<directory>. The order matters: it is the dependency order used by the
+# root CMakeLists (engine -> Python bridge -> game).
+#
+# Format: <github-repository>=<source-directory>
+neoeter=neoeter
+neoeter-python=neoeter-python
+client=client

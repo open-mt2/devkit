@@ -62,11 +62,11 @@ follow-ups: <new tasks or "none">
 - [x] Plan v0.3 written (`docs/planning/windows-parity.md`)
 - [x] Decisions settled (see §2)
 - [x] Wave A complete
-- [ ] Wave B complete (optional)
+- [x] Wave B complete (optional)
 - [x] Waves 0–4 complete
 - [ ] Wave 5 scoped only (not executed)
 
-Progress: **30 / 38 tasks**, **16 / 16 decisions**.
+Progress: **34 / 38 tasks**, **16 / 16 decisions**.
 
 ---
 
@@ -264,44 +264,56 @@ directly.
 
 ## 5. Wave B — Structural consolidation (optional, recommended)
 
-> Pure moves only. Can run in parallel with T0.1. Dropping this wave saves 5 agent-days
-> here and costs ~1–2 days per cross-cutting task afterwards.
+> Executed after Waves 0–4 (the parity work landed first). The engine was flattened
+> rather than kept package-shaped: one `include/Neoeter/` root and role directories.
 
-- [ ] **TB.1 — Merge engine layers L0–L3 into `neoeter`**
+- [x] **TB.1 — Merge engine layers L0–L3 into `neoeter`**
+  - owner: opencode
+  - evidence: evidence/TB.1.md
+  - PR: https://github.com/open-mt2/devkit/pull/124
   - wave: B · repo: all · profile: standard
   - agent: 1.5 d (1–2) · human: 4 d (3–5)
   - deps: TA.8, D14
-  - scope: `git filter-repo --to-subdirectory-filter src/<role>` per repo; move-only commit; `src/{platform,io,image,render,audio,model,terrain,effect}`.
-  - done: same targets, same 22 CTest cases, same golden hashes.
+  - scope: per-repo history import (`filter-repo --to-subdirectory-filter`) followed by the flat layout: `include/Neoeter/{Platform/{Base,Locale,Math},IO,Image,Render,Audio,Model/{Grn,SpeedTree},Terrain,Effect}` and `src/{platform/{base,locale,math},io,image,render,audio,model/{grn,speedtree},terrain,effect}`; targets `neoeter_*` with `Neoeter::*` aliases.
+  - done: 49/49 CTest, 11/11 golden; manifests changed by path only.
   - verify: `scripts/golden-check.sh && ctest --output-on-failure`
   - risk: history loss — tag every old repo `final` before merging
 
-- [ ] **TB.2 — Create `neoeter-python` and `client`**
+- [x] **TB.2 — Create `neoeter-python` and `client`**
+  - owner: opencode
+  - evidence: evidence/TB.2.md
+  - PR: https://github.com/open-mt2/devkit/pull/124
   - wave: B · repo: all · profile: standard
   - agent: 1.5 d (1–2) · human: 4 d (3–5)
   - deps: TB.1
-  - scope: `neoeter-python` = scriptlib + eterpythonlib; `client` = gamelib + userinterface; move-only commit.
-  - done: same golden hashes; target graph unchanged.
+  - scope: `neoeter-python` = `host` + `bindings`; `client` = `game` + `ui` + `webbrowser`; same flat layout (`include/Neoeter/Python/...`, `include/Client/...`).
+  - done: same golden hashes; graph `neoeter → neoeter-python → client`.
   - verify: `scripts/golden-check.sh`
   - risk: cross-repo include paths — see TB.3
 
-- [ ] **TB.3 — Compatibility shims + devkit rewire**
+- [x] **TB.3 — Devkit rewire**
+  - owner: opencode
+  - evidence: evidence/TB.3.md
+  - PR: https://github.com/open-mt2/devkit/pull/124
   - wave: B · repo: devkit · profile: standard
   - agent: 1.5 d (1–2) · human: 4 d (3–4)
   - deps: TB.1, TB.2
-  - scope: keep include roots (`<EterBase/...>`) and target aliases (`EterBase::EterBase` → `Neoeter::Platform`); replace `packages.map` + `fetch-packages.sh` with `fetch-sources.sh` (3 repos).
-  - done: `build.sh` and the image work unchanged against the new layout.
-  - verify: `docker build -t openmt2/client . && docker run --rm openmt2/client`
-  - risk: shim must be temporary and documented
+  - scope: include roots renamed outright (no `Eter*` shim kept); `sources.map` + `fetch-sources.sh` replace the 16-package fetch; root CMake prefers the three repositories; goldens, feature matrix, build scripts and CI follow the new paths.
+  - done: `fetch-sources.sh` populates `src/` and the build is green; binary paths `build/src/{host,bindings,ui}`.
+  - verify: `scripts/fetch-sources.sh && ctest --output-on-failure`
+  - risk: none outstanding — the `packages.map` fallback remains for pre-consolidation images
 
-- [ ] **TB.4 — Archive old repositories**
+- [x] **TB.4 — Archive old repositories**
+  - owner: opencode
+  - evidence: evidence/TB.4.md
+  - PR: https://github.com/open-mt2/devkit/pull/124
   - wave: B · repo: org · profile: standard
   - agent: 0.5 d · human: 1.5 d (1–2)
   - deps: TB.3
-  - scope: tag `final`, archive read-only, update org docs and CI; optionally delete the `cwebbrowser` stub while moving.
-  - done: the 3 new repos are the only writable source of truth.
-  - verify: `git ls-remote` on old repos returns archived tags
-  - risk: downstream users pinning old repos
+  - scope: tag `final` at the imported `main`, archive all 16 `pkg_*` read-only; the three new repositories are the only writable source of truth.
+  - done: all 16 archived with a `final` tag on their last commit.
+  - verify: `git ls-remote --tags` on the old repos; `gh repo view --json isArchived`
+  - risk: downstream users pinning old repos — tags and clones still resolve
 
 ---
 

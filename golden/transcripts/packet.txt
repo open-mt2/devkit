@@ -1,4 +1,4 @@
-=== src/UserInterface/tests/test_packet ===
+=== src/ui/tests/test_packet ===
 [TEST] packet wire sizes
   [PASS] structs are byte-packed with no tail padding
 [TEST] packet field offsets

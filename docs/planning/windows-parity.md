@@ -376,8 +376,9 @@ Two prunings that should happen **during** the move, not before:
    and target aliases (`EterBase::EterBase` → `Neoeter::Platform`), so the devkit and any
    downstream consumer keep building.
 4. **Rewire the devkit.** Replace `scripts/packages.map` + `scripts/fetch-packages.sh`
-   with `scripts/fetch-sources.sh` pulling 3 repos into `src/neoeter`,
-   `src/neoeter-python`, `src/client`.
+   with `scripts/sources.map` + `scripts/fetch-sources.sh` pulling 3 repos into
+   `src/neoeter`, `src/neoeter-python`, `src/client`. As executed, the include
+   roots were renamed (`<Neoeter/…>`, `<Client/…>`) instead of shimmed.
 
 #### Ordering advice
 
@@ -465,7 +466,7 @@ critical path.
 |---|---|---|---|---|---|
 | **TB.1** | Merge engine layers L0–L3 into `neoeter` with history preserved (`filter-repo`); move-only commit. | all | M | TA.8, D14 | Same targets, same 22 CTest cases, same golden hashes |
 | **TB.2** | Create `neoeter-python` (scriptlib + eterpythonlib) and `client` (gamelib + userinterface); move-only commit. | all | M | TB.1 | Same golden hashes; target graph unchanged |
-| **TB.3** | Compatibility layer: include roots (`<EterBase/...>`) and CMake target aliases; replace `packages.map`/`fetch-packages.sh` with a 3-repo fetch. | devkit | M | TB.1, TB.2 | `build.sh` and the image work unchanged against the new layout |
+| **TB.3** | Devkit rewire: flat `<Neoeter/…>`/`<Client/…>` include roots, 3-repo `sources.map`/`fetch-sources.sh`, golden/build/CI path updates. | devkit | M | TB.1, TB.2 | `fetch-sources.sh` populates `src/` and the build is green |
 | **TB.4** | Archive the 16 `pkg_*` repositories read-only, tag `final`, update org docs and CI. | org | S | TB.3 | New repos are the only writable source of truth |
 
 ### Wave 0 — Foundation (serial)
