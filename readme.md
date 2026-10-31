@@ -133,13 +133,15 @@ compares the captured screenshot with `scripts/render-diff.py`.
 [old-metin2 deployment](https://git.old-metin2.com/metin2/deploy) (MySQL 5.5,
 web app, db/auth/game cores) with Docker Compose on the host, so the packaged
 client has a server to log in to. The deploy repository is cloned into the
-gitignored `server/` and its `.env` is generated on first use.
+`server/` directory next to the devkit checkout (`../server`, outside this
+repository; set `SERVER_DIR` to use another path) and its `.env` is generated
+on first use.
 
 ```bash
 scripts/server.sh up                         # fetch, configure, start, wait for auth/CH1
 scripts/server.sh account devtest devtest123 # create a login (or reset its password)
 scripts/server.sh status                     # containers; `logs [service]` follows logs
-scripts/server.sh down                       # stop; data stays in server/storage
+scripts/server.sh down                       # stop; data stays in ../server/storage
 ```
 
 The shipped `serverinfo.py` already targets `127.0.0.1` (auth `11000`, CH1
