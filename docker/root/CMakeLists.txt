@@ -59,4 +59,15 @@ foreach(_dir IN LISTS _source_dirs)
     endif()
 endforeach()
 
+# T1.8: the fixed-function feature matrix is generated, never hand-written.
+# Keep it in lockstep with the sources in CI (scripts/feature-matrix.sh --check).
+if(BUILD_TESTS AND EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/scripts/feature-matrix.sh")
+    add_test(NAME feature_matrix
+        COMMAND bash "${CMAKE_CURRENT_SOURCE_DIR}/scripts/feature-matrix.sh" --check
+    )
+    set_tests_properties(feature_matrix PROPERTIES
+        WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
+    )
+endif()
+
 message(STATUS "Metin2 Client configured successfully.")

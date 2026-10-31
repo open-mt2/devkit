@@ -8,6 +8,7 @@ PRTerrainLib_SmokeTests
 ScriptLib_SmokeTests
 SpeedTreeLib_SmokeTests
 UserInterface_SmokeTests
+feature_matrix
 render_golden
 test_crc32
 test_crc32_vectors
@@ -36,6 +37,7 @@ test_python_client_api
 test_python_eterpythonlib_api
 test_python_scriptlib_api
 test_render_seam
+test_shader_stats
 test_sphere
 test_sphere_invariants
 test_stl
