@@ -23,7 +23,7 @@ docker run --rm --user "$(id -u):$(id -g)" -e HOME=/tmp \
 |---|---|---|
 | `render.sha256` | `src/EterLib/tests/golden/render/*.png` | TA.4, 12 headless scenes |
 | `api.sha256` | `src/*/tests/data/python_api_*.txt` | TA.6, embedded Python 2.7 surface |
-| `ctest-tests.txt` | `ctest -N` | TA.1–TA.6, sorted test inventory (41 tests) |
+| `ctest-tests.txt` | `ctest -N` | TA.1–TA.6 and the parity tests, sorted inventory (49 tests) |
 | `transcripts/pack.txt` | `test_pack_formats`, `test_eterpack` | TA.3 pack/provider behaviour |
 | `transcripts/model.txt` | `test_gr2_reader`, `test_grn_reference` | TA.3/TA.5 model readers and reference math |
 | `transcripts/collision.txt` | `test_detector`, `test_grpmath` | TA.2 OBB/ray/math invariants |
