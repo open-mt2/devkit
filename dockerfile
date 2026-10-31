@@ -163,13 +163,13 @@ RUN /workspace/scripts/fetch-windows-python.sh --prefix "${WIN64_DEPS_PREFIX}" -
 # ---------------------------------------------------------------------------
 # Client packages (src/<Package>)
 # ---------------------------------------------------------------------------
-ARG PKG_ORG=open-mt2
-ARG PKG_REF=main
+ARG SRC_ORG=open-mt2
+ARG SRC_REF=main
 # Changing this value (CI passes the run id) invalidates the source layer, so a
-# cached image never pins stale package commits.
-ARG PKG_CACHE_BUST=0
-RUN echo "[packages] source cache bust: ${PKG_CACHE_BUST}" \
-    && PKG_ORG="${PKG_ORG}" PKG_REF="${PKG_REF}" /workspace/scripts/fetch-packages.sh /workspace
+# cached image never pins stale source commits.
+ARG SRC_CACHE_BUST=0
+RUN echo "[sources] source cache bust: ${SRC_CACHE_BUST}" \
+    && SRC_ORG="${SRC_ORG}" SRC_REF="${SRC_REF}" /workspace/scripts/fetch-sources.sh /workspace
 
 # ---------------------------------------------------------------------------
 # Original client assets (bin/)

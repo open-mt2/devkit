@@ -72,7 +72,7 @@ case "${1:-}" in
         ;;
     fetch)
         shift
-        "$(require_script fetch-packages.sh)" "$@"
+        "$(require_script fetch-sources.sh)" "$@"
         exec "$(require_script fetch-bin.sh)" "$@"
         ;;
     help|-h|--help)
