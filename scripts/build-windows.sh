@@ -29,7 +29,7 @@ if [ "$CLEAN" = true ]; then
     rm -rf "$BUILD_DIR"
 fi
 
-export PKG_CONFIG_LIBDIR=/usr/x86_64-w64-mingw32/lib/pkgconfig
+export PKG_CONFIG_LIBDIR=/opt/openmt2/win64/lib/pkgconfig:/usr/x86_64-w64-mingw32/lib/pkgconfig
 cmake --preset windows
 cmake --build --preset windows --parallel "$JOBS"
 
