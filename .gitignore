@@ -1,4 +1,6 @@
 dist/
+dist-linux/
+dist-windows/
 .local/
 .scratch/
 build/

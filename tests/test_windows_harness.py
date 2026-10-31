@@ -32,6 +32,25 @@ class WindowsHarnessTests(unittest.TestCase):
         self.assertIn('metin2client.exe', script)
         self.assertIn('config.exe', script)
 
+    def test_distribution_shares_the_asset_and_pack_scripts(self):
+        script = (ROOT / 'scripts/build-windows.sh').read_text()
+        self.assertIn('copy-assets.sh', script)
+        self.assertIn('pack-assets.sh', script)
+        self.assertIn('OPENMT2_DIST_DIR', script)
+
+    def test_distribution_ships_the_mingw_and_python_runtime(self):
+        script = (ROOT / 'scripts/build-windows.sh').read_text()
+        for dll in ('python27.dll', 'msvcr90.dll', 'libstdc++-6.dll', 'libgcc_s_seh-1.dll'):
+            self.assertIn(dll, script)
+
+    def test_linux_and_windows_use_the_same_assembler(self):
+        linux = (ROOT / 'scripts/build.sh').read_text()
+        windows = (ROOT / 'scripts/build-windows.sh').read_text()
+        for script in (linux, windows):
+            self.assertIn('copy-assets.sh', script)
+            self.assertIn('pack-assets.sh', script)
+        self.assertIn('$ORIGIN/runtime', (ROOT / 'docker/root/CMakeLists.txt').read_text())
+
 
 if __name__ == '__main__':
     unittest.main()

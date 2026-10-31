@@ -66,7 +66,7 @@ follow-ups: <new tasks or "none">
 - [ ] Waves 0–4 complete
 - [ ] Wave 5 scoped only (not executed)
 
-Progress: **22 / 38 tasks**, **16 / 16 decisions**.
+Progress: **23 / 38 tasks**, **16 / 16 decisions**.
 
 ---
 
@@ -521,7 +521,10 @@ directly.
 
 ## 9. Wave 3 — Parity and packaging
 
-- [ ] **T3.1 — Windows packaging**
+- [x] **T3.1 — Windows packaging**
+  - owner: agent-06
+  - evidence: evidence/T3.1.md
+  - note: shared `copy-assets.sh`/`pack-assets.sh`; MinGW runtime DLLs shipped; `dist-diff.py` reports 0 unexpected differences
   - wave: 3 · repo: devkit · profile: standard
   - agent: 1.5 d (1–2) · human: 4 d (3–5)
   - deps: T2.3, T2.4
