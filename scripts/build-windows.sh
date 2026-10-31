@@ -82,12 +82,12 @@ done
 
 # Same asset tree as the Linux package (T3.1).
 if [ -d bin ]; then
-    bash "$SCRIPT_DIR/copy-assets.sh" --dist "$DIST_DIR" --bin bin --treecache treecache
+    bash "$PROJECT_ROOT/scripts/copy-assets.sh" --dist "$DIST_DIR" --bin bin --treecache treecache
 fi
 
 # Same pack archives as the Linux package.
 if [ "$SKIP_PACK" = false ] && [ -d bin/pack ]; then
-    bash "$SCRIPT_DIR/pack-assets.sh" bin/pack "$DIST_DIR/pack" "${PACK_ARCHIVER:-zip}"
+    bash "$PROJECT_ROOT/scripts/pack-assets.sh" bin/pack "$DIST_DIR/pack" "${PACK_ARCHIVER:-zip}"
 else
     mkdir -p "$DIST_DIR/pack"
     if [ -d bin/pack ]; then

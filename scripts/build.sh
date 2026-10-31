@@ -233,7 +233,7 @@ fi
 echo ""
 echo "[4/5] Copying asset and runtime data from bin/..."
 if [ -d "bin" ]; then
-    bash "$SCRIPT_DIR/copy-assets.sh" --dist "$DIST_DIR" --bin bin --treecache treecache
+    bash "$PROJECT_ROOT/scripts/copy-assets.sh" --dist "$DIST_DIR" --bin bin --treecache treecache
     if [ -d "treecache" ]; then
         echo "  - Installed tree geometry cache: dist/treecache"
     fi
@@ -256,9 +256,6 @@ if [ "$PACK_ARCHIVES" = true ] && [ -d "bin/pack" ]; then
     echo "[5/5] Compressing and installing pack archives into dist/pack/..."
 
     PACK_HELPER="$PROJECT_ROOT/scripts/pack-assets.sh"
-    if [ ! -x "$PACK_HELPER" ]; then
-        PACK_HELPER="$SCRIPT_DIR/pack-assets.sh"
-    fi
     if [ ! -x "$PACK_HELPER" ]; then
         echo "ERROR: pack-assets.sh not found!" >&2
         exit 1
