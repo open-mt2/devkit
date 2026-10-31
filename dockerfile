@@ -77,6 +77,7 @@ RUN dpkg --add-architecture i386 \
         clang \
         lld \
         gcc-mingw-w64-i686 \
+        gcc-mingw-w64-x86-64 \
         g++-mingw-w64-x86-64 \
         wine \
         wine32 \
