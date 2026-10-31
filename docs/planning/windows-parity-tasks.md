@@ -432,7 +432,7 @@ directly.
 - [~] **T1.9 — Windows compile tail**
   - owner: agent-07
   - evidence: evidence/T1.9.md
-  - note: min/max + EterLib GL headers fixed (129 → 109 failing targets); the rest is Python-header location (T2.4), 64-bit IME casts (T1.6) and LLP64 pointer types
+  - note: client-side build is clean (min/max, GL headers, python header selection, 64-bit IME casts, LLP64 casts); the `windows` preset now fails only in the cross-built lzo2 headers (LZO_ABI_LLP64, T2.3) — issue #107
   - wave: 1 · repo: all · profile: standard
   - agent: 0.5 d · human: 1 d
   - deps: T1.5, T4.1
