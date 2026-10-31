@@ -15,6 +15,14 @@ endif()
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 include(Platform)
 
+# Windows cross builds resolve most dependencies through the toolchain's
+# OPENMT2_WIN64_DEPS_PREFIX, but packages that link via pkg-config (-lminiaudio,
+# -lzip) only contribute the library name. Make the prefix a link directory
+# (T1.9).
+if(WIN32 AND OPENMT2_WIN64_DEPS_PREFIX)
+    link_directories("${OPENMT2_WIN64_DEPS_PREFIX}/lib")
+endif()
+
 # The packages are cloned into src/<Name> by scripts/fetch-packages.sh. Read
 # the ordered mapping from scripts/packages.map so the dependency build order
 # has a single source of truth.

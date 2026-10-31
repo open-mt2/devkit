@@ -66,7 +66,7 @@ follow-ups: <new tasks or "none">
 - [ ] Waves 0–4 complete
 - [ ] Wave 5 scoped only (not executed)
 
-Progress: **18 / 38 tasks**, **16 / 16 decisions**.
+Progress: **21 / 38 tasks**, **16 / 16 decisions**.
 
 ---
 
@@ -396,10 +396,10 @@ directly.
   - verify: `nm -u dist/metin2client.exe | grep " gl"` is empty
   - risk: GL 1.1-only `opengl32.dll` on real Windows
 
-- [~] **T1.5 — Enable compat renderer on Windows**
+- [x] **T1.5 — Enable compat renderer on Windows**
   - owner: agent-07
   - evidence: evidence/T1.5.md
-  - note: Windows GL path lands and links (no DirectX SDK imports); the `windows` preset verify waits on issue #107 (image rebuild, SDL2 config, 64-bit CONTEXT, lzo include path)
+  - note: the renderer is the Windows path; `metin2client.exe` links against OPENGL32 with no DirectX SDK imports
   - wave: 1 · repo: EterBase · profile: standard
   - agent: 0.75 d (0.5–1) · human: 2 d (1.5–3)
   - deps: T1.4, T1.7, D1
@@ -429,10 +429,10 @@ directly.
   - verify: `scripts/golden-check.sh`
   - risk: time-box — any feature work here is out of scope
 
-- [~] **T1.9 — Windows compile tail**
+- [x] **T1.9 — Windows compile tail**
   - owner: agent-07
   - evidence: evidence/T1.9.md
-  - note: min/max + EterLib GL headers fixed (129 → 109 failing targets); the rest is Python-header location (T2.4), 64-bit IME casts (T1.6) and LLP64 pointer types
+  - note: `cmake --preset windows` builds `metin2client.exe` (PE32+, no GL/DirectX leftovers); proven with a toolchain image that has the x86_64 MinGW C++ compiler and the T2.3/T2.4 prefixes
   - wave: 1 · repo: all · profile: standard
   - agent: 0.5 d · human: 1 d
   - deps: T1.5, T4.1
@@ -549,10 +549,10 @@ directly.
 
 ## 10. Wave 4 — Removal
 
-- [~] **T4.1 — Delete legacy surface**
+- [x] **T4.1 — Delete legacy surface**
   - owner: agent-07
   - evidence: evidence/T4.1.md
-  - note: SDK/Miles/dinput surface deleted (grep clean); tracked in #107 is the remaining general Windows port tail, which is not SDK surface
+  - note: SDK/Miles/dinput surface deleted (grep clean); the remaining port tail became T1.9
   - wave: 4 · repo: all · profile: standard
   - agent: 0.5 d · human: 1 d
   - deps: T1.5, T2.1
