@@ -66,7 +66,7 @@ follow-ups: <new tasks or "none">
 - [ ] Waves 0–4 complete
 - [ ] Wave 5 scoped only (not executed)
 
-Progress: **17 / 37 tasks**, **16 / 16 decisions**.
+Progress: **18 / 37 tasks**, **16 / 16 decisions**.
 
 ---
 
@@ -414,8 +414,10 @@ directly.
   - verify: `ctest -R ime` + manual CJK check
   - risk: CJK parity is already broken on Linux — scope creep
 
-- [~] **T1.7 — Renderer seam skeleton**
+- [x] **T1.7 — Renderer seam skeleton**
   - owner: agent-07
+  - evidence: evidence/T1.7.md
+  - PR: https://github.com/open-mt2/pkg_eterbase/pull/13 (plus one header-only PR per package)
   - wave: 1 · repo: EterBase · profile: design
   - agent: 2 d (1.5–2.5) · human: 4 d (3–5)
   - deps: T1.4, D11
