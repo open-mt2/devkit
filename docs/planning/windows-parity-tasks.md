@@ -360,7 +360,10 @@ directly.
   - verify: `grep -rl "__LINUX__" src | wc -l` + golden hashes
   - risk: accidental behaviour change — split into per-package commits
 
-- [ ] **T1.2 — SDL2 window and event loop on both targets**
+- [~] **T1.2 — SDL2 window and event loop on both targets**
+  - owner: agent-06
+  - evidence: evidence/T1.2.md
+  - note: SDL-only window/event loop landed and cross-compiles; Wine smoke waits on T1.4/T1.5/T4.1
   - wave: 1 · repo: EterLib · profile: standard
   - agent: 1.5 d (1–2) · human: 4 d (3–5)
   - deps: T1.1, D2
