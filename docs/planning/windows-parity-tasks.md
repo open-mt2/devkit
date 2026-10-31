@@ -66,7 +66,7 @@ follow-ups: <new tasks or "none">
 - [ ] Waves 0–4 complete
 - [ ] Wave 5 scoped only (not executed)
 
-Progress: **15 / 37 tasks**, **16 / 16 decisions**.
+Progress: **16 / 37 tasks**, **16 / 16 decisions**.
 
 ---
 
@@ -478,7 +478,10 @@ directly.
   - verify: `wine dist/metin2client.exe --version` + ctest
   - risk: **highest variance task** — start early
 
-- [ ] **T2.5 — CMake platform hygiene**
+- [x] **T2.5 — CMake platform hygiene**
+  - owner: agent-06
+  - evidence: evidence/T2.5.md
+  - PR: https://github.com/open-mt2/devkit/pull/101 (base: main)
   - wave: 2 · repo: all · profile: standard
   - agent: 0.5 d · human: 1 d
   - deps: T0.2
