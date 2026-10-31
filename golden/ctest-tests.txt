@@ -35,6 +35,7 @@ test_poly
 test_python_client_api
 test_python_eterpythonlib_api
 test_python_scriptlib_api
+test_render_seam
 test_sphere
 test_sphere_invariants
 test_stl
