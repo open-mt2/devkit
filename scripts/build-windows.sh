@@ -85,6 +85,14 @@ if [ -d bin ]; then
     bash "$PROJECT_ROOT/scripts/copy-assets.sh" --dist "$DIST_DIR" --bin bin --treecache treecache
 fi
 
+# Ship the checked-in release configuration (same file as the Linux package).
+if [ -f "$PROJECT_ROOT/metin2.cfg" ]; then
+    cp -f "$PROJECT_ROOT/metin2.cfg" "$DIST_DIR/metin2.cfg"
+    echo "  - Installed release configuration: metin2.cfg"
+else
+    echo "  - WARNING: metin2.cfg not found; the client will create one on first run" >&2
+fi
+
 # Same pack archives as the Linux package.
 if [ "$SKIP_PACK" = false ] && [ -d bin/pack ]; then
     bash "$PROJECT_ROOT/scripts/pack-assets.sh" bin/pack "$DIST_DIR/pack" "${PACK_ARCHIVER:-zip}"

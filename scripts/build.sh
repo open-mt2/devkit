@@ -248,6 +248,14 @@ else
     echo "WARNING: 'bin/' directory not found. Skipping asset copy."
 fi
 
+# Ship the checked-in release configuration (overrides a runtime-generated one).
+if [ -f "$PROJECT_ROOT/metin2.cfg" ]; then
+    cp -f "$PROJECT_ROOT/metin2.cfg" "$DIST_DIR/metin2.cfg"
+    echo "  - Installed release configuration: dist/metin2.cfg"
+else
+    echo "  - WARNING: metin2.cfg not found; the client will create one on first run" >&2
+fi
+
 install_python_stdlib
 
 # Build & copy pack archives
