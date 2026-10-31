@@ -82,12 +82,20 @@ done
 
 # Same asset tree as the Linux package (T3.1).
 if [ -d bin ]; then
-    bash "$SCRIPT_DIR/copy-assets.sh" --dist "$DIST_DIR" --bin bin --treecache treecache
+    bash "$PROJECT_ROOT/scripts/copy-assets.sh" --dist "$DIST_DIR" --bin bin --treecache treecache
+fi
+
+# Ship the checked-in release configuration (same file as the Linux package).
+if [ -f "$PROJECT_ROOT/metin2.cfg" ]; then
+    cp -f "$PROJECT_ROOT/metin2.cfg" "$DIST_DIR/metin2.cfg"
+    echo "  - Installed release configuration: metin2.cfg"
+else
+    echo "  - WARNING: metin2.cfg not found; the client will create one on first run" >&2
 fi
 
 # Same pack archives as the Linux package.
 if [ "$SKIP_PACK" = false ] && [ -d bin/pack ]; then
-    bash "$SCRIPT_DIR/pack-assets.sh" bin/pack "$DIST_DIR/pack" "${PACK_ARCHIVER:-zip}"
+    bash "$PROJECT_ROOT/scripts/pack-assets.sh" bin/pack "$DIST_DIR/pack" "${PACK_ARCHIVER:-zip}"
 else
     mkdir -p "$DIST_DIR/pack"
     if [ -d bin/pack ]; then

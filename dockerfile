@@ -145,6 +145,8 @@ COPY CMakePresets.json /workspace/CMakePresets.json
 COPY scripts/ /workspace/scripts/
 # The generated feature matrix is checked by ctest (scripts/feature-matrix.sh).
 COPY docs/ /workspace/docs/
+# Default release configuration, copied into dist/ by the build scripts.
+COPY metin2.cfg /workspace/metin2.cfg
 COPY docker/entrypoint.sh /usr/local/bin/openmt2-entrypoint
 
 RUN chmod +x /workspace/scripts/*.sh /usr/local/bin/openmt2-entrypoint \
