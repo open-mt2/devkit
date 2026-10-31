@@ -71,7 +71,7 @@ Rules for container runs:
 ## Verification commands
 
 ```bash
-# Linux build + full test suite (48 CTest cases, all green)
+# Linux build + full test suite (49 CTest cases, all green)
 docker run ... openmt2/client -t --skip-pack          # see command above
 
 # Windows cross-build + boot smoke

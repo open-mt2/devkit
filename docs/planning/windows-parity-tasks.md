@@ -66,7 +66,7 @@ follow-ups: <new tasks or "none">
 - [ ] Waves 0–4 complete
 - [ ] Wave 5 scoped only (not executed)
 
-Progress: **26 / 38 tasks**, **16 / 16 decisions**.
+Progress: **27 / 38 tasks**, **16 / 16 decisions**.
 
 ---
 
@@ -408,7 +408,10 @@ directly.
   - verify: `docker run --rm openmt2/client windows`
   - risk: none after T1.7
 
-- [ ] **T1.6 — IME / text input**
+- [x] **T1.6 — IME / text input**
+  - owner: agent-06
+  - evidence: evidence/T1.6.md
+  - note: SDL `TEXTEDITING`/`TEXTINPUT` implementation on both targets; IMM/TSF path compiled out; candidate list is the OS IME's (documented limitation)
   - wave: 1 · repo: EterLib · profile: standard
   - agent: 1.5 d (1–2) · human: 4 d (3–6)
   - deps: T1.2, D6

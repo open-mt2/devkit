@@ -22,6 +22,7 @@ test_grn_reference
 test_grpmath
 test_image
 test_image_loader
+test_ime
 test_input
 test_jpeg
 test_locale

@@ -13,3 +13,4 @@ build-coverage/
 build-fuzz/
 fuzz-corpus/
 coverage/
+__pycache__/
