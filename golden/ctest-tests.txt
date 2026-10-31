@@ -20,6 +20,7 @@ test_gr2_reader
 test_grn_reference
 test_grpmath
 test_image
+test_image_loader
 test_locale
 test_locale_codecs
 test_lzo

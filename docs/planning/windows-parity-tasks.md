@@ -66,7 +66,7 @@ follow-ups: <new tasks or "none">
 - [ ] Waves 0–4 complete
 - [ ] Wave 5 scoped only (not executed)
 
-Progress: **9 / 37 tasks**, **16 / 16 decisions**.
+Progress: **12 / 37 tasks**, **16 / 16 decisions**.
 
 ---
 
@@ -319,8 +319,10 @@ directly.
   - verify: `scripts/spike-windows.sh > evidence/T0.1.log`
   - risk: results may reshape Wave 1 — that is the point
 
-- [~] **T0.2 — Build harness**
+- [x] **T0.2 — Build harness**
   - owner: Codex
+  - evidence: evidence/T0.2.md
+  - PR: https://github.com/open-mt2/devkit/pull/88 (base: main)
   - wave: 0 · repo: devkit · profile: standard
   - agent: 1.5 d (1–2) · human: 4 d (3–6)
   - deps: D7, D8, TB.3 (soft)
@@ -333,7 +335,7 @@ directly.
   - owner: Codex
   - evidence: evidence/T0.3.md
   - commits: https://github.com/open-mt2/devkit/commit/1313980c8d315a566e71bb64cadb8276223f8f43 · https://github.com/open-mt2/devkit/commit/122827f00ef2a8c2e88b006693df537dff0bdeb2 · https://github.com/open-mt2/devkit/commit/16e45f1f669b28f5faa6bdb301c30e1c8af3cc8e · https://github.com/open-mt2/devkit/commit/aa7c29dc1f243c911ec9fee0efa5c03631ab87b3
-  - PR: unavailable — GitHub API returned 403; branch pushed successfully
+  - PR: https://github.com/open-mt2/devkit/pull/89 (base: main)
   - wave: 0 · repo: all · profile: standard
   - agent: 1 d (0.5–1.5) · human: 2.5 d (2–4)
   - deps: D10
@@ -346,7 +348,10 @@ directly.
 
 ## 7. Wave 1 — Platform unification
 
-- [ ] **T1.1 — Replace `__LINUX__` with explicit macros**
+- [x] **T1.1 — Replace `__LINUX__` with explicit macros**
+  - owner: agent-06
+  - evidence: evidence/T1.1.md
+  - PR: https://github.com/open-mt2/devkit/pull/95 (base: main)
   - wave: 1 · repo: all · profile: bulk
   - agent: 1.5 d (1–2) · human: 4.5 d (3–6)
   - deps: T0.2
