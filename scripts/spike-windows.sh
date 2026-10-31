@@ -6,9 +6,9 @@ set -euo pipefail
 script_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 src=${1:-/workspace/src}
 out=${2:-/workspace/build/windows-spike}
-map=${SPIKE_MAP:-$script_dir/packages.map}
+map=${SPIKE_MAP:-$script_dir/sources.map}
 cmake=${SPIKE_CMAKE:-i686-w64-mingw32-cmake}
-[[ -d "$src" && -f "$map" ]] || { echo 'Missing source directory or package map' >&2; exit 2; }
+[[ -d "$src" && -f "$map" ]] || { echo 'Missing source directory or source map' >&2; exit 2; }
 mkdir -p "$out"
 # A fresh directory avoids stale configure results without deleting earlier evidence.
 run=$(mktemp -d "$out/run.XXXXXX")
@@ -39,20 +39,23 @@ if [[ -z "${SPIKE_CMAKE:-}" ]]; then
         fi
     done
 fi
-printf 'package\tstatus\tlog\n'
-while IFS='=' read -r repo package; do
-    [[ "$repo" == pkg_* ]] || continue
-    log="$run/$package.log"
-    if [[ ! -f "$src/$package/CMakeLists.txt" ]]; then
+printf 'repository\tstatus\tlog\n'
+while IFS='=' read -r repo dir; do
+    repo="${repo%%#*}"; repo="${repo//[[:space:]]/}"
+    dir="${dir//[[:space:]]/}"
+    [[ -z "$repo" ]] && continue
+    [[ -n "$dir" ]] || dir="$repo"
+    log="$run/$dir.log"
+    if [[ ! -f "$src/$dir/CMakeLists.txt" ]]; then
         status=source-missing
         infrastructure_failure=2
-        echo "Missing $src/$package/CMakeLists.txt" > "$log"
+        echo "Missing $src/$dir/CMakeLists.txt" > "$log"
     elif ! command -v "$cmake" >/dev/null 2>&1; then
         status=tool-missing
         infrastructure_failure=2
         echo "Missing command: $cmake" > "$log"
-    elif "${configure[@]}" -G Ninja -S "$src/$package" -B "$run/$package" -DOPENMT2_RENDERER=GL -DBUILD_TESTS=OFF -DBUILD_TESTING=OFF > "$log" 2>&1; then
-        if cmake --build "$run/$package" --parallel 2 -- -k 0 >> "$log" 2>&1; then
+    elif "${configure[@]}" -G Ninja -S "$src/$dir" -B "$run/$dir" -DOPENMT2_RENDERER=GL -DBUILD_TESTS=OFF -DBUILD_TESTING=OFF > "$log" 2>&1; then
+        if cmake --build "$run/$dir" --parallel 2 -- -k 0 >> "$log" 2>&1; then
             status=build-passed
         else
             status=build-failed
@@ -60,9 +63,9 @@ while IFS='=' read -r repo package; do
     else
         status=configure-failed
     fi
-    printf '%s\t%s\t%s\n' "$package" "$status" "$log"
-    if [[ -d "$src/$package/.git" ]]; then
-        git -C "$src/$package" rev-parse HEAD
+    printf '%s\t%s\t%s\n' "$dir" "$status" "$log"
+    if [[ -d "$src/$dir/.git" ]]; then
+        git -C "$src/$dir" rev-parse HEAD
     fi
     cat "$log"
 done < "$map"
