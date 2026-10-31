@@ -66,7 +66,7 @@ follow-ups: <new tasks or "none">
 - [ ] Waves 0–4 complete
 - [ ] Wave 5 scoped only (not executed)
 
-Progress: **25 / 38 tasks**, **16 / 16 decisions**.
+Progress: **26 / 38 tasks**, **16 / 16 decisions**.
 
 ---
 
@@ -573,7 +573,10 @@ directly.
   - verify: the grep above
   - risk: removing too early breaks the native fallback
 
-- [ ] **T4.2 — CI + docs**
+- [x] **T4.2 — CI + docs**
+  - owner: agent-06
+  - evidence: evidence/T4.2.md
+  - note: `parity` workflow (tags/manual), README cross-build/smoke sections, `build.bat` retired
   - wave: 4 · repo: devkit · profile: standard
   - agent: 0.5 d · human: 1.5 d (1–2)
   - deps: T3.1

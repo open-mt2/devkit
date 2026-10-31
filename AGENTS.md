@@ -17,7 +17,8 @@ packaging scripts. The client sources are fetched at image build time into
 dockerfile                image definition
 docker/                   entrypoint + /workspace scaffold + vendored headers
 scripts/build.sh          Linux build + dist packaging
-scripts/build.bat         historical Windows/MSVC script (being retired)
+scripts/build-windows.sh  Windows cross-build + dist packaging
+scripts/smoke.sh          headless boot smoke (Linux + Wine)
 scripts/fetch-*.sh        source and asset fetchers
 scripts/bake-trees.sh     SpeedTree geometry cache baker (needs Wine)
 docs/planning/            the parity plan and the task sheet (tracked)
@@ -64,19 +65,23 @@ Rules for container runs:
 - always `--user "$(id -u):$(id -g)" -e HOME=/tmp`, otherwise `dist/` and `build/`
   become root-owned;
 - always mount `build/` so runs are incremental;
-- vendor markers: the image has `i686-w64-mingw32-gcc` only (no C++ cross compiler),
-  Wine 8.0, Python 2.7, CMake 3.25, Ninja.
+- vendor markers: `i686-w64-mingw32-gcc`, `x86_64-w64-mingw32-gcc/g++`,
+  Wine 8.0 (32- and 64-bit), Python 2.7, CMake 3.25, Ninja, Xvfb + ImageMagick.
 
 ## Verification commands
 
 ```bash
-# Linux build + full test suite (48 CTest cases currently; 47 pass until #106)
+# Linux build + full test suite (48 CTest cases, all green)
 docker run ... openmt2/client -t --skip-pack          # see command above
 
-# cross-compile probe (Windows target; C only until g++ is added)
-docker run ... openmt2/client shell -c 'i686-w64-mingw32-gcc --version'
+# Windows cross-build + boot smoke
+docker run ... openmt2/client windows
+scripts/smoke.sh windows && scripts/smoke.sh linux
 
-# golden baseline (11 checks; currently 10/11 until #106)
+# cross-compile probe
+docker run ... openmt2/client shell -c 'x86_64-w64-mingw32-g++ --version'
+
+# golden baseline (11 checks, all green)
 scripts/golden-check.sh
 
 # repository state
