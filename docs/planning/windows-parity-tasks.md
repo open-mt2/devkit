@@ -537,7 +537,10 @@ directly.
 
 ## 10. Wave 4 — Removal
 
-- [ ] **T4.1 — Delete legacy surface**
+- [~] **T4.1 — Delete legacy surface**
+  - owner: agent-07
+  - evidence: evidence/T4.1.md
+  - note: SDK/Miles/dinput surface deleted (grep clean); tracked in #107 is the remaining general Windows port tail, which is not SDK surface
   - wave: 4 · repo: all · profile: standard
   - agent: 0.5 d · human: 1 d
   - deps: T1.5, T2.1
