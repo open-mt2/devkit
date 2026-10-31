@@ -1,5 +1,6 @@
 dist/
 .local/
+.scratch/
 build/
 bin/
 src/

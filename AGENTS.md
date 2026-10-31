@@ -1,6 +1,11 @@
 # AGENTS.md — OpenMT2 client devkit
 
-Project instructions for AI agents working in this repository.
+Local instructions for AI agents working in this repository.
+
+Global agent rules — tracking, branch and PR policy, test-first, evidence,
+GitHub authentication and reporting — live in
+[`open-mt2/agent-docs`](https://github.com/open-mt2/agent-docs/blob/main/AGENTS.md).
+Read that first. This file only records what is specific to the devkit.
 
 ## What this repository is
 
@@ -16,6 +21,8 @@ scripts/build.bat         historical Windows/MSVC script (being retired)
 scripts/fetch-*.sh        source and asset fetchers
 scripts/bake-trees.sh     SpeedTree geometry cache baker (needs Wine)
 docs/planning/            the parity plan and the task sheet (tracked)
+evidence/                 per-task command output and notes (tracked)
+golden/                   pinned render/format/test baselines (tracked)
 src/                      materialized client sources (gitignored)
 bin/                      client assets (gitignored, ~2.3 GB)
 build/ dist/ treecache/   generated (gitignored)
@@ -23,12 +30,10 @@ build/ dist/ treecache/   generated (gitignored)
 
 ## Read first
 
-Before doing any work, read:
-
 1. `docs/planning/windows-parity.md` — the cross-platform / no-proprietary plan.
-2. `docs/planning/windows-parity-tasks.md` — the **execution source of truth**: 37
-   tasks, 16 decisions, per-task size, dependencies, verification command, evidence
-   rules.
+2. `docs/planning/windows-parity-tasks.md` — the **execution source of truth**:
+   38 tasks, 16 decisions, per-task size, dependencies, verification command,
+   evidence rules.
 
 Update the task sheet as you work: tick decisions, claim tasks with `- [~]` +
 `owner:`, close them with `- [x]` + the evidence path, and keep the counters in
@@ -37,32 +42,12 @@ Update the task sheet as you work: tick decisions, claim tasks with `- [~]` +
 ## Tracking
 
 Every task is mirrored as an issue in `open-mt2/devkit`, titled `[<ID>] <title>`,
-with one milestone per wave and the `parity` label. The task sheet remains the
-source of truth for scope and state; the issues are the progress view and the
-place PRs close (`Closes #<n>`). Assign the issue to yourself when you claim a
-task, and keep the sheet's checkbox, owner and counters in sync.
+with one milestone per wave and the `parity` label. The task sheet is the source
+of truth for scope and state; the issues are the progress view and the place PRs
+close (`Closes #<n>`). Assign the issue to yourself when you claim a task, and
+keep the sheet's checkbox, owner and counters in sync.
 
-Blocked/undecided work is tracked in issue #1 (D1–D16). Deferred work carries the
-`deferred` label.
-
-## Hard rules
-
-1. **Decisions gate tasks.** A task whose `deps` include an unchecked `D*` decision
-   must not start. Ask the user; do not pick a decision silently.
-2. **Test first.** No task lands without a test that fails before and passes after,
-   or a recorded characterization artifact (render hash, pack transcript).
-3. **One task per branch and per commit series.** Branch `task/<ID>-<slug>`,
-   commit prefix `[<ID>]`.
-4. **Nothing merged to `main` without review.** Push the branch, open a PR, report
-   the link. Do not self-merge unless the user explicitly asks.
-5. **Never commit generated or licensed content:** `src/`, `bin/`, `build/`,
-   `dist/`, `treecache/`, `.local/`, assets (`.gr2`, `.spt`, packs).
-6. **Structural tasks are move-only.** File moves, renames and reformatting must be
-   separate commits from behaviour changes.
-7. **Evidence.** Every closed task writes `evidence/<ID>.md` with the command,
-   before/after output, and notes.
-
-## Environment
+## Build and test
 
 Docker image (already built as `openmt2/client`):
 
@@ -82,70 +67,29 @@ Rules for container runs:
 - vendor markers: the image has `i686-w64-mingw32-gcc` only (no C++ cross compiler),
   Wine 8.0, Python 2.7, CMake 3.25, Ninja.
 
-GitHub CLI: use plain `gh` with the existing authentication. Check access with a
-bounded read-only request before GitHub work:
-
-```bash
-timeout 20s gh api user --jq .login
-gh repo view open-mt2/devkit
-```
-
-If the request succeeds, continue with `gh`. A missing `.local/gh` wrapper or
-`GH_TOKEN` environment variable does not mean authentication is unavailable.
-If authentication fails or times out, use `.local/gh` only when it exists and
-`~/.config/openmt2/gh-token` is available; the wrapper supplies `GH_TOKEN` to
-bypass the keyring. Otherwise report the actual error and request authentication
-setup. Preserve `~/.config/gh/hosts.yml` unless the user asks to change it.
-
-This authentication policy also applies to `.local/gh` examples in
-`docs/agents/issue-tracker.md`: use `gh` when the access check succeeds.
-
-Git: SSH works (`git@github.com` as `PoNo1101`). Remotes must use SSH, not HTTPS.
-
 ## Verification commands
 
 ```bash
-# Linux build + full test suite (22 CTest cases today)
+# Linux build + full test suite (48 CTest cases currently; 47 pass until #106)
 docker run ... openmt2/client -t --skip-pack          # see command above
 
 # cross-compile probe (Windows target; C only until g++ is added)
 docker run ... openmt2/client shell -c 'i686-w64-mingw32-gcc --version'
 
+# golden baseline (11 checks; currently 10/11 until #106)
+scripts/golden-check.sh
+
 # repository state
 git status --short && git log --oneline -3
 ```
+
+## Never commit
+
+`src/`, `bin/`, `build/`, `dist/`, `treecache/`, `.local/`, and game assets
+(`.gr2`, `.spt`, packs). They are gitignored — do not force-add them.
 
 ## Repository topology (target)
 
 16 `pkg_*` repositories are being consolidated into three: `neoeter` (engine),
 `neoeter-python` (Python bridge), `client` (game). Until decided and merged (D14),
 edit the `pkg_*` repositories, never create per-library repos.
-
-## Reporting
-
-When a task closes, return exactly:
-
-```
-<ID> done.
-changed: <paths>
-tests: <n> added, <n> updated — `ctest` <pass/total>
-evidence: evidence/<ID>.md
-follow-ups: <new tasks or "none">
-```
-
-## Agent skills
-
-### Issue tracker
-
-Issues live in GitHub Issues on `open-mt2/devkit`. Follow the GitHub CLI
-authentication policy above; see `docs/agents/issue-tracker.md` for tracker operations.
-
-### Triage labels
-
-Default five-role vocabulary: `needs-triage`, `needs-info`, `ready-for-agent`,
-`ready-for-human`, `wontfix`. See `docs/agents/triage-labels.md`.
-
-### Domain docs
-
-Single-context: one `GLOSSARY.md` plus `docs/adr/` at the repo root.
-See `docs/agents/domain.md`.
