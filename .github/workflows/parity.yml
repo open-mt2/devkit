@@ -53,7 +53,6 @@ jobs:
         run: |
           docker run --rm \
             --user "$(id -u):$(id -g)" -e HOME=/tmp \
-            -v "$PWD/src:/workspace/src" \
             -v "$PWD/build:/workspace/build" \
             -v "$PWD/dist:/workspace/dist" \
             -v "$PWD/scripts:/workspace/scripts" \
@@ -66,7 +65,6 @@ jobs:
           docker run --rm \
             --user "$(id -u):$(id -g)" -e HOME=/tmp \
             -e OPENMT2_DIST_DIR=/workspace/dist-windows \
-            -v "$PWD/src:/workspace/src" \
             -v "$PWD/build:/workspace/build" \
             -v "$PWD/dist-windows:/workspace/dist-windows" \
             -v "$PWD/scripts:/workspace/scripts" \

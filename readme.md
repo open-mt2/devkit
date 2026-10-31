@@ -43,7 +43,7 @@ Useful build arguments:
 | Argument                 | Default               | Purpose                                      |
 | ------------------------ | --------------------- | -------------------------------------------- |
 | `BASE_IMAGE`             | `debian:bookworm`     | Base image                                   |
-| `PKG_ORG` / `PKG_REF`    | `open-mt2` / `main`   | Source organization and branch               |
+| `SRC_ORG` / `SRC_REF`    | `open-mt2` / `main`   | Source organization and branch               |
 | `WITH_BIN`               | `1`                   | Fetch the original `bin/` assets             |
 | `BIN_REF`                | `master`              | Branch used for `bin/`                       |
 | `BIN_REPO_URL`           | old-metin2 Gitea repo | Alternative asset repository                 |
