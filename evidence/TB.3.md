@@ -7,6 +7,6 @@
 - after:
   - `scripts/sources.map` + `scripts/fetch-sources.sh` clone `neoeter`, `neoeter-python`, `client` into `src/`;
   - `dockerfile` and the `fetch` entrypoint use the new fetcher (CI cache-bust arg renamed `SRC_CACHE_BUST`);
-  - `docker/root/CMakeLists.txt` adds the three repository roots and keeps `packages.map` only as a fallback for pre-consolidation images;
+  - `docker/root/CMakeLists.txt` requires the three repository roots (the `packages.map` fallback was removed after the old remotes were deleted);
   - `scripts/golden-check.sh`, `golden/*.sha256`, the transcript headers, `scripts/build.sh`, `scripts/build-windows.sh` and `docs/planning/feature-matrix.md` follow the role-based paths.
 - notes: no compatibility shims are kept — the include roots are `<Neoeter/…>` and `<Client/…>` outright. `fetch-sources.sh` was verified against the three published repositories and the root CMake configured from that `src/` tree. PR: https://github.com/open-mt2/devkit/pull/124

@@ -301,7 +301,7 @@ directly.
   - scope: include roots renamed outright (no `Eter*` shim kept); `sources.map` + `fetch-sources.sh` replace the 16-package fetch; root CMake prefers the three repositories; goldens, feature matrix, build scripts and CI follow the new paths.
   - done: `fetch-sources.sh` populates `src/` and the build is green; binary paths `build/src/{host,bindings,ui}`.
   - verify: `scripts/fetch-sources.sh && ctest --output-on-failure`
-  - risk: none outstanding — the `packages.map` fallback remains for pre-consolidation images
+  - risk: none — the `packages.map` fallback was removed and the old remotes deleted
 
 - [x] **TB.4 — Archive old repositories**
   - owner: opencode
@@ -310,9 +310,9 @@ directly.
   - wave: B · repo: org · profile: standard
   - agent: 0.5 d · human: 1.5 d (1–2)
   - deps: TB.3
-  - scope: tag `final` at the imported `main`, archive all 16 `pkg_*` read-only; the three new repositories are the only writable source of truth.
-  - done: all 16 archived with a `final` tag on their last commit.
-  - verify: `git ls-remote --tags` on the old repos; `gh repo view --json isArchived`
+  - scope: tag `final` at the imported `main`, mirror all 16 `pkg_*` locally under `../archive`, then delete the remotes; the three new repositories are the only source of truth.
+  - done: all 16 deleted from the org; full local clones with their `final` tags remain in `../archive/`.
+  - verify: `.local/gh repo list open-mt2` and `../archive/README.md`
   - risk: downstream users pinning old repos — tags and clones still resolve
 
 ---
