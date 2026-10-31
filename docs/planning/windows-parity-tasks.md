@@ -381,7 +381,10 @@ directly.
   - verify: `grep -rn "DirectInput8Create" src`
   - risk: scancode gaps on non-US layouts
 
-- [ ] **T1.4 — GL function loader for Windows**
+- [~] **T1.4 — GL function loader for Windows**
+  - owner: agent-06
+  - evidence: evidence/T1.4.md
+  - note: loader implemented and wired; the nm check waits on T1.5
   - wave: 1 · repo: EterBase · profile: standard
   - agent: 1.5 d (1.5–2) · human: 4 d (3–5)
   - deps: T1.2
