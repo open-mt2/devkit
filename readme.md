@@ -151,7 +151,7 @@ renderer (OpenGL compatibility via SDL2), Python 2.7 runtime and packaging
 scripts. The differences are limited to the binary itself, the runtime
 libraries and platform extension modules; `scripts/dist-diff.py` enforces that.
 
-Current state (see `docs/planning/windows-parity-tasks.md` for the live sheet):
+Current state (see https://github.com/open-mt2/agent-docs/blob/main/parity/docs/planning/windows-parity-tasks.md for the archived sheet):
 
 - both targets compile, link and boot to the login flow (`scripts/smoke.sh`);
 - `metin2client.exe` has no DirectX SDK dependency and no unresolved `gl*`;

@@ -2,7 +2,7 @@
 # ======================================================
 # Fixed-function feature matrix (T1.8)
 # ======================================================
-# Generates docs/planning/feature-matrix.md from the sources: every D3DRS_*,
+# Generates docs/feature-matrix.md from the sources: every D3DRS_*,
 # D3DTSS_*, D3DSAMP_*, D3DTS_* and FVF layout the client asks for, plus the
 # shader calls that are no-ops on the GL path (D13).
 #
@@ -19,7 +19,7 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT="$(dirname "$SCRIPT_DIR")"
-OUTPUT="$ROOT/docs/planning/feature-matrix.md"
+OUTPUT="$ROOT/docs/feature-matrix.md"
 
 PYTHON="${PYTHON:-}"
 if [ -z "$PYTHON" ]; then
@@ -49,7 +49,7 @@ case "${1:-}" in
         if diff -u "$OUTPUT" "$TMP" >&2; then
             echo "feature matrix is current"
         else
-            echo "error: docs/planning/feature-matrix.md is stale." >&2
+            echo "error: docs/feature-matrix.md is stale." >&2
             echo "       run scripts/feature-matrix.sh --write and review the diff." >&2
             exit 1
         fi
