@@ -396,7 +396,10 @@ directly.
   - verify: `nm -u dist/metin2client.exe | grep " gl"` is empty
   - risk: GL 1.1-only `opengl32.dll` on real Windows
 
-- [ ] **T1.5 — Enable compat renderer on Windows**
+- [~] **T1.5 — Enable compat renderer on Windows**
+  - owner: agent-07
+  - evidence: evidence/T1.5.md
+  - note: Windows GL path lands and links (no DirectX SDK imports); the `windows` preset verify waits on issue #107 (image rebuild, SDL2 config, 64-bit CONTEXT, lzo include path)
   - wave: 1 · repo: EterBase · profile: standard
   - agent: 0.75 d (0.5–1) · human: 2 d (1.5–3)
   - deps: T1.4, T1.7, D1
