@@ -1,4 +1,4 @@
-=== src/EterGrnLib/tests/test_gr2_reader ===
+=== src/model/grn/tests/test_gr2_reader ===
 [TEST] synthetic GR2 model
   [PASS] header, relocations, type tree and model record
 [TEST] truncated GR2
@@ -20,7 +20,7 @@
   [PASS] compressed section decoder is reachable with arbitrary bytes
 [test_gr2_reader] all checks passed
 exit=0
-=== src/EterGrnLib/tests/test_grn_reference ===
+=== src/model/grn/tests/test_grn_reference ===
 [PASS] test_world_pose_reference_rotation
 [PASS] test_skinning_reference_weights
 [PASS] test_curve_sampling_reference

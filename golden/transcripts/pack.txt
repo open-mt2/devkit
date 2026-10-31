@@ -1,4 +1,4 @@
-=== src/EterPack/tests/test_pack_formats ===
+=== src/io/tests/test_pack_formats ===
 [TEST] ZIP provider round-trip
   [PASS] entries, empty files, embedded NULs and case folding
 [TEST] pack manager overlay
@@ -9,7 +9,7 @@
   [PASS] separators, ASCII case and non-ASCII bytes
 [test_pack_formats] all checks passed
 exit=0
-=== src/EterPack/tests/test_eterpack ===
+=== src/io/tests/test_eterpack ===
 [test_eterpack] Running EterPack VFS unit tests...
   [PASS] Filename normalization & case folding
   [PASS] FOLDER provider registration & case-insensitive virtual lookup

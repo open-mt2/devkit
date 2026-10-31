@@ -13,8 +13,8 @@ The renderer seam (T1.7) and the future Vulkan backend (T5.2) need a complete,
   * the shader calls that are no-ops on the GL path (D13)
 
 It is generated, never hand-written: comments and string literals are stripped
-first, the platform implementation (`include/Platform/`, `EterBase/src/`) and
-the test trees are excluded, and every section is sorted so `--check` is a
+first, the platform implementation (`include/Platform/`, `src/neoeter/src/platform/base/`)
+and the test trees are excluded, and every section is sorted so `--check` is a
 stable diff.
 
 Usage:
@@ -34,7 +34,10 @@ SOURCE_SUFFIXES = {".cpp", ".c", ".cc", ".h", ".hpp", ".inl"}
 # Implementation-side files: they *consume* the state (switch statements in the
 # compat device / GL backend) rather than declare the app's feature usage.
 EXCLUDED_DIR_PARTS = ("tests",)
-EXCLUDED_PATH_PREFIXES = ("src/EterBase/src/",)
+EXCLUDED_PATH_PREFIXES = (
+    "src/EterBase/src/",                       # legacy 16-repo layout
+    "src/neoeter/src/platform/base/",          # consolidated engine layout
+)
 # Every package vendors the platform shim under include/Platform/.
 EXCLUDED_PATH_MARKERS = ("/include/Platform/",)
 
@@ -389,8 +392,8 @@ def main(argv=None):
     lines.append(">")
     lines.append("> Source: `src/**/*.{cpp,c,h,hpp,inl}` with comments and string literals")
     lines.append("> removed, excluding `tests/` and the renderer/platform implementation")
-    lines.append("> (`src/EterBase/include/`, `src/EterBase/src/`). Those directories consume")
-    lines.append("> the state; this file lists what the game and engine *ask for*.")
+    lines.append("> (`include/Neoeter/Platform/Base/`, `src/neoeter/src/platform/base/`). Those directories")
+    lines.append("> consume the state; this file lists what the game and engine *ask for*.")
     lines.append("")
     lines.append("This is the contract the renderer backend must satisfy (plan §4.4): the GL")
     lines.append("backend passes it through to OpenGL 2.1, and a Vulkan backend has to")

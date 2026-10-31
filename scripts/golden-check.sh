@@ -196,17 +196,17 @@ if [ "$UPDATE" = true ]; then
     [ "${OPENMT2_UPDATE_PYTHON_API:-}" = "1" ] ||
         echo "[update] keeping Python API snapshots (set OPENMT2_UPDATE_PYTHON_API=1 to rewrite them)"
 
-    run_binary "render goldens (updated)" src/EterLib/tests/test_render_golden --update
+    run_binary "render goldens (updated)" src/render/tests/test_render_golden --update
     run_binary "Python API: ScriptLib" src/ScriptLib/tests/test_python_scriptlib_api \
-        "$ROOT/src/ScriptLib/tests/data/python_api_scriptlib.txt"
+        "$ROOT/src/neoeter-python/src/ScriptLib/tests/data/python_api_scriptlib.txt"
     run_binary "Python API: EterPythonLib" src/EterPythonLib/tests/test_python_eterpythonlib_api \
-        "$ROOT/src/EterPythonLib/tests/data/python_api_eterpythonlib.txt"
+        "$ROOT/src/neoeter-python/src/EterPythonLib/tests/data/python_api_eterpythonlib.txt"
     run_binary "Python API: client" src/UserInterface/tests/test_python_client_api \
-        "$ROOT/src/UserInterface/tests/data/python_api_client.txt"
+        "$ROOT/src/client/src/UserInterface/tests/data/python_api_client.txt"
     [ "$FAILED" -eq 0 ] || die "refusing to refresh goldens after a failing check"
 
     shopt -s nullglob
-    render_files=("$ROOT"/src/EterLib/tests/golden/render/*.png)
+    render_files=("$ROOT"/src/neoeter/src/render/tests/golden/render/*.png)
     shopt -u nullglob
     [ "${#render_files[@]}" -gt 0 ] || die "no render goldens found"
     render_relative=()
@@ -215,19 +215,19 @@ if [ "$UPDATE" = true ]; then
     done
     write_manifest "$GOLDEN/render.sha256" "${render_relative[@]}"
     write_manifest "$GOLDEN/api.sha256" \
-        "src/ScriptLib/tests/data/python_api_scriptlib.txt" \
-        "src/EterPythonLib/tests/data/python_api_eterpythonlib.txt" \
-        "src/UserInterface/tests/data/python_api_client.txt"
+        "src/neoeter-python/src/ScriptLib/tests/data/python_api_scriptlib.txt" \
+        "src/neoeter-python/src/EterPythonLib/tests/data/python_api_eterpythonlib.txt" \
+        "src/client/src/UserInterface/tests/data/python_api_client.txt"
 
     run_transcript pack \
-        src/EterPack/tests/test_pack_formats \
-        src/EterPack/tests/test_eterpack
+        src/io/tests/test_pack_formats \
+        src/io/tests/test_eterpack
     run_transcript model \
-        src/EterGrnLib/tests/test_gr2_reader \
-        src/EterGrnLib/tests/test_grn_reference
+        src/model/grn/tests/test_gr2_reader \
+        src/model/grn/tests/test_grn_reference
     run_transcript collision \
-        src/EterLib/tests/test_detector \
-        src/EterLib/tests/test_grpmath
+        src/render/tests/test_detector \
+        src/render/tests/test_grpmath
     run_transcript packet \
         src/UserInterface/tests/test_packet
 
@@ -242,23 +242,23 @@ else
     check_manifest "render hashes" "$GOLDEN/render.sha256"
     check_manifest "Python API hashes" "$GOLDEN/api.sha256"
 
-    run_binary "render goldens" src/EterLib/tests/test_render_golden
+    run_binary "render goldens" src/render/tests/test_render_golden
     run_binary "Python API: ScriptLib" src/ScriptLib/tests/test_python_scriptlib_api \
-        "$ROOT/src/ScriptLib/tests/data/python_api_scriptlib.txt"
+        "$ROOT/src/neoeter-python/src/ScriptLib/tests/data/python_api_scriptlib.txt"
     run_binary "Python API: EterPythonLib" src/EterPythonLib/tests/test_python_eterpythonlib_api \
-        "$ROOT/src/EterPythonLib/tests/data/python_api_eterpythonlib.txt"
+        "$ROOT/src/neoeter-python/src/EterPythonLib/tests/data/python_api_eterpythonlib.txt"
     run_binary "Python API: client" src/UserInterface/tests/test_python_client_api \
-        "$ROOT/src/UserInterface/tests/data/python_api_client.txt"
+        "$ROOT/src/client/src/UserInterface/tests/data/python_api_client.txt"
 
     run_transcript pack \
-        src/EterPack/tests/test_pack_formats \
-        src/EterPack/tests/test_eterpack
+        src/io/tests/test_pack_formats \
+        src/io/tests/test_eterpack
     run_transcript model \
-        src/EterGrnLib/tests/test_gr2_reader \
-        src/EterGrnLib/tests/test_grn_reference
+        src/model/grn/tests/test_gr2_reader \
+        src/model/grn/tests/test_grn_reference
     run_transcript collision \
-        src/EterLib/tests/test_detector \
-        src/EterLib/tests/test_grpmath
+        src/render/tests/test_detector \
+        src/render/tests/test_grpmath
     run_transcript packet \
         src/UserInterface/tests/test_packet
 

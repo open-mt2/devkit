@@ -1,11 +1,11 @@
-=== src/EterLib/tests/test_detector ===
+=== src/render/tests/test_detector ===
 [TEST] OBB (axis aligned)
   [PASS] inside, outside, radius margin and swept check
 [TEST] OBB (45 degree yaw)
   [PASS] local-space containment survives rotation
 [test_detector] all checks passed
 exit=0
-=== src/EterLib/tests/test_grpmath ===
+=== src/render/tests/test_grpmath ===
 [TEST] CrossProduct2D
   [PASS] signed area and collinearity
 [TEST] IsInTriangle2D
