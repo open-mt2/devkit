@@ -139,7 +139,6 @@ COPY docker/root/cmake/Platform.cmake /workspace/cmake/Platform.cmake
 COPY cmake/toolchain-i686-windows-gnu.cmake /workspace/cmake/toolchain-i686-windows-gnu.cmake
 COPY CMakePresets.json /workspace/CMakePresets.json
 COPY scripts/ /workspace/scripts/
-COPY docker/vendor/ /opt/openmt2/vendor/
 COPY docker/entrypoint.sh /usr/local/bin/openmt2-entrypoint
 
 RUN chmod +x /workspace/scripts/*.sh /usr/local/bin/openmt2-entrypoint \
@@ -157,14 +156,6 @@ ARG PKG_REF=main
 ARG PKG_CACHE_BUST=0
 RUN echo "[packages] source cache bust: ${PKG_CACHE_BUST}" \
     && PKG_ORG="${PKG_ORG}" PKG_REF="${PKG_REF}" /workspace/scripts/fetch-packages.sh /workspace
-
-# pkg_eterbase currently references <Platform/stb_image.h> but does not ship
-# the header in its repository. Provide the same copy as the reference tree
-# until it is published upstream.
-RUN if [ ! -f /workspace/src/EterBase/include/Platform/stb_image.h ]; then \
-        install -Dm644 /opt/openmt2/vendor/stb_image.h \
-            /workspace/src/EterBase/include/Platform/stb_image.h; \
-    fi
 
 # ---------------------------------------------------------------------------
 # Original client assets (bin/)

@@ -4,12 +4,17 @@ name: coverage
 # tree inside the development image (the package repositories build standalone
 # and do not share a coverage baseline), so the image is built here and the
 # ratchet runs inside it.
+#
+# Cost control (#93): this job builds the full image, so it is deliberately not
+# run on ordinary pushes or PRs. It runs on release tags and on demand:
+#
+#     gh workflow run coverage --repo open-mt2/devkit
+#
+# Restore PR runs once CI cost is re-evaluated (see #93).
 
 on:
   push:
-    branches: ["main"]
-  pull_request:
-    branches: ["**"]
+    tags: ["v*"]
   workflow_dispatch:
 
 concurrency:
