@@ -533,7 +533,10 @@ directly.
   - verify: `diff -r dist-linux dist-windows` (expected diff limited to binaries)
   - risk: asset drift between targets
 
-- [ ] **T3.2 — Automated smoke test**
+- [x] **T3.2 — Automated smoke test**
+  - owner: agent-06
+  - evidence: evidence/T3.2.md
+  - note: `scripts/smoke.sh` boots both targets under Xvfb/Wine, screenshots and fails on crash/fatal/blank; uncovered the SDL cursor and minimized-window bugs (pkg_userinterface#18)
   - wave: 3 · repo: devkit · profile: design
   - agent: 2 d (1.5–2.5) · human: 4 d (3–5)
   - deps: T3.1, TA.4

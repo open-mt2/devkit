@@ -74,6 +74,7 @@ RUN dpkg --add-architecture i386 \
         libasound2-dev \
         xvfb \
         xauth \
+        imagemagick \
         libgl1-mesa-dri \
         clang \
         lld \
