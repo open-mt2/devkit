@@ -1,6 +1,7 @@
 dist/
 dist-linux/
 dist-windows/
+smoke-artifacts/
 .local/
 .scratch/
 build/
