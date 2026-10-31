@@ -66,7 +66,7 @@ follow-ups: <new tasks or "none">
 - [ ] Waves 0–4 complete
 - [ ] Wave 5 scoped only (not executed)
 
-Progress: **16 / 37 tasks**, **16 / 16 decisions**.
+Progress: **17 / 37 tasks**, **16 / 16 decisions**.
 
 ---
 
@@ -372,7 +372,10 @@ directly.
   - verify: `grep -rn "CreateWindowEx" src` + Wine smoke
   - risk: IME/IMC message plumbing
 
-- [ ] **T1.3 — SDL2 input**
+- [x] **T1.3 — SDL2 input**
+  - owner: agent-06
+  - evidence: evidence/T1.3.md
+  - PR: https://github.com/open-mt2/pkg_eterlib/pull/10 (plus one header-only PR per package)
   - wave: 1 · repo: EterLib · profile: standard
   - agent: 1 d (1–1.5) · human: 2.5 d (2–4)
   - deps: T1.1, D2
@@ -411,7 +414,8 @@ directly.
   - verify: `ctest -R ime` + manual CJK check
   - risk: CJK parity is already broken on Linux — scope creep
 
-- [ ] **T1.7 — Renderer seam skeleton**
+- [~] **T1.7 — Renderer seam skeleton**
+  - owner: agent-07
   - wave: 1 · repo: EterBase · profile: design
   - agent: 2 d (1.5–2.5) · human: 4 d (3–5)
   - deps: T1.4, D11
