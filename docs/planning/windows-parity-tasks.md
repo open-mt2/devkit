@@ -66,7 +66,7 @@ follow-ups: <new tasks or "none">
 - [ ] Waves 0–4 complete
 - [ ] Wave 5 scoped only (not executed)
 
-Progress: **14 / 37 tasks**, **16 / 16 decisions**.
+Progress: **15 / 37 tasks**, **16 / 16 decisions**.
 
 ---
 
@@ -451,7 +451,10 @@ directly.
   - verify: `docker run --rm openmt2/client`
   - risk: low
 
-- [ ] **T2.3 — Cross-build Windows dependencies**
+- [x] **T2.3 — Cross-build Windows dependencies**
+  - owner: agent-06
+  - evidence: evidence/T2.3.md
+  - PR: https://github.com/open-mt2/devkit/pull/98 (base: main)
   - wave: 2 · repo: devkit · profile: standard
   - agent: 2 d (1.5–2.5) · human: 5 d (4–6)
   - deps: T0.2

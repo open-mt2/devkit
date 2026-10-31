@@ -147,6 +147,15 @@ RUN chmod +x /workspace/scripts/*.sh /usr/local/bin/openmt2-entrypoint \
     && chmod +x /workspace/build.sh
 
 # ---------------------------------------------------------------------------
+# Windows cross-build dependency set (T2.3)
+# ---------------------------------------------------------------------------
+# zlib, lzo2, libzip and SDL2, pinned and cross-built with x86_64-w64-mingw32.
+# libjpeg is intentionally absent (T2.2 replaced it with stb_image_write).
+ARG WIN64_DEPS_PREFIX=/opt/openmt2/win64
+RUN /workspace/scripts/build-windows-deps.sh --prefix "${WIN64_DEPS_PREFIX}" --work /tmp/openmt2-win64-deps \
+    && rm -rf /tmp/openmt2-win64-deps
+
+# ---------------------------------------------------------------------------
 # Client packages (src/<Package>)
 # ---------------------------------------------------------------------------
 ARG PKG_ORG=open-mt2
