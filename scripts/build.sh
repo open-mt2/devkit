@@ -204,25 +204,8 @@ fi
 echo ""
 echo "[4/5] Copying asset and runtime data from bin/..."
 if [ -d "bin" ]; then
-    # Copy root configuration / data files (excluding Windows DLLs and git files)
-    find bin -maxdepth 1 -type f ! -iname "*.dll" ! -name ".gitignore" -exec cp {} "$DIST_DIR/" \;
-
-    # Copy subdirectories (excluding pack which is handled separately)
-    for dir in BGM lib mark miles screenshot upload; do
-        if [ -d "bin/$dir" ]; then
-            mkdir -p "$DIST_DIR/$dir"
-            cp -r bin/$dir/. "$DIST_DIR/$dir/" 2>/dev/null || true
-            # Clean any nested .gitignore
-            find "$DIST_DIR/$dir" -name ".gitignore" -delete 2>/dev/null || true
-        else
-            mkdir -p "$DIST_DIR/$dir"
-        fi
-    done
-
-    # Baked SpeedTree geometry (generated from the original SpeedTreeRT SDK)
+    bash "$SCRIPT_DIR/copy-assets.sh" --dist "$DIST_DIR" --bin bin --treecache treecache
     if [ -d "treecache" ]; then
-        mkdir -p "$DIST_DIR/treecache"
-        cp treecache/*.tree "$DIST_DIR/treecache/" 2>/dev/null || true
         echo "  - Installed tree geometry cache: dist/treecache"
     fi
 
