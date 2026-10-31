@@ -15,6 +15,16 @@ endif()
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 include(Platform)
 
+# #115: run the packaged client outside the build image. The runtime
+# libraries (libzip, libpython2.7) are copied into dist/runtime by build.sh,
+# so the executable must carry $ORIGIN/runtime in its RUNPATH. CMake expands
+# $ORIGIN correctly for the generated build rules; build.sh copies the
+# build-tree executable, hence BUILD_WITH_INSTALL_RPATH.
+if(UNIX AND NOT APPLE)
+    set(CMAKE_BUILD_WITH_INSTALL_RPATH TRUE)
+    set(CMAKE_INSTALL_RPATH "$ORIGIN/runtime;/usr/local/lib")
+endif()
+
 # Windows cross builds resolve most dependencies through the toolchain's
 # OPENMT2_WIN64_DEPS_PREFIX, but packages that link via pkg-config (-lminiaudio,
 # -lzip) only contribute the library name. Make the prefix a link directory

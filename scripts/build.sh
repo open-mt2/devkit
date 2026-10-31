@@ -25,7 +25,7 @@ echo "======================================================"
 # Default configuration
 BUILD_TYPE="Release"
 BUILD_DIR="${PROJECT_ROOT}/build"
-DIST_DIR="${PROJECT_ROOT}/dist"
+DIST_DIR="${OPENMT2_DIST_DIR:-${PROJECT_ROOT}/dist}"
 PACK_ARCHIVES=true
 CLEAN_BUILD=false
 RUN_TESTS=false
@@ -158,6 +158,48 @@ if [ -f "$CONFIG_BIN" ]; then
     echo "  - Installed configuration utility: dist/config"
 fi
 
+# Self-contained runtime (#115): the binary keeps a build-tree RUNPATH and
+# links libzip/libpython from the image. Ship those two next to it and point
+# RUNPATH at $ORIGIN/runtime (set in the root CMakeLists) so `dist/` runs
+# outside the development image. BUNDLED_RUNTIME_LIBS overrides the set.
+RUNTIME_DIR="$DIST_DIR/runtime"
+BUNDLED_RUNTIME_LIBS="${BUNDLED_RUNTIME_LIBS:-libzip.so.4 libpython2.7.so.1.0}"
+if [ -n "$BUNDLED_RUNTIME_LIBS" ]; then
+    mkdir -p "$RUNTIME_DIR"
+    for lib in $BUNDLED_RUNTIME_LIBS; do
+        lib_path="$(ldconfig -p 2>/dev/null | awk -v name="$lib" '$1 == name { print $NF; exit }')"
+        if [ -n "$lib_path" ] && [ -e "$lib_path" ]; then
+            cp -L "$lib_path" "$RUNTIME_DIR/$lib"
+            echo "  - Bundled runtime library: runtime/$lib"
+        else
+            echo "WARNING: runtime library '$lib' not found; dist/ will need it from the host"
+        fi
+    done
+fi
+
+# The interpreter is embedded with Python home "." (ScriptLib), so it reads
+# its standard library from ./lib. The asset tree only carries the game-side
+# subset; overlay the full CPython 2.7 stdlib and flatten lib-dynload (#115).
+PYTHON27_BIN="${PYTHON27_BIN:-python2.7}"
+if command -v "$PYTHON27_BIN" >/dev/null 2>&1; then
+    PY_PREFIX="$("$PYTHON27_BIN" -c 'import sys; print(sys.prefix)' 2>/dev/null || true)"
+    PY_STDLIB="$PY_PREFIX/lib/python2.7"
+    if [ -n "$PY_PREFIX" ] && [ -d "$PY_STDLIB" ]; then
+        mkdir -p "$DIST_DIR/lib"
+        cp -r "$PY_STDLIB/." "$DIST_DIR/lib/"
+        if [ -d "$DIST_DIR/lib/lib-dynload" ]; then
+            find "$DIST_DIR/lib/lib-dynload" -maxdepth 1 -type f -name "*.so*" \
+                -exec cp {} "$DIST_DIR/lib/" \;
+            rm -rf "$DIST_DIR/lib/lib-dynload"
+        fi
+        echo "  - Overlaid CPython 2.7 stdlib from $PY_STDLIB"
+    else
+        echo "WARNING: CPython 2.7 stdlib not found under '$PY_PREFIX'; dist/lib stays asset-only"
+    fi
+else
+    echo "WARNING: '$PYTHON27_BIN' not found; dist/lib stays asset-only"
+fi
+
 # Copy base asset directories from bin/
 echo ""
 echo "[4/5] Copying asset and runtime data from bin/..."
@@ -184,12 +226,14 @@ if [ -d "bin" ]; then
         echo "  - Installed tree geometry cache: dist/treecache"
     fi
 
-    # Setup pack directory and metadata
+    # Pack metadata (Index/Index.dev/rdch) is copied by pack-assets.sh when the
+    # archives are built; with --skip-pack copy it here so the dist stays valid.
     mkdir -p "$DIST_DIR/pack"
-    if [ -f "bin/pack/Index" ]; then
+    if [ "$PACK_ARCHIVES" = false ] && [ -f "bin/pack/Index" ]; then
         cp "bin/pack/Index" "$DIST_DIR/pack/"
+        [ ! -f "bin/pack/Index.dev" ] || cp "bin/pack/Index.dev" "$DIST_DIR/pack/"
+        cp bin/pack/*.rdch "$DIST_DIR/pack/" 2>/dev/null || true
     fi
-    cp bin/pack/*.rdch "$DIST_DIR/pack/" 2>/dev/null || true
 else
     echo "WARNING: 'bin/' directory not found. Skipping asset copy."
 fi
@@ -198,21 +242,7 @@ fi
 echo ""
 if [ "$PACK_ARCHIVES" = true ] && [ -d "bin/pack" ]; then
     echo "[5/5] Compressing and installing pack archives into dist/pack/..."
-    
-    count=0
-    for pack_dir in bin/pack/*/; do
-        [ -d "$pack_dir" ] || continue
-        pack_name="$(basename "$pack_dir")"
-        echo "  - Packing ${pack_name}..."
-
-        if [ "$ARCHIVER" = "7z" ] || [ "$ARCHIVER" = "7za" ]; then
-            (cd "$pack_dir" && "$ARCHIVER" a -tzip -mx=1 -bd -bso0 -bsp0 "${DIST_DIR}/pack/${pack_name}.zip" ./*)
-        elif [ "$ARCHIVER" = "zip" ]; then
-            (cd "$pack_dir" && zip -1 -r -q "${DIST_DIR}/pack/${pack_name}.zip" .)
-        fi
-        count=$((count + 1))
-    done
-    echo "  - Total pack archives created: $count"
+    bash "$SCRIPT_DIR/pack-assets.sh" --source bin/pack --dest "$DIST_DIR/pack"
 else
     echo "[5/5] Skipping pack archives creation (--skip-pack: preserving existing archives in dist/pack/)."
     mkdir -p "${DIST_DIR}/pack"
