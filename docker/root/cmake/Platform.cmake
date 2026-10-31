@@ -9,6 +9,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 if(WIN32)
     message(STATUS "Target Platform: Windows")
     add_compile_definitions(
+        OPENMT2_PLATFORM_WINDOWS=1
         WIN32
         _WINDOWS
         _CRT_SECURE_NO_WARNINGS
@@ -23,7 +24,9 @@ if(WIN32)
 else()
     message(STATUS "Target Platform: Linux / POSIX")
     add_compile_definitions(
-        __LINUX__
+        OPENMT2_PLATFORM_LINUX=1
+        OPENMT2_RENDERER_GL=1
+        OPENMT2_SDL_WINDOW=1
         _GNU_SOURCE
     )
 
