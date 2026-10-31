@@ -15,6 +15,15 @@ endif()
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 include(Platform)
 
+# The Linux package is relocatable: build.sh copies the non-system runtime
+# libraries (libzip, libpython2.7) into dist/runtime. Resolve them relative to
+# the executable so `cd dist && ./metin2client` works outside the image.
+# Build-tree binaries keep CMake's automatic RPATH for CTest.
+if(UNIX AND NOT APPLE)
+    set(CMAKE_BUILD_RPATH "$ORIGIN/runtime")
+    set(CMAKE_INSTALL_RPATH "$ORIGIN/runtime")
+endif()
+
 # Windows cross builds resolve most dependencies through the toolchain's
 # OPENMT2_WIN64_DEPS_PREFIX, but packages that link via pkg-config (-lminiaudio,
 # -lzip) only contribute the library name. Make the prefix a link directory
