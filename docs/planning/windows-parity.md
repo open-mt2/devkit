@@ -131,7 +131,7 @@ do not infer that packages blocked at configure time have clean source code.
 | zlib | apt | `extern/` (MSVC) | zlib | **share** (cross-build) |
 | lzo2 | apt | `extern/` (MSVC) | GPL-2.0+ | **share** (cross-build; required by pack format) |
 | libzip | apt | `extern/` (MSVC) | BSD-3 | **share** (cross-build) |
-| libjpeg | apt | `extern/` (MSVC) | IJG | **decide** (D5) |
+| libjpeg | — | — | IJG | **remove** (D5 revised in T2.2: replaced by `stb_image_write`) |
 | DevIL (`IL`) | apt | `extern/` (MSVC) | LGPL-2.1 | **remove** (D4) |
 | Python 2.7 | built in image | `extern/` (MSVC) | PSF | **decide** (D3) |
 | DirectX SDK | — | `extern/` | proprietary | **remove** |
@@ -399,7 +399,7 @@ them freely, they will be recorded in §11.
 | **D2** | Window/input policy | (a) SDL2 everywhere; (b) keep Win32+DInput on Windows | **(a)** | T1.2, T1.3 |
 | **D3** | Python 2.7 on Windows | (a) ship official PSF `python-2.7.18-win32` DLL + generated import lib; (b) cross-compile CPython 2.7 with MinGW; (c) keep per-platform interpreters | **(a)** — fastest, licence-clean, no fork | T2.4 |
 | **D4** | DevIL | (a) replace with stb_image/stb_image_write; (b) keep | **(a)** — ~5 call sites, removes an unmaintained dep from both targets | T2.1 |
-| **D5** | libjpeg | (a) keep (open source, used by EterLib); (b) replace with stb | **(a) keep**, unless the audit shows only texture decode | T2.2 |
+| **D5** | libjpeg | (a) keep (open source, used by EterLib); (b) replace with stb | **(b) replace**: the T2.2 audit found a single writer call site (screenshots) | T2.2 |
 | **D6** | IME / CJK input | (a) implement on SDL2 text input for both; (b) documented no-op on Linux, IMM on Windows | **(a)**, but it can ship after parity | T1.6 |
 | **D7** | Where build logic lives | (a) devkit only (presets + entrypoint); (b) presets/CI inside each `pkg_*` | **(a)** for the pipeline, per-package `CMakeLists` fixes as needed | T0.2 |
 | **D8** | Cross toolchain | (a) MinGW-w64 (`i686`/`x86_64-w64-mingw32`); (b) clang-cl + xwin + MSVC-built `extern/` libs | **(a)** — (b) keeps MSVC-produced binaries in the graph, contradicting the goal | T0.1, T2.3 |
@@ -656,6 +656,7 @@ Other useful comparisons:
 | 2026-10-30 | D3 | accepted (a) vendor PSF python27.dll + dlltool import lib | fastest; licence-clean; no CPython fork |
 | 2026-10-30 | D4 | accepted (a) replace DevIL with stb_image/stb_image_write | removes an unmaintained dependency |
 | 2026-10-30 | D5 | accepted (a) keep libjpeg for now | pending the T2.2 audit |
+| 2026-10-31 | D5 | revised to (b) replace libjpeg with `stb_image_write` | T2.2 audit: one writer call site, no progressive need; drops a Windows cross-build |
 | 2026-10-30 | D6 | accepted (a) SDL2 text input on both targets | may ship after parity |
 | 2026-10-30 | D7 | accepted (a) build logic in the devkit | single pipeline, per-package CMake fixes as needed |
 | 2026-10-30 | D8 | accepted (a) MinGW-w64 | only option that removes every MSVC-produced binary |

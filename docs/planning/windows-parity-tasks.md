@@ -66,7 +66,7 @@ follow-ups: <new tasks or "none">
 - [ ] Waves 0–4 complete
 - [ ] Wave 5 scoped only (not executed)
 
-Progress: **13 / 37 tasks**, **16 / 16 decisions**.
+Progress: **14 / 37 tasks**, **16 / 16 decisions**.
 
 ---
 
@@ -439,7 +439,10 @@ directly.
   - verify: `grep -rn "IL/il.h\|target_link_libraries.*IL" src`
   - risk: DDS/mark encoding parity — golden images cover it
 
-- [ ] **T2.2 — libjpeg audit**
+- [x] **T2.2 — libjpeg audit**
+  - owner: agent-06
+  - evidence: evidence/T2.2.md
+  - PR: https://github.com/open-mt2/devkit/pull/97 (base: main)
   - wave: 2 · repo: EterLib · profile: standard
   - agent: 0.5 d · human: 1 d
   - deps: D5, T2.1
