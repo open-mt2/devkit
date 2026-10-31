@@ -143,6 +143,8 @@ COPY docker/root/cmake/Platform.cmake /workspace/cmake/Platform.cmake
 COPY cmake/toolchain-i686-windows-gnu.cmake /workspace/cmake/toolchain-i686-windows-gnu.cmake
 COPY CMakePresets.json /workspace/CMakePresets.json
 COPY scripts/ /workspace/scripts/
+# The generated feature matrix is checked by ctest (scripts/feature-matrix.sh).
+COPY docs/ /workspace/docs/
 COPY docker/entrypoint.sh /usr/local/bin/openmt2-entrypoint
 
 RUN chmod +x /workspace/scripts/*.sh /usr/local/bin/openmt2-entrypoint \

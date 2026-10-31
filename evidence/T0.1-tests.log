@@ -1,8 +1,0 @@
-test_configure_failure_does_not_skip_later_package (test_spike_windows.SpikeTests.test_configure_failure_does_not_skip_later_package) ... ok
-test_missing_tool_reports_every_package (test_spike_windows.SpikeTests.test_missing_tool_reports_every_package) ... ok
-test_real_build_failure_and_success_are_distinguished (test_spike_windows.SpikeTests.test_real_build_failure_and_success_are_distinguished) ... ok
-
-----------------------------------------------------------------------
-Ran 3 tests in 0.480s
-
-OK
