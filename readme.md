@@ -127,6 +127,35 @@ docker run --rm --tmpfs /tmp/smoke-home:size=2g,mode=1777,uid=1000,gid=1000 \
 Use `windows` instead of `linux` for the cross-built tree; `--reference PNG`
 compares the captured screenshot with `scripts/render-diff.py`.
 
+## Test server
+
+`scripts/server.sh` runs the
+[old-metin2 deployment](https://git.old-metin2.com/metin2/deploy) (MySQL 5.5,
+web app, db/auth/game cores) with Docker Compose on the host, so the packaged
+client has a server to log in to. The deploy repository is cloned into the
+gitignored `server/` and its `.env` is generated on first use.
+
+```bash
+scripts/server.sh up                         # fetch, configure, start, wait for auth/CH1
+scripts/server.sh account devtest devtest123 # create a login (or reset its password)
+scripts/server.sh status                     # containers; `logs [service]` follows logs
+scripts/server.sh down                       # stop; data stays in server/storage
+```
+
+The shipped `serverinfo.py` already targets `127.0.0.1` (auth `11000`, CH1
+`13000`), so a client on the Docker host connects without changes; only CH1 is
+served. For a client on another machine, advertise and package a reachable
+address:
+
+```bash
+SERVER_PUBLIC_IP=192.168.1.20 scripts/server.sh up
+scripts/server.sh client dist 192.168.1.20   # rewrites serverinfo.py in dist/pack/root.zip
+```
+
+The web app listens on `http://localhost:8080` and MySQL on `3306`
+(root / `metin2`); override them with `SERVER_WEB_PORT` and
+`SERVER_MYSQL_PORT`. `scripts/server.sh help` lists every option.
+
 ## Other commands
 
 ```bash
