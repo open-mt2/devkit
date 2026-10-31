@@ -8,7 +8,6 @@
 #   /workspace
 #   ├── CMakeLists.txt              root project (docker/root/CMakeLists.txt)
 #   ├── build.sh                    build + dist packaging entrypoint
-#   ├── build.bat                   Windows equivalent
 #   ├── cmake/Platform.cmake        compiler/platform flags
 #   ├── scripts/                    fetch/build/bake helpers
 #   ├── src/<Package>/              every pkg_* repository
@@ -148,7 +147,6 @@ COPY docker/entrypoint.sh /usr/local/bin/openmt2-entrypoint
 
 RUN chmod +x /workspace/scripts/*.sh /usr/local/bin/openmt2-entrypoint \
     && cp /workspace/scripts/build.sh /workspace/build.sh \
-    && cp /workspace/scripts/build.bat /workspace/build.bat \
     && chmod +x /workspace/build.sh
 
 # ---------------------------------------------------------------------------

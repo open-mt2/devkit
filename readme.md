@@ -74,6 +74,53 @@ docker run --rm -v "$PWD/dist:/workspace/dist" openmt2/client --clean -t
 The resulting package is written to the mounted `dist/` directory:
 `metin2client`, the asset directories, and `pack/*.zip`.
 
+## Cross-build for Windows
+
+The same image cross-compiles the client with MinGW-w64 (no Windows host or
+DirectX SDK needed):
+
+```bash
+docker run --rm \
+  --user "$(id -u):$(id -g)" -e HOME=/tmp \
+  -v "$PWD/src:/workspace/src" \
+  -v "$PWD/build:/workspace/build" \
+  -v "$PWD/dist:/workspace/dist" \
+  openmt2/client windows
+```
+
+`windows` accepts the same `-j/--jobs`, `--clean` and `--skip-pack` options.
+The tree mirrors the Linux package: same assets, same `pack/*.zip` archives,
+plus `metin2client.exe` and its runtime DLLs (`python27.dll`, `msvcr90.dll`,
+`libstdc++-6.dll`, `libgcc_s_seh-1.dll`). SDL2 is linked statically.
+
+Build both targets side by side and compare them:
+
+```bash
+OPENMT2_DIST_DIR=dist-linux  docker run ... openmt2/client --skip-pack
+OPENMT2_DIST_DIR=dist-windows docker run ... openmt2/client windows --skip-pack
+python3 scripts/dist-diff.py dist-linux dist-windows
+```
+
+Keep the C++ runtime DLLs and the Python runtime next to the executable when
+copying `dist/` to a Windows machine.
+
+## Smoke test
+
+`scripts/smoke.sh` boots a packaged tree under Xvfb (and Wine for the Windows
+build), screenshots it and fails on crashes, fatal `syserr.txt` lines or a
+blank screen:
+
+```bash
+docker run --rm --tmpfs /tmp/smoke-home:size=2g,mode=1777,uid=1000,gid=1000 \
+  -v "$PWD/scripts:/workspace/scripts" \
+  -v "$PWD/dist:/workspace/dist" \
+  -v "$PWD/smoke-artifacts:/workspace/smoke-artifacts" \
+  openmt2/client shell bash /workspace/scripts/smoke.sh linux --home /tmp/smoke-home
+```
+
+Use `windows` instead of `linux` for the cross-built tree; `--reference PNG`
+compares the captured screenshot with `scripts/render-diff.py`.
+
 ## Other commands
 
 ```bash
@@ -92,9 +139,19 @@ docker run --rm openmt2/client help
 
 ## Platform parity
 
-`scripts/build.sh` is the Linux pipeline. `scripts/build.bat` implements the
-same options and `dist/` layout for MSBuild/Windows, including `treecache/`,
-pack archive generation, `--clean`, and `--skip-pack`.
+There is one pipeline for both targets: the image builds Linux natively and
+cross-builds Windows with MinGW-w64, and both run the same CMake project,
+renderer (OpenGL compatibility via SDL2), Python 2.7 runtime and packaging
+scripts. The differences are limited to the binary itself, the runtime
+libraries and platform extension modules; `scripts/dist-diff.py` enforces that.
+
+Current state (see `docs/planning/windows-parity-tasks.md` for the live sheet):
+
+- both targets compile, link and boot to the login flow (`scripts/smoke.sh`);
+- `metin2client.exe` has no DirectX SDK dependency and no unresolved `gl*`;
+- the legacy MSVC `build.bat` path is retired;
+- IME/text input is still Linux-incomplete (T1.6) and the Windows login
+  background scene is black (tracked with the Wave 5 renderer work).
 
 ## Related links
 
