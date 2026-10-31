@@ -463,7 +463,10 @@ directly.
   - verify: `find build-windows -name "*.a" | wc -l` + configure log
   - risk: hidden host-lib leakage — check with `objdump -p`
 
-- [ ] **T2.4 — Python 2.7 for Windows**
+- [~] **T2.4 — Python 2.7 for Windows**
+  - owner: agent-06
+  - evidence: evidence/T2.4.md
+  - note: PSF 2.7.18 amd64 vendored + dlltool import lib + CMake resolves it; client boot gated on T1.5/T4.1
   - wave: 2 · repo: EterPythonLib, devkit · profile: design
   - agent: 3 d (2–4) · human: 6 d (4–9)
   - deps: D3, TA.6 (recommended)
