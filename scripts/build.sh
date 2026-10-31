@@ -31,6 +31,76 @@ CLEAN_BUILD=false
 RUN_TESTS=false
 NUM_JOBS="$(nproc 2>/dev/null || echo 4)"
 
+# Libraries the packaged client links dynamically but cannot expect on every
+# Linux host. They are copied next to the binary and resolved through the
+# $ORIGIN/runtime RPATH set in docker/root/CMakeLists.txt.
+BUNDLED_RUNTIME_LIBS="${BUNDLED_RUNTIME_LIBS:-libzip.so.4 libpython2.7.so.1.0}"
+
+resolve_library() {
+    local soname="$1" path=""
+    # Prefer the system cache: the packaged binary's RPATH points at
+    # dist/runtime, so resolving through it would find the previous copy.
+    path="$(ldconfig -p 2>/dev/null \
+        | awk -v name="$soname" '$1 == name { print $NF; exit }')"
+    if [ -z "$path" ] || [ ! -f "$path" ]; then
+        path="$(ldd "${BUILD_DIR}/src/UserInterface/metin2client" 2>/dev/null \
+            | awk -v name="$soname" '$1 == name { print $3; exit }')"
+    fi
+    [ -n "$path" ] && [ -f "$path" ] && printf '%s\n' "$path"
+}
+
+install_runtime_libs() {
+    local runtime="$DIST_DIR/runtime"
+    local lib path installed=0
+
+    mkdir -p "$runtime"
+    for lib in $BUNDLED_RUNTIME_LIBS; do
+        path="$(resolve_library "$lib")"
+        if [ -z "$path" ]; then
+            echo "  - WARNING: could not resolve $lib; the package will rely on the host"
+            continue
+        fi
+        if [ "$(readlink -f "$path")" != "$(readlink -f "$runtime/$lib")" ]; then
+            cp -Lf "$path" "$runtime/$lib"
+        fi
+        echo "  - Bundled runtime library: $runtime/$lib"
+        installed=$((installed + 1))
+    done
+
+    if [ "$installed" -eq 0 ]; then
+        echo "  - WARNING: no runtime libraries bundled"
+    fi
+}
+
+# The original bin/lib tree is a flat, Windows-oriented subset of the CPython
+# 2.7 standard library. POSIX builds need the complete library (posixpath and
+# the 2.7.18 locale module are missing from that subset), so overlay the
+# interpreter's own stdlib and flatten its extension modules into dist/lib.
+install_python_stdlib() {
+    command -v python2.7 >/dev/null 2>&1 || {
+        echo "  - WARNING: python2.7 not found; dist/lib may be incomplete"
+        return 0
+    }
+
+    local stdlib
+    stdlib="$(python2.7 -c 'import sys; print(sys.prefix + "/lib/python2.7")')"
+    if [ ! -d "$stdlib" ]; then
+        echo "  - WARNING: CPython 2.7 stdlib not found at $stdlib"
+        return 0
+    fi
+
+    echo "  - Installing CPython 2.7 stdlib from $stdlib"
+    mkdir -p "$DIST_DIR/lib"
+    (
+        cd "$stdlib"
+        find . -mindepth 1 -maxdepth 1 ! -name lib-dynload \
+            -exec cp -a {} "$DIST_DIR/lib/" \;
+    )
+    if [ -d "$stdlib/lib-dynload" ]; then
+        cp -a "$stdlib/lib-dynload"/. "$DIST_DIR/lib/" 2>/dev/null || true
+    fi
+}
+
 # Help message
 show_help() {
     cat << EOF
@@ -146,6 +216,7 @@ if [ -f "$METIN2_BIN" ]; then
     # Create convenience symlink / wrapper
     ln -sf metin2client "$DIST_DIR/metin2"
     echo "  - Installed executable: dist/metin2client"
+    install_runtime_libs
 else
     echo "ERROR: Executable '$METIN2_BIN' not found after build!"
     exit 1
@@ -194,25 +265,27 @@ else
     echo "WARNING: 'bin/' directory not found. Skipping asset copy."
 fi
 
+install_python_stdlib
+
 # Build & copy pack archives
 echo ""
 if [ "$PACK_ARCHIVES" = true ] && [ -d "bin/pack" ]; then
     echo "[5/5] Compressing and installing pack archives into dist/pack/..."
-    
-    count=0
-    for pack_dir in bin/pack/*/; do
-        [ -d "$pack_dir" ] || continue
-        pack_name="$(basename "$pack_dir")"
-        echo "  - Packing ${pack_name}..."
 
-        if [ "$ARCHIVER" = "7z" ] || [ "$ARCHIVER" = "7za" ]; then
-            (cd "$pack_dir" && "$ARCHIVER" a -tzip -mx=1 -bd -bso0 -bsp0 "${DIST_DIR}/pack/${pack_name}.zip" ./*)
-        elif [ "$ARCHIVER" = "zip" ]; then
-            (cd "$pack_dir" && zip -1 -r -q "${DIST_DIR}/pack/${pack_name}.zip" .)
-        fi
-        count=$((count + 1))
-    done
-    echo "  - Total pack archives created: $count"
+    PACK_HELPER="$PROJECT_ROOT/scripts/pack-assets.sh"
+    if [ ! -x "$PACK_HELPER" ]; then
+        PACK_HELPER="$SCRIPT_DIR/pack-assets.sh"
+    fi
+    if [ ! -x "$PACK_HELPER" ]; then
+        echo "ERROR: pack-assets.sh not found!" >&2
+        exit 1
+    fi
+
+    # Rebuild the archive set from scratch so an old orphan (for example the
+    # separate etc.zip left by a case-sensitive checkout) cannot shadow the
+    # merged Index-named archive.
+    rm -f "$DIST_DIR/pack"/*.zip
+    "$PACK_HELPER" "bin/pack" "$DIST_DIR/pack" "$ARCHIVER"
 else
     echo "[5/5] Skipping pack archives creation (--skip-pack: preserving existing archives in dist/pack/)."
     mkdir -p "${DIST_DIR}/pack"

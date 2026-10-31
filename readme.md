@@ -74,6 +74,12 @@ docker run --rm -v "$PWD/dist:/workspace/dist" openmt2/client --clean -t
 The resulting package is written to the mounted `dist/` directory:
 `metin2client`, the asset directories, and `pack/*.zip`.
 
+The Linux package is self-contained: `dist/runtime/` holds the non-system
+libraries the client links (`libzip.so.4`, `libpython2.7.so.1.0`) and
+`dist/lib/` holds the CPython 2.7 standard library. The executable resolves
+`runtime/` relative to its own location, so it must be run from `dist/` but
+does not need `LD_LIBRARY_PATH` or host Python 2.7 packages.
+
 ## Other commands
 
 ```bash
