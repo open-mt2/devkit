@@ -545,7 +545,10 @@ directly.
   - verify: `scripts/smoke.sh windows && scripts/smoke.sh linux`
   - risk: Wine timing/flakiness — retries + fixed seeds
 
-- [ ] **T3.3 — Parity audit**
+- [x] **T3.3 — Parity audit**
+  - owner: agent-06
+  - evidence: evidence/T3.3.md
+  - note: 9 PASS, 1 UNVERIFIED (fullscreen under Xvfb), 2 FAIL: IME (T1.6) and the Windows login background (fold into T5.2)
   - wave: 3 · repo: all · profile: standard
   - agent: 1 d (1–1.5) · human: 2.5 d (2–4)
   - deps: T3.2, D9
