@@ -43,7 +43,7 @@ resolve_library() {
     path="$(ldconfig -p 2>/dev/null \
         | awk -v name="$soname" '$1 == name { print $NF; exit }')"
     if [ -z "$path" ] || [ ! -f "$path" ]; then
-        path="$(ldd "${BUILD_DIR}/src/UserInterface/metin2client" 2>/dev/null \
+        path="$(ldd "${BUILD_DIR}/src/ui/metin2client" 2>/dev/null \
             | awk -v name="$soname" '$1 == name { print $3; exit }')"
     fi
     [ -n "$path" ] && [ -f "$path" ] && printf '%s\n' "$path"
@@ -208,7 +208,7 @@ fi
 mkdir -p "$DIST_DIR"
 
 # Copy main executables
-METIN2_BIN="$BUILD_DIR/src/UserInterface/metin2client"
+METIN2_BIN="$BUILD_DIR/src/ui/metin2client"
 if [ -f "$METIN2_BIN" ]; then
     rm -f "$DIST_DIR/metin2client"
     cp "$METIN2_BIN" "$DIST_DIR/metin2client"

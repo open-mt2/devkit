@@ -197,12 +197,12 @@ if [ "$UPDATE" = true ]; then
         echo "[update] keeping Python API snapshots (set OPENMT2_UPDATE_PYTHON_API=1 to rewrite them)"
 
     run_binary "render goldens (updated)" src/render/tests/test_render_golden --update
-    run_binary "Python API: ScriptLib" src/ScriptLib/tests/test_python_scriptlib_api \
-        "$ROOT/src/neoeter-python/src/ScriptLib/tests/data/python_api_scriptlib.txt"
-    run_binary "Python API: EterPythonLib" src/EterPythonLib/tests/test_python_eterpythonlib_api \
-        "$ROOT/src/neoeter-python/src/EterPythonLib/tests/data/python_api_eterpythonlib.txt"
-    run_binary "Python API: client" src/UserInterface/tests/test_python_client_api \
-        "$ROOT/src/client/src/UserInterface/tests/data/python_api_client.txt"
+    run_binary "Python API: Host" src/host/tests/test_python_scriptlib_api \
+        "$ROOT/src/neoeter-python/src/host/tests/data/python_api_scriptlib.txt"
+    run_binary "Python API: Bindings" src/bindings/tests/test_python_eterpythonlib_api \
+        "$ROOT/src/neoeter-python/src/bindings/tests/data/python_api_eterpythonlib.txt"
+    run_binary "Python API: client" src/ui/tests/test_python_client_api \
+        "$ROOT/src/client/src/ui/tests/data/python_api_client.txt"
     [ "$FAILED" -eq 0 ] || die "refusing to refresh goldens after a failing check"
 
     shopt -s nullglob
@@ -215,9 +215,9 @@ if [ "$UPDATE" = true ]; then
     done
     write_manifest "$GOLDEN/render.sha256" "${render_relative[@]}"
     write_manifest "$GOLDEN/api.sha256" \
-        "src/neoeter-python/src/ScriptLib/tests/data/python_api_scriptlib.txt" \
-        "src/neoeter-python/src/EterPythonLib/tests/data/python_api_eterpythonlib.txt" \
-        "src/client/src/UserInterface/tests/data/python_api_client.txt"
+        "src/neoeter-python/src/host/tests/data/python_api_scriptlib.txt" \
+        "src/neoeter-python/src/bindings/tests/data/python_api_eterpythonlib.txt" \
+        "src/client/src/ui/tests/data/python_api_client.txt"
 
     run_transcript pack \
         src/io/tests/test_pack_formats \
@@ -229,7 +229,7 @@ if [ "$UPDATE" = true ]; then
         src/render/tests/test_detector \
         src/render/tests/test_grpmath
     run_transcript packet \
-        src/UserInterface/tests/test_packet
+        src/ui/tests/test_packet
 
     collect_inventory > "$GOLDEN/ctest-tests.txt"
     inventory_total="$(cd "$BUILD_DIR" && ctest -N 2>/dev/null | sed -n 's/^Total Tests: //p')"
@@ -243,12 +243,12 @@ else
     check_manifest "Python API hashes" "$GOLDEN/api.sha256"
 
     run_binary "render goldens" src/render/tests/test_render_golden
-    run_binary "Python API: ScriptLib" src/ScriptLib/tests/test_python_scriptlib_api \
-        "$ROOT/src/neoeter-python/src/ScriptLib/tests/data/python_api_scriptlib.txt"
-    run_binary "Python API: EterPythonLib" src/EterPythonLib/tests/test_python_eterpythonlib_api \
-        "$ROOT/src/neoeter-python/src/EterPythonLib/tests/data/python_api_eterpythonlib.txt"
-    run_binary "Python API: client" src/UserInterface/tests/test_python_client_api \
-        "$ROOT/src/client/src/UserInterface/tests/data/python_api_client.txt"
+    run_binary "Python API: Host" src/host/tests/test_python_scriptlib_api \
+        "$ROOT/src/neoeter-python/src/host/tests/data/python_api_scriptlib.txt"
+    run_binary "Python API: Bindings" src/bindings/tests/test_python_eterpythonlib_api \
+        "$ROOT/src/neoeter-python/src/bindings/tests/data/python_api_eterpythonlib.txt"
+    run_binary "Python API: client" src/ui/tests/test_python_client_api \
+        "$ROOT/src/client/src/ui/tests/data/python_api_client.txt"
 
     run_transcript pack \
         src/io/tests/test_pack_formats \
@@ -260,7 +260,7 @@ else
         src/render/tests/test_detector \
         src/render/tests/test_grpmath
     run_transcript packet \
-        src/UserInterface/tests/test_packet
+        src/ui/tests/test_packet
 
     collect_inventory > "$tmpdir/ctest-tests.txt"
     inventory_total="$(cd "$BUILD_DIR" && ctest -N 2>/dev/null | sed -n 's/^Total Tests: //p')"

@@ -45,7 +45,7 @@ cmake --preset windows
 cmake --build --preset windows --parallel "$JOBS"
 
 mkdir -p "$DIST_DIR"
-for pair in "metin2client:src/UserInterface/metin2client.exe" "config:src/Config/config.exe"; do
+for pair in "metin2client:src/ui/metin2client.exe" "config:src/Config/config.exe"; do
     name="${pair%%:*}"
     path="${pair#*:}"
     if [ -f "$BUILD_DIR/$path" ]; then
@@ -54,7 +54,7 @@ for pair in "metin2client:src/UserInterface/metin2client.exe" "config:src/Config
     fi
 done
 if [ ! -f "$DIST_DIR/metin2client.exe" ]; then
-    echo "ERROR: Windows executable '$BUILD_DIR/src/UserInterface/metin2client.exe' not found after build" >&2
+    echo "ERROR: Windows executable '$BUILD_DIR/src/ui/metin2client.exe' not found after build" >&2
     exit 1
 fi
 
