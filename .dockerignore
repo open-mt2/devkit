@@ -7,7 +7,6 @@ bin
 src
 tools
 treecache
-server
 extern
 node_modules
 *.log

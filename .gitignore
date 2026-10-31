@@ -9,7 +9,6 @@ bin/
 src/
 tools/
 treecache/
-server/
 build-coverage/
 build-fuzz/
 fuzz-corpus/

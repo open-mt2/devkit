@@ -5,8 +5,9 @@
 #
 # Runs the old-metin2 Docker Compose deployment (MySQL 5.5, web app, db/auth/
 # game cores) from https://git.old-metin2.com/metin2/deploy so the packaged
-# client has a server to log in to. The deploy repository is cloned into
-# <root>/server (gitignored); its .env is generated on first use.
+# client has a server to log in to. The deploy repository is cloned into a
+# `server` directory next to the devkit checkout, outside this repository; its
+# .env is generated on first use.
 #
 # The shipped client already targets 127.0.0.1 (auth 11000, CH1 13000), so a
 # client on the Docker host connects without changes. For a client elsewhere,
@@ -16,9 +17,9 @@
 #
 # Commands:
 #   fetch                        Clone or update the deploy repository
-#   configure                    Create/update server/.env (no containers)
+#   configure                    Create/update ../server/.env (no containers)
 #   up                           fetch + configure + start, wait for the ports
-#   down                         Stop the stack (data stays in server/storage)
+#   down                         Stop the stack (data stays in ../server/storage)
 #   status                       Show the containers
 #   logs [service...]            Follow the logs
 #   account <login> <password>   Create a test account, or reset its password
@@ -26,7 +27,7 @@
 #                                (default: SERVER_PUBLIC_IP)
 #
 # Environment:
-#   SERVER_DIR          deploy checkout (default: <root>/server)
+#   SERVER_DIR          deploy checkout (default: ../server, next to the devkit)
 #   DEPLOY_REPO_URL     deploy repository (default: old-metin2 Gitea)
 #   DEPLOY_REF          branch/tag (default: master)
 #   SERVER_PUBLIC_IP    address the game cores advertise (default: 127.0.0.1)
@@ -41,7 +42,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 DEFAULT_ROOT="$(dirname "$SCRIPT_DIR")"
 
 ROOT="${OPENMT2_ROOT:-$DEFAULT_ROOT}"
-SERVER_DIR="${SERVER_DIR:-$ROOT/server}"
+SERVER_DIR="${SERVER_DIR:-$(dirname "$ROOT")/server}"
 DEPLOY_REPO_URL="${DEPLOY_REPO_URL:-https://git.old-metin2.com/metin2/deploy.git}"
 DEPLOY_REF="${DEPLOY_REF:-master}"
 SERVER_PUBLIC_IP="${SERVER_PUBLIC_IP:-127.0.0.1}"

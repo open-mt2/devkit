@@ -161,6 +161,24 @@ class ServerConfigureTests(unittest.TestCase):
             self.assertEqual(env["WEB_APP_URL"], "http://localhost:9090")
             self.assertEqual(env["MYSQL_EXTERNAL_PORT"], "3307")
 
+    def test_defaults_to_a_server_directory_next_to_the_devkit(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            devkit = Path(tmp) / "devkit"
+            devkit.mkdir()
+            sibling = self.make_deploy(Path(tmp))
+            env = {k: v for k, v in os.environ.items() if k != "SERVER_DIR"}
+            env.update(OPENMT2_ROOT=str(devkit), SERVER_APP_KEY="base64:test")
+
+            result = subprocess.run(
+                ["bash", str(SERVER_SCRIPT), "configure"],
+                text=True,
+                capture_output=True,
+                env=env,
+            )
+            self.assertEqual(result.returncode, 0, result.stderr)
+            self.assertTrue((sibling / ".env").is_file())
+            self.assertFalse((devkit / "server").exists())
+
     def test_fails_when_the_deploy_checkout_is_missing(self):
         with tempfile.TemporaryDirectory() as tmp:
             result = self.run_configure(Path(tmp) / "missing", SERVER_APP_KEY="k")
