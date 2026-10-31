@@ -93,17 +93,20 @@ else
     echo "  - WARNING: metin2.cfg not found; the client will create one on first run" >&2
 fi
 
+# Pack metadata, as in the Linux package: the client registers the archives
+# from pack/Index and refuses to start without it.
+mkdir -p "$DIST_DIR/pack"
+if [ -d bin/pack ]; then
+    [ ! -f bin/pack/Index ] || cp bin/pack/Index "$DIST_DIR/pack/"
+    [ ! -f bin/pack/Index.dev ] || cp bin/pack/Index.dev "$DIST_DIR/pack/"
+    cp bin/pack/*.rdch "$DIST_DIR/pack/" 2>/dev/null || true
+fi
+
 # Same pack archives as the Linux package.
 if [ "$SKIP_PACK" = false ] && [ -d bin/pack ]; then
     bash "$PROJECT_ROOT/scripts/pack-assets.sh" bin/pack "$DIST_DIR/pack" "${PACK_ARCHIVER:-zip}"
-else
-    mkdir -p "$DIST_DIR/pack"
-    if [ -d bin/pack ]; then
-        [ ! -f bin/pack/Index ] || cp bin/pack/Index "$DIST_DIR/pack/"
-        [ ! -f bin/pack/Index.dev ] || cp bin/pack/Index.dev "$DIST_DIR/pack/"
-        cp bin/pack/*.rdch "$DIST_DIR/pack/" 2>/dev/null || true
-        cp bin/pack/*.zip "$DIST_DIR/pack/" 2>/dev/null || true
-    fi
+elif [ -d bin/pack ]; then
+    cp bin/pack/*.zip "$DIST_DIR/pack/" 2>/dev/null || true
 fi
 
 echo "Windows client package assembled in $DIST_DIR"

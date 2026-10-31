@@ -43,6 +43,38 @@ class WindowsHarnessTests(unittest.TestCase):
         for dll in ('python27.dll', 'msvcr90.dll', 'libstdc++-6.dll', 'libgcc_s_seh-1.dll'):
             self.assertIn(dll, script)
 
+    def test_packed_distribution_ships_the_pack_index(self):
+        # The client registers its archives from pack/Index and refuses to
+        # start without it, so packing must not drop the index files.
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / 'scripts').mkdir()
+            for name in ('build-windows.sh', 'copy-assets.sh', 'pack-assets.sh'):
+                (root / 'scripts' / name).write_text((ROOT / 'scripts' / name).read_text())
+            stubs = root / 'stubs'
+            stubs.mkdir()
+            (stubs / 'cmake').write_text('#!/bin/sh\nexit 0\n')
+            (stubs / 'cmake').chmod(0o755)
+            exe = root / 'build/windows/src/ui/metin2client.exe'
+            exe.parent.mkdir(parents=True)
+            exe.write_text('MZ')
+            pack = root / 'bin/pack'
+            pack.mkdir(parents=True)
+            (pack / 'Index').write_text('Patch\tZIP\n')
+            (pack / 'Index.dev').write_text('Patch\tZIP\n')
+            (pack / 'Patch.zip').write_bytes(b'PK\x05\x06' + b'\x00' * 18)
+            env = dict(os.environ,
+                       PATH=f'{stubs}{os.pathsep}{os.environ["PATH"]}',
+                       MINGW_CXX='openmt2-missing-mingw-g++',
+                       OPENMT2_WIN64_DEPS_PREFIX=str(root / 'missing'))
+            result = subprocess.run(['bash', str(root / 'scripts/build-windows.sh')],
+                                    cwd=root, env=env, text=True, capture_output=True)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            dist_pack = root / 'dist/pack'
+            self.assertTrue((dist_pack / 'Patch.zip').is_file())
+            self.assertEqual((dist_pack / 'Index').read_text(), 'Patch\tZIP\n')
+            self.assertEqual((dist_pack / 'Index.dev').read_text(), 'Patch\tZIP\n')
+
     def test_linux_and_windows_use_the_same_assembler(self):
         linux = (ROOT / 'scripts/build.sh').read_text()
         windows = (ROOT / 'scripts/build-windows.sh').read_text()
