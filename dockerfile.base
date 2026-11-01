@@ -7,6 +7,9 @@
 # sources: the Debian toolchain, CPython 2.7, miniaudio, and the Windows
 # cross-build dependency set.
 #
+# No Wine, clang or lld: the tree geometry cache is vendored in the client
+# image (treecache/), so nothing here builds or runs speedtree_dumper.exe.
+#
 # The client image (dockerfile) is a thin `FROM` this image, so rebuilding the
 # client only refetches sources/assets. Publish this image whenever one of its
 # inputs changes:
@@ -33,8 +36,7 @@ ENV PYTHONUNBUFFERED=1
 # ---------------------------------------------------------------------------
 # Toolchain and native dependencies
 # ---------------------------------------------------------------------------
-RUN dpkg --add-architecture i386 \
-    && apt-get update \
+RUN apt-get update \
     && apt-get install -y --no-install-recommends \
     ca-certificates \
     curl \
@@ -66,13 +68,8 @@ RUN dpkg --add-architecture i386 \
     libzip-dev \
     libdevil-dev \
     libasound2-dev \
-    gcc-mingw-w64-i686 \
     gcc-mingw-w64-x86-64 \
     g++-mingw-w64-x86-64 \
-    wine \
-    wine32 \
-    wine64 \
-    libwine-dev:i386 \
     && rm -rf /var/lib/apt/lists/*
 
 RUN cmake --version \
@@ -136,8 +133,7 @@ RUN mkdir -p /usr/local/include/miniaudio /usr/local/lib/pkgconfig \
 COPY scripts/build-windows-deps.sh scripts/fetch-windows-python.sh /usr/local/lib/openmt2/
 
 ARG WIN64_DEPS_PREFIX=/opt/openmt2/win64
-RUN WINEPREFIX=/tmp/openmt2-win64-deps/.wine WINEDEBUG=-all WINEDLLOVERRIDES=mscoree,mshtml= \
-    /usr/local/lib/openmt2/build-windows-deps.sh --prefix "${WIN64_DEPS_PREFIX}" --work /tmp/openmt2-win64-deps \
+RUN /usr/local/lib/openmt2/build-windows-deps.sh --prefix "${WIN64_DEPS_PREFIX}" --work /tmp/openmt2-win64-deps \
     && rm -rf /tmp/openmt2-win64-deps
 RUN /usr/local/lib/openmt2/fetch-windows-python.sh --prefix "${WIN64_DEPS_PREFIX}" --work /tmp/openmt2-win64-python \
     && rm -rf /tmp/openmt2-win64-python
