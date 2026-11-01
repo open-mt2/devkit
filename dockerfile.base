@@ -22,7 +22,7 @@ FROM debian:bookworm
 
 LABEL org.opencontainers.image.title="OpenMT2 Client Development Kit - base"
 LABEL org.opencontainers.image.description="Toolchain, CPython 2.7 and Windows cross-build dependencies for the OpenMT2 client"
-LABEL org.opencontainers.image.source="https://github.com/open-mt2/client"
+LABEL org.opencontainers.image.source="https://github.com/open-mt2/devkit"
 LABEL org.opencontainers.image.licenses="GPL-2.0-or-later"
 
 SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]

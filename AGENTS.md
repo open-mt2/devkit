@@ -19,3 +19,9 @@ docker push ghcr.io/open-mt2/devkit-base:bookworm
 
 The client image and the release workflow pull that tag, so publish the base
 before tagging a release.
+
+The package is **private**: this repository must be listed under the package's
+*Manage Actions access* with the **Read** role, otherwise the release build
+fails pulling the base with
+`unexpected status from HEAD request ... 403 Forbidden: denied`. The same page
+is where access is granted for any other repository that needs the base.

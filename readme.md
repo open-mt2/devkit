@@ -12,7 +12,9 @@ vendored tree geometry cache. It does not build anything on start; run the
 ## Quick start
 
 ```bash
-# Pull the published toolchain base and build the client image
+# The toolchain base is a private GHCR package: log in first with a token that
+# has read:packages, then pull it and build the client image
+echo "$GHCR_TOKEN" | docker login ghcr.io -u <user> --password-stdin
 docker pull ghcr.io/open-mt2/devkit-base:bookworm
 docker build -f dockerfile -t openmt2/client .
 
