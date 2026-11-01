@@ -21,6 +21,10 @@ if(WIN32)
             /MP
             /EHsc
         )
+    else()
+        # Flowing off the end of a non-void function is undefined behaviour that
+        # GCC optimises as unreachable at -O2/-O3 (devkit#138).
+        add_compile_options(-Werror=return-type)
     endif()
 
     # Cross-built dependency prefix (T2.3): zlib, lzo2, libzip, SDL2, miniaudio.
@@ -45,6 +49,7 @@ else()
         -Wno-invalid-offsetof
         -Wno-multichar
         -Wno-sign-compare
+        -Werror=return-type
         -fPIC
     )
 
