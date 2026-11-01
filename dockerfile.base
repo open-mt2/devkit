@@ -16,7 +16,7 @@
 #
 #   docker build -f dockerfile.base -t ghcr.io/open-mt2/devkit-base:bookworm .
 #
-# The GitHub workflow .github/workflows/base.yml does that on main.
+# The base is built and published manually, never by CI (see AGENTS.md).
 
 FROM debian:bookworm
 
@@ -127,8 +127,8 @@ RUN mkdir -p /usr/local/include/miniaudio /usr/local/lib/pkgconfig \
 # Windows cross-build dependency set
 #
 # Only these two scripts are needed to build the prefix; the client image
-# installs the full scripts/ tree at /workspace. Rebuild this image when
-# either script changes (see .github/workflows/base.yml).
+# installs the full scripts/ tree at /workspace. Rebuild this image manually
+# when either script changes (see AGENTS.md).
 # ---------------------------------------------------------------------------
 COPY scripts/build-windows-deps.sh scripts/fetch-windows-python.sh /usr/local/lib/openmt2/
 

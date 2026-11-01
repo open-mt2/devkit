@@ -26,7 +26,8 @@ Code-only image without the ~2.3 GB `bin/` asset tree:
 docker build -f dockerfile --build-arg WITH_BIN=0 -t openmt2/client:slim .
 ```
 
-Rebuild the base locally:
+Rebuild the base locally (it is built and published manually; there is no CI
+job for it):
 
 ```bash
 docker build -f dockerfile.base -t ghcr.io/open-mt2/devkit-base:bookworm .
