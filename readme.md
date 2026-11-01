@@ -20,12 +20,31 @@ build scripts; run the build yourself when you are ready.
 
 ## Build the image
 
+The devkit is built from two images:
+
+- **toolchain base** (`dockerfile.base`) — Debian build dependencies, CPython
+  2.7, miniaudio and the Windows cross-build dependency set. It only depends on
+  the recipes, so it changes rarely and is published as
+  `ghcr.io/open-mt2/devkit-base:bookworm`.
+- **client image** (`dockerfile`) — `FROM` the base plus the workspace
+  scaffolding, sources, optional `bin/` assets and the SpeedTree baker.
+
+Pulling the published base is enough to build the client:
+
 ```bash
+docker pull ghcr.io/open-mt2/devkit-base:bookworm
 docker build -f dockerfile -t openmt2/client .
 ```
 
-The default image includes the full `bin/` asset tree (~2.3 GB) and therefore
-takes a while to build. For a code-only image:
+To build the base locally instead (or after changing `dockerfile.base`):
+
+```bash
+docker build -f dockerfile.base -t ghcr.io/open-mt2/devkit-base:bookworm .
+docker build -f dockerfile -t openmt2/client .
+```
+
+The default client image includes the full `bin/` asset tree (~2.3 GB) and
+therefore takes a while to build. For a code-only image:
 
 ```bash
 docker build -f dockerfile \
@@ -34,11 +53,20 @@ docker build -f dockerfile \
   -t openmt2/client:slim .
 ```
 
-Useful build arguments:
+Base image arguments (`dockerfile.base`):
+
+| Argument               | Default           | Purpose                                      |
+| ---------------------- | ----------------- | -------------------------------------------- |
+| `BASE_IMAGE`           | `debian:bookworm` | Debian base image                            |
+| `PYTHON27_VERSION`     | `2.7.18`          | CPython built into the base                  |
+| `MINIAUDIO_VERSION`    | `0.11.25`         | miniaudio header version                     |
+| `WIN64_DEPS_PREFIX`    | `/opt/openmt2/win64` | Windows cross-dependency prefix           |
+
+Client image arguments (`dockerfile`):
 
 | Argument                 | Default               | Purpose                                      |
 | ------------------------ | --------------------- | -------------------------------------------- |
-| `BASE_IMAGE`             | `debian:bookworm`     | Base image                                   |
+| `DEVKIT_BASE`            | `ghcr.io/open-mt2/devkit-base:bookworm` | Toolchain base image |
 | `SRC_ORG` / `SRC_REF`    | `open-mt2` / `main`   | Source organization and branch               |
 | `WITH_BIN`               | `1`                   | Fetch the original `bin/` assets             |
 | `BIN_REF`                | `master`              | Branch used for `bin/`                       |
@@ -46,8 +74,16 @@ Useful build arguments:
 | `BIN_ARCHIVE_URL`        | empty                 | Optional `tar.gz`/`zip` asset archive        |
 | `BIN_REQUIRED`           | `0`                   | Fail the build when no assets can be fetched |
 | `WITH_SPEEDTREE`         | `1`                   | Fetch `speedtreebkr`                         |
-| `BUILD_SPEEDTREE_DUMPER` | `1`                   | Build `speedtree_dumper.exe` under Wine      |
+| `BUILD_SPEEDTREE_DUMPER` | `0`                   | Install/compile `speedtree_dumper.exe`       |
+| `SPEEDTREE_DUMPER`       | empty                 | Path to a prebuilt `speedtree_dumper.exe`    |
+| `SPEEDTREE_DUMPER_URL`   | empty                 | Download URL for the prebuilt dumper         |
 | `BAKE_TREES`             | `0`                   | Bake `treecache/` during image build         |
+
+The base is rebuilt by `.github/workflows/base.yml` on every change to
+`dockerfile.base`, `scripts/build-windows-deps.sh` or
+`scripts/fetch-windows-python.sh`; run it manually with
+`gh workflow run base`. Use the dated tag (`:bookworm-YYYYMMDD`) or a digest if
+you need a pinned base.
 
 ## Published image
 
@@ -67,9 +103,21 @@ toolchain and the build scripts, but not the original client `bin/` tree, the
 `docker run ... fetch` from your own asset source; the publish job refuses to
 push an image that contains them.
 
-The SpeedTree dumper is built from the public
-[speedtreebkr](https://github.com/open-mt2/speedtreebkr) sources. No `.spt`
-files or baked tree data are included.
+The SpeedTree dumper is **not compiled during the image build by default**.
+`speedtreebkr`'s toolchain requires `clang`/`lld`, which the build-only image no
+longer ships ([devkit#143](https://github.com/open-mt2/devkit/issues/143)).
+Two paths exist:
+
+- point `SPEEDTREE_DUMPER_URL` at the release asset from
+  [speedtreebkr#1](https://github.com/open-mt2/speedtreebkr/issues/1) (or set
+  `SPEEDTREE_DUMPER` to a local path) and pass
+  `--build-arg BUILD_SPEEDTREE_DUMPER=1`; or
+- set `BUILD_SPEEDTREE_DUMPER=1` without a prebuilt dumper to compile it,
+  which requires `clang` + `lld` in the image.
+
+No `.spt` files or baked tree data are included. `scripts/bake-trees.sh` reads
+`SPEEDTREE_DUMPER` / `SPEEDTREE_DUMPER_URL` at build and at run time, so the
+published image can download the dumper and bake without a rebuild.
 
 ## Compile and package
 
@@ -136,8 +184,10 @@ docker run --rm -it openmt2/client shell
 # Refresh pkg_* sources and bin/ inside a container
 docker run --rm -it openmt2/client fetch
 
-# Build the SpeedTree dumper and bake treecache/
-docker run --rm -v "$PWD/treecache:/workspace/treecache" openmt2/client bake --force
+# Bake treecache/ (needs a dumper: --build-arg SPEEDTREE_DUMPER_URL=... at
+# image build time, or -e SPEEDTREE_DUMPER_URL=... here)
+docker run --rm -e SPEEDTREE_DUMPER_URL="<release asset URL>" \
+  -v "$PWD/treecache:/workspace/treecache" openmt2/client bake --force
 
 # Help
 docker run --rm openmt2/client help
