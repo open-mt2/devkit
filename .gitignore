@@ -1,16 +1,3 @@
-dist/
-dist-linux/
-dist-windows/
-smoke-artifacts/
 .local/
-.scratch/
-build/
-bin/
-src/
-tools/
-treecache/
-build-coverage/
-build-fuzz/
-fuzz-corpus/
-coverage/
 __pycache__/
+*.pyc

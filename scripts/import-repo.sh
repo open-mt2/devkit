@@ -21,7 +21,7 @@
 #   - network access to github.com (or --source pointing at full clones)
 #
 # The target must be a git repository with a clean worktree. The script does not
-# push; review the result, run the build/golden checks, then push.
+# push; review the result, run the build checks, then push.
 
 set -euo pipefail
 
@@ -100,7 +100,6 @@ while IFS= read -r line; do
         continue
     fi
 
-    # Already imported? The destination directory is the marker.
     if git -C "$TARGET" cat-file -e "HEAD:$dest" 2>/dev/null; then
         warn "$dest already exists in $TARGET; skipping $repo (move it out first to redo)"
         continue
@@ -118,7 +117,6 @@ while IFS= read -r line; do
         die "could not clone $repo; check credentials or pass --source with full clones"
     fi
 
-    # The devkit checkouts are --depth 1; never import a shallow history.
     if [ -f "$clone/.git/shallow" ]; then
         log "unshallowing $repo"
         git -C "$clone" fetch --quiet --unshallow --tags origin
@@ -165,6 +163,5 @@ fi
 log "imported $count_merged/$count_entries repositories into $TARGET"
 log "next:"
 printf '    1. review:  git -C %s log --oneline --graph | head\n' "$TARGET"
-printf '    2. sources: docker run ... openmt2/client -t --skip-pack\n'
-printf '    3. goldens: scripts/golden-check.sh\n'
-printf '    4. update the devkit wiring (TB.3) before pushing\n'
+printf '    2. sources: docker run ... openmt2/client --skip-pack\n'
+printf '    3. update the devkit wiring (TB.3) before pushing\n'

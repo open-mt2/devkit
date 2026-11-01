@@ -3,7 +3,7 @@
 # Cross-build the Windows (x86_64-w64-mingw32) dependency set (T2.3)
 # ======================================================
 # Builds zlib, lzo2, libzip and SDL2 from pinned sources into a prefix that
-# the Windows toolchain file and build-windows.sh point CMake/pkg-config at.
+# build-windows.sh points CMake/pkg-config at.
 # libjpeg is intentionally absent: T2.2 replaced it with stb_image_write.
 #
 # Usage:
@@ -54,12 +54,10 @@ fetch() {
     echo "$sha  $file" | sha256sum -c - >/dev/null
 }
 
-# --- zlib -------------------------------------------------------------------
 fetch "https://github.com/madler/zlib/releases/download/v1.3.1/zlib-1.3.1.tar.gz" \
       "zlib-1.3.1.tar.gz" \
       "9a93b2b7dfdac77ceba5a558a580e74667dd6fede4585b91eefb60f03b72df23"
 rm -rf zlib-1.3.1 && tar xf zlib-1.3.1.tar.gz
-# zlib's CMake always builds a DLL too; its win32 Makefile gives a clean libz.a.
 ( cd zlib-1.3.1 && \
   make -f win32/Makefile.gcc -j"$JOBS" libz.a \
       CC="$CC" AR="$AR" RANLIB="$RANLIB" CFLAGS="-O2" >/dev/null && \
@@ -80,7 +78,6 @@ Libs: -L\${libdir} -lz
 Cflags: -I\${includedir}
 PC
 
-# --- lzo2 -------------------------------------------------------------------
 fetch "https://www.oberhumer.com/opensource/lzo/download/lzo-2.10.tar.gz" \
       "lzo-2.10.tar.gz" \
       "c0f892943208266f9b6543b3ae308fab6284c5c90e627931446fb49b4221a072"
@@ -92,7 +89,6 @@ rm -rf lzo-2.10 && tar xf lzo-2.10.tar.gz
   make -j"$JOBS" >/dev/null && \
   make install >/dev/null )
 
-# --- libzip -----------------------------------------------------------------
 fetch "https://libzip.org/download/libzip-1.10.1.tar.gz" \
       "libzip-1.10.1.tar.gz" \
       "9669ae5dfe3ac5b3897536dc8466a874c8cf2c0e3b1fdd08d75b273884299363"
@@ -111,7 +107,6 @@ cmake -S libzip-1.10.1 -B build-libzip -G Ninja \
 cmake --build build-libzip --parallel "$JOBS" >/dev/null
 cmake --install build-libzip >/dev/null
 
-# --- SDL2 -------------------------------------------------------------------
 fetch "https://github.com/libsdl-org/SDL/releases/download/release-2.30.9/SDL2-2.30.9.tar.gz" \
       "SDL2-2.30.9.tar.gz" \
       "24b574f71c87a763f50704bbb630cbe38298d544a1f890f099a4696b1d6beba4"
@@ -127,7 +122,6 @@ cmake -S SDL2-2.30.9 -B build-sdl2 -G Ninja \
 cmake --build build-sdl2 --parallel "$JOBS" >/dev/null
 cmake --install build-sdl2 >/dev/null
 
-# --- miniaudio (header-only; built as a static library) ---------------------
 MINIAUDIO_VERSION=0.11.25
 fetch "https://raw.githubusercontent.com/mackron/miniaudio/${MINIAUDIO_VERSION}/miniaudio.h" \
       "miniaudio.h" \

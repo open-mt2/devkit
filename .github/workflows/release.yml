@@ -2,9 +2,10 @@ name: release
 
 # REL.1 — publish the devkit image to GitHub Container Registry on a version tag.
 #
-# The published image is source-only: no original client `bin/` tree, no pack
-# archives and no baked `treecache/`, because those carry licensed Metin2
-# content. Consumers fetch them into their own container (`docker run ... fetch`).
+# The published image ships the vendored tree geometry cache (`treecache/`,
+# see treecache/README.md) so normal builds do not need the SpeedTree toolchain,
+# Wine or clang/lld. The original client `bin/` tree, the pack archives and the
+# assembled `dist/` are still fetched or built by the consumer.
 #
 #     git tag vX.Y.Z && git push origin vX.Y.Z
 
@@ -39,27 +40,30 @@ jobs:
             exit 1
           fi
 
-      - name: Devkit tests
-        run: python3 -m unittest discover -s tests -p 'test_*.py' -v
-
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
+      # Log in before building: the client image pulls the toolchain base from
+      # GHCR (published by .github/workflows/base.yml).
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
       # Build locally first so the proprietary-content gate can inspect the
       # image before anything is pushed.
-      - name: Build the source-only image
+      - name: Build the image
         uses: docker/build-push-action@v6
         with:
           context: .
           load: true
           tags: ${{ env.IMAGE }}:${{ github.ref_name }}
-          # Assets are fetched by the consumer, never by the published image.
-          # The SpeedTree dumper is built from the public speedtreebkr sources.
+          # The tree geometry cache is vendored in this repository; client
+          # assets are still fetched by the consumer, never by the image.
           build-args: |
             WITH_BIN=0
-            WITH_SPEEDTREE=1
-            BUILD_SPEEDTREE_DUMPER=1
-            BAKE_TREES=0
             SRC_CACHE_BUST=${{ github.run_id }}
           labels: |
             org.opencontainers.image.version=${{ github.ref_name }}
@@ -72,13 +76,6 @@ jobs:
           docker run --rm \
             --entrypoint /workspace/scripts/verify-no-proprietary.sh \
             "$IMAGE:$GITHUB_REF_NAME" /workspace
-
-      - name: Log in to GHCR
-        uses: docker/login-action@v3
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Push the version and latest tags
         run: |

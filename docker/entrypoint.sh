@@ -3,14 +3,13 @@
 # OpenMT2 client development image entrypoint
 # ======================================================
 #
-# With no arguments the client build runs immediately. Extra arguments are
-# forwarded to build.sh (or to the selected helper command).
+# With no arguments the usage is shown. Run `build` (or pass build.sh
+# options) to compile the client.
 #
 # Commands:
-#   build [build.sh options]   Compile and assemble dist/ (default)
+#   build [build.sh options]   Compile and assemble dist/
 #   windows [options]          Cross-build Windows client and assemble dist/
 #   shell                      Open an interactive shell
-#   bake [bake.py options]     Build/run the SpeedTree geometry baker
 #   fetch                      Refresh pkg_* sources and bin/ assets
 #   help                       Show this help
 #
@@ -48,7 +47,7 @@ usage() {
 
 case "${1:-}" in
     "")
-        exec "$(require_script build.sh)"
+        usage
         ;;
     build)
         shift
@@ -62,14 +61,6 @@ case "${1:-}" in
         shift
         exec "${@:-bash}"
         ;;
-    bake)
-        shift
-        exec "$(require_script bake-trees.sh)" "$@"
-        ;;
-    coverage)
-        shift
-        exec "$(require_script coverage.sh)" "$@"
-        ;;
     fetch)
         shift
         "$(require_script fetch-sources.sh)" "$@"
@@ -79,7 +70,6 @@ case "${1:-}" in
         usage
         ;;
     *)
-        # Forward build.sh options directly (--clean, --skip-pack, -t, ...).
         exec "$(require_script build.sh)" "$@"
         ;;
 esac

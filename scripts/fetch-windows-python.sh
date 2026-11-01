@@ -65,7 +65,6 @@ cp -r "$SRC/Lib" "$PREFIX/python/Lib"
 cp -r "$SRC/DLLs" "$PREFIX/python/DLLs"
 cp -r "$SRC/include/." "$PREFIX/include/python2.7/"
 
-# Generate the MinGW import lib from the DLL exports.
 "$TARGET-objdump" -p "$SRC/python27.dll" \
     | sed -n '/\[Ordinal\/Name Pointer\] Table/,$p' \
     | grep -oE '\] [A-Za-z_][A-Za-z0-9_@]*$' \

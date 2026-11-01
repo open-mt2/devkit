@@ -6,7 +6,6 @@ build
 bin
 src
 tools
-treecache
 extern
 node_modules
 *.log

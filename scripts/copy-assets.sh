@@ -48,11 +48,9 @@ if [ ! -d "$BIN_DIR" ]; then
     exit 0
 fi
 
-# Root configuration/data files (Windows DLLs never belong in the shared tree).
 find "$BIN_DIR" -maxdepth 1 -type f ! -iname "*.dll" ! -name ".gitignore" \
     -exec cp {} "$DIST_DIR/" \;
 
-# Asset directories shared by both targets.
 for dir in BGM lib mark miles screenshot upload; do
     mkdir -p "$DIST_DIR/$dir"
     if [ -d "$BIN_DIR/$dir" ]; then
@@ -61,7 +59,6 @@ for dir in BGM lib mark miles screenshot upload; do
     fi
 done
 
-# Baked SpeedTree geometry (generated from the original SpeedTreeRT SDK).
 if [ -d "$TREECACHE_DIR" ]; then
     mkdir -p "$DIST_DIR/treecache"
     cp "$TREECACHE_DIR"/*.tree "$DIST_DIR/treecache/" 2>/dev/null || true

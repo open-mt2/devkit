@@ -1,0 +1,144 @@
+# syntax=docker/dockerfile:1.7
+# ======================================================
+# OpenMT2 client - toolchain base image
+# ======================================================
+#
+# Everything the client build needs that does not depend on the OpenMT2
+# sources: the Debian toolchain, CPython 2.7, miniaudio, and the Windows
+# cross-build dependency set.
+#
+# No Wine, clang or lld: the tree geometry cache is vendored in the client
+# image (treecache/), so nothing here builds or runs speedtree_dumper.exe.
+#
+# The client image (dockerfile) is a thin `FROM` this image, so rebuilding the
+# client only refetches sources/assets. Publish this image whenever one of its
+# inputs changes:
+#
+#   docker build -f dockerfile.base -t ghcr.io/open-mt2/devkit-base:bookworm .
+#
+# The GitHub workflow .github/workflows/base.yml does that on main.
+
+FROM debian:bookworm
+
+LABEL org.opencontainers.image.title="OpenMT2 Client Development Kit - base"
+LABEL org.opencontainers.image.description="Toolchain, CPython 2.7 and Windows cross-build dependencies for the OpenMT2 client"
+LABEL org.opencontainers.image.source="https://github.com/open-mt2/client"
+LABEL org.opencontainers.image.licenses="GPL-2.0-or-later"
+
+SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+
+ARG DEBIAN_FRONTEND=noninteractive
+ENV DEBIAN_FRONTEND=noninteractive
+ENV LANG=C.UTF-8
+ENV LC_ALL=C.UTF-8
+ENV PYTHONUNBUFFERED=1
+
+# ---------------------------------------------------------------------------
+# Toolchain and native dependencies
+# ---------------------------------------------------------------------------
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+    ca-certificates \
+    curl \
+    git \
+    openssh-client \
+    xz-utils \
+    unzip \
+    zip \
+    p7zip-full \
+    msitools \
+    build-essential \
+    cmake \
+    ninja-build \
+    pkg-config \
+    libc6-dev-i386 \
+    python3 \
+    zlib1g-dev \
+    libbz2-dev \
+    libreadline-dev \
+    libsqlite3-dev \
+    libffi-dev \
+    liblzo2-dev \
+    libjpeg-dev \
+    libsdl2-dev \
+    libfreetype-dev \
+    libgl-dev \
+    libegl-dev \
+    libglu1-mesa-dev \
+    libzip-dev \
+    libdevil-dev \
+    libasound2-dev \
+    gcc-mingw-w64-x86-64 \
+    g++-mingw-w64-x86-64 \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN cmake --version \
+    && python3 --version
+
+# ---------------------------------------------------------------------------
+# Python 2.7 (required by neoeter-python: the client embeds CPython 2.7)
+#
+# Built from source here, once per base rebuild, instead of on every client
+# image build. --enable-shared produces the libpython2.7.so.1.0 that the
+# client links and that scripts/build.sh bundles into dist/runtime.
+# --with-ensurepip=no keeps pip/setuptools out of the shipped stdlib.
+# ---------------------------------------------------------------------------
+ARG PYTHON27_VERSION=2.7.18
+RUN curl -fsSL "https://www.python.org/ftp/python/${PYTHON27_VERSION}/Python-${PYTHON27_VERSION}.tgz" \
+    -o /tmp/python27.tgz \
+    && tar -xzf /tmp/python27.tgz -C /tmp \
+    && cd "/tmp/Python-${PYTHON27_VERSION}" \
+    && ./configure --prefix=/usr/local --enable-shared --enable-unicode=ucs4 --with-ensurepip=no \
+    && make -j"$(nproc)" \
+    && make altinstall \
+    && printf '/usr/local/lib\n' > /etc/ld.so.conf.d/python2.7.conf \
+    && ldconfig \
+    && rm -rf "/tmp/Python-${PYTHON27_VERSION}" /tmp/python27.tgz \
+    && python2.7 -c 'import sys; print(sys.version)'
+
+# ---------------------------------------------------------------------------
+# miniaudio (header-only, exposed as a static library through pkg-config)
+# ---------------------------------------------------------------------------
+ARG MINIAUDIO_VERSION=0.11.25
+RUN mkdir -p /usr/local/include/miniaudio /usr/local/lib/pkgconfig \
+    && curl -fsSL "https://raw.githubusercontent.com/mackron/miniaudio/${MINIAUDIO_VERSION}/miniaudio.h" \
+    -o /usr/local/include/miniaudio/miniaudio.h \
+    && printf '#define MINIAUDIO_IMPLEMENTATION\n#include <miniaudio/miniaudio.h>\n' > /tmp/miniaudio.c \
+    && cc -O2 -fPIC -I/usr/local/include -c /tmp/miniaudio.c -o /tmp/miniaudio.o \
+    && ar rcs /usr/local/lib/libminiaudio.a /tmp/miniaudio.o \
+    && printf '%s\n' \
+    'prefix=/usr/local' \
+    'exec_prefix=${prefix}' \
+    'libdir=${exec_prefix}/lib' \
+    'includedir=${prefix}/include' \
+    '' \
+    'Name: miniaudio' \
+    'Description: Single-file audio playback and capture library' \
+    "Version: ${MINIAUDIO_VERSION}" \
+    'Cflags: -I${includedir}' \
+    'Libs: -L${libdir} -lminiaudio' \
+    'Libs.private: -lpthread -ldl -lm' \
+    > /usr/local/lib/pkgconfig/miniaudio.pc \
+    && rm -f /tmp/miniaudio.c /tmp/miniaudio.o \
+    && ldconfig \
+    && pkg-config --modversion miniaudio
+
+# ---------------------------------------------------------------------------
+# Windows cross-build dependency set
+#
+# Only these two scripts are needed to build the prefix; the client image
+# installs the full scripts/ tree at /workspace. Rebuild this image when
+# either script changes (see .github/workflows/base.yml).
+# ---------------------------------------------------------------------------
+COPY scripts/build-windows-deps.sh scripts/fetch-windows-python.sh /usr/local/lib/openmt2/
+
+ARG WIN64_DEPS_PREFIX=/opt/openmt2/win64
+RUN /usr/local/lib/openmt2/build-windows-deps.sh --prefix "${WIN64_DEPS_PREFIX}" --work /tmp/openmt2-win64-deps \
+    && rm -rf /tmp/openmt2-win64-deps
+RUN /usr/local/lib/openmt2/fetch-windows-python.sh --prefix "${WIN64_DEPS_PREFIX}" --work /tmp/openmt2-win64-python \
+    && rm -rf /tmp/openmt2-win64-python
+
+# ---------------------------------------------------------------------------
+# Runtime environment inherited by the client image
+# ---------------------------------------------------------------------------
+ENV LD_LIBRARY_PATH=/usr/local/lib
