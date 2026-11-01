@@ -21,6 +21,12 @@
 #   SPEEDTREE_REF    branch/tag (default: main)
 #   SPEEDTREE_UPDATE set to 1 to update an existing checkout
 #   SPEEDTREE_DIR    checkout location (default: <root>/tools/speedtree_baker)
+#   SPEEDTREE_DUMPER     prebuilt speedtree_dumper.exe (path), used instead of
+#                        compiling the dumper; falls back to
+#                        <checkout>/prebuilt/speedtree_dumper.exe and
+#                        <checkout>/bin/speedtree_dumper.exe
+#   SPEEDTREE_DUMPER_URL URL of a prebuilt speedtree_dumper.exe (e.g. a release
+#                        asset), downloaded when no local prebuilt is found
 #   WINE_LIBS        Wine i386 import-library directory
 
 set -euo pipefail
@@ -32,6 +38,9 @@ ROOT="${OPENMT2_ROOT:-$DEFAULT_ROOT}"
 SPEEDTREE_REPO="${SPEEDTREE_REPO:-https://github.com/open-mt2/speedtreebkr.git}"
 SPEEDTREE_REF="${SPEEDTREE_REF:-main}"
 TOOL_DIR="${SPEEDTREE_DIR:-$ROOT/tools/speedtree_baker}"
+PREBUILT_DUMPER="${SPEEDTREE_DUMPER:-}"
+PREBUILT_DUMPER_URL="${SPEEDTREE_DUMPER_URL:-}"
+DUMPER_TARGET="$TOOL_DIR/build/speedtree_dumper.exe"
 
 log()  { printf '\033[1;34m[speedtree]\033[0m %s\n' "$*"; }
 warn() { printf '\033[1;33m[speedtree]\033[0m %s\n' "$*" >&2; }
@@ -99,9 +108,58 @@ detect_wine_libs() {
     return 1
 }
 
+prebuilt_dumper_candidates() {
+    if [ -n "$PREBUILT_DUMPER" ]; then
+        printf '%s\n' "$PREBUILT_DUMPER"
+    fi
+    printf '%s\n' \
+        "$TOOL_DIR/prebuilt/speedtree_dumper.exe" \
+        "$TOOL_DIR/bin/speedtree_dumper.exe"
+}
+
+download_prebuilt_dumper() {
+    [ -n "$PREBUILT_DUMPER_URL" ] || return 1
+    log "Downloading prebuilt speedtree_dumper.exe from $PREBUILT_DUMPER_URL"
+    mkdir -p "$(dirname "$DUMPER_TARGET")"
+    if ! curl -fL --retry 3 --connect-timeout 20 -o "$DUMPER_TARGET" "$PREBUILT_DUMPER_URL"; then
+        rm -f "$DUMPER_TARGET"
+        warn "Could not download the prebuilt speedtree dumper from $PREBUILT_DUMPER_URL"
+        return 1
+    fi
+    chmod +x "$DUMPER_TARGET"
+    return 0
+}
+
+install_prebuilt_dumper() {
+    local candidate
+    while IFS= read -r candidate; do
+        [ -n "$candidate" ] && [ -f "$candidate" ] || continue
+        log "Using prebuilt speedtree_dumper.exe from $candidate"
+        mkdir -p "$(dirname "$DUMPER_TARGET")"
+        cp -f "$candidate" "$DUMPER_TARGET"
+        chmod +x "$DUMPER_TARGET"
+        return 0
+    done < <(prebuilt_dumper_candidates)
+
+    if download_prebuilt_dumper; then
+        return 0
+    fi
+    return 1
+}
+
 build_baker() {
+    if install_prebuilt_dumper; then
+        return 0
+    fi
     if [ ! -f "$TOOL_DIR/build.sh" ]; then
         warn "speedtree baker sources not found in $TOOL_DIR"
+        return 1
+    fi
+    if ! command -v clang++ >/dev/null 2>&1; then
+        warn "clang++ not found: cannot compile the SpeedTree dumper."
+        warn "Provide a prebuilt binary with SPEEDTREE_DUMPER (path) or"
+        warn "SPEEDTREE_DUMPER_URL, checked in at"
+        warn "$TOOL_DIR/prebuilt/speedtree_dumper.exe, or install clang + lld."
         return 1
     fi
     local wine_libs
