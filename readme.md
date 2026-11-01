@@ -53,6 +53,28 @@ Useful build arguments:
 | `BUILD_SPEEDTREE_DUMPER` | `1`                   | Build `speedtree_dumper.exe` under Wine      |
 | `BAKE_TREES`             | `0`                   | Bake `treecache/` during image build         |
 
+## Published image
+
+Pushing a version tag publishes the image to the GitHub Container Registry:
+
+```bash
+git tag v0.1.0
+git push origin v0.1.0
+```
+
+This builds and pushes `ghcr.io/open-mt2/client:v0.1.0` and updates `:latest`.
+Only tags matching `vX.Y.Z` (optionally with a prerelease suffix) are published.
+
+The published image is **source-only**: it contains the OpenMT2 sources, the
+toolchain and the build scripts, but not the original client `bin/` tree, the
+`pack/` archives or a baked `treecache/`. Fetch those into a container with
+`docker run ... fetch` from your own asset source; the publish job refuses to
+push an image that contains them.
+
+The SpeedTree dumper is built from the public
+[speedtreebkr](https://github.com/open-mt2/speedtreebkr) sources. No `.spt`
+files or baked tree data are included.
+
 ## Compile and package
 
 With no arguments the entrypoint runs `build.sh`:
