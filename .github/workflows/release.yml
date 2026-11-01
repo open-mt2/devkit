@@ -2,9 +2,10 @@ name: release
 
 # REL.1 — publish the devkit image to GitHub Container Registry on a version tag.
 #
-# The published image is source-only: no original client `bin/` tree, no pack
-# archives and no baked `treecache/`, because those carry licensed Metin2
-# content. Consumers fetch them into their own container (`docker run ... fetch`).
+# The published image ships the vendored tree geometry cache (`treecache/`,
+# see treecache/README.md) so normal builds do not need the SpeedTree toolchain,
+# Wine or clang/lld. The original client `bin/` tree, the pack archives and the
+# assembled `dist/` are still fetched or built by the consumer.
 #
 #     git tag vX.Y.Z && git push origin vX.Y.Z
 
@@ -53,22 +54,16 @@ jobs:
 
       # Build locally first so the proprietary-content gate can inspect the
       # image before anything is pushed.
-      - name: Build the source-only image
+      - name: Build the image
         uses: docker/build-push-action@v6
         with:
           context: .
           load: true
           tags: ${{ env.IMAGE }}:${{ github.ref_name }}
-          # Assets are fetched by the consumer, never by the published image.
-          # The dumper is consumed from the speedtreebkr release asset once
-          # open-mt2/speedtreebkr#1 exists: set the SPEEDTREE_DUMPER_URL
-          # repository variable and it is baked in (no clang needed).
+          # The tree geometry cache is vendored in this repository; client
+          # assets are still fetched by the consumer, never by the image.
           build-args: |
             WITH_BIN=0
-            WITH_SPEEDTREE=1
-            BUILD_SPEEDTREE_DUMPER=${{ vars.SPEEDTREE_DUMPER_URL && '1' || '0' }}
-            SPEEDTREE_DUMPER_URL=${{ vars.SPEEDTREE_DUMPER_URL }}
-            BAKE_TREES=0
             SRC_CACHE_BUST=${{ github.run_id }}
           labels: |
             org.opencontainers.image.version=${{ github.ref_name }}

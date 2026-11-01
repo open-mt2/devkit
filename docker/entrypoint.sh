@@ -10,7 +10,6 @@
 #   build [build.sh options]   Compile and assemble dist/
 #   windows [options]          Cross-build Windows client and assemble dist/
 #   shell                      Open an interactive shell
-#   bake [bake.py options]     Build/run the SpeedTree geometry baker
 #   fetch                      Refresh pkg_* sources and bin/ assets
 #   help                       Show this help
 #
@@ -61,10 +60,6 @@ case "${1:-}" in
     shell|bash|sh)
         shift
         exec "${@:-bash}"
-        ;;
-    bake)
-        shift
-        exec "$(require_script bake-trees.sh)" "$@"
         ;;
     fetch)
         shift

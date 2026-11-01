@@ -16,7 +16,7 @@ ARG DEVKIT_BASE=ghcr.io/open-mt2/devkit-base:bookworm
 FROM ${DEVKIT_BASE}
 
 LABEL org.opencontainers.image.title="OpenMT2 Client Development Kit"
-LABEL org.opencontainers.image.description="Build, package and bake the OpenMT2 client"
+LABEL org.opencontainers.image.description="Build and package the OpenMT2 client"
 LABEL org.opencontainers.image.source="https://github.com/open-mt2/client"
 LABEL org.opencontainers.image.licenses="GPL-2.0-or-later"
 
@@ -30,6 +30,7 @@ WORKDIR /workspace
 COPY docker/root/CMakeLists.txt /workspace/CMakeLists.txt
 COPY docker/root/cmake/Platform.cmake /workspace/cmake/Platform.cmake
 COPY scripts/ /workspace/scripts/
+COPY treecache/ /workspace/treecache/
 COPY docker/entrypoint.sh /usr/local/bin/openmt2-entrypoint
 
 RUN chmod +x /workspace/scripts/*.sh /usr/local/bin/openmt2-entrypoint \
@@ -64,48 +65,22 @@ RUN if [ "${WITH_BIN}" = "1" ]; then \
     fi
 
 # ---------------------------------------------------------------------------
-# SpeedTree geometry baker
+# Tree geometry cache
 #
-# The dumper is not compiled here by default: speedtreebkr's toolchain needs
-# clang/lld, which the build-only image no longer ships (devkit#143). Point
-# SPEEDTREE_DUMPER_URL at the release asset from open-mt2/speedtreebkr#1 (or
-# use SPEEDTREE_DUMPER with a local path) and set BUILD_SPEEDTREE_DUMPER=1 to
-# bake the prebuilt dumper into the image; bake-trees.sh falls back to
-# compiling only when neither is provided.
+# treecache/ is vendored in this repository (see treecache/README.md) and is
+# copied into the image in the scaffolding stage above. It was generated once
+# with open-mt2/speedtreebkr from bin/pack/**/*.spt; the image build never
+# compiles the dumper and never runs Wine. Verify the manifest and, when bin/
+# was fetched, that every .spt still has a matching cache entry.
 # ---------------------------------------------------------------------------
-ARG WITH_SPEEDTREE=1
-ARG SPEEDTREE_REF=main
-ARG BUILD_SPEEDTREE_DUMPER=0
-ARG SPEEDTREE_DUMPER=
-ARG SPEEDTREE_DUMPER_URL=
-RUN if [ "${WITH_SPEEDTREE}" = "1" ]; then \
-    export WINEPREFIX=/tmp/openmt2-speedtree-wine WINEDEBUG=-all WINEDLLOVERRIDES=mscoree,mshtml=; \
-    export SPEEDTREE_DUMPER="${SPEEDTREE_DUMPER}" SPEEDTREE_DUMPER_URL="${SPEEDTREE_DUMPER_URL}"; \
-    SPEEDTREE_REF="${SPEEDTREE_REF}" /workspace/scripts/bake-trees.sh --fetch-only; \
-    if [ "${BUILD_SPEEDTREE_DUMPER}" = "1" ]; then \
-    /workspace/scripts/bake-trees.sh --build-only; \
-    fi; \
-    rm -rf /tmp/openmt2-speedtree-wine; \
-    else \
-    echo "Skipping speedtree baker (WITH_SPEEDTREE=${WITH_SPEEDTREE})"; \
-    fi
-
-ARG BAKE_TREES=0
-RUN if [ "${BAKE_TREES}" = "1" ]; then \
-    ( export WINEPREFIX=/tmp/openmt2-bake-wine WINEDEBUG=-all WINEDLLOVERRIDES=mscoree,mshtml=; \
-      export SPEEDTREE_DUMPER="${SPEEDTREE_DUMPER}" SPEEDTREE_DUMPER_URL="${SPEEDTREE_DUMPER_URL}"; \
-      /workspace/scripts/bake-trees.sh --force ) \
-    || echo "warning: tree baking failed; treecache/ will be empty"; \
-    rm -rf /tmp/openmt2-bake-wine; \
-    fi
+RUN python3 /workspace/scripts/verify-treecache.py \
+    --treecache /workspace/treecache --bin /workspace/bin
 
 # ---------------------------------------------------------------------------
 # Runtime
 # ---------------------------------------------------------------------------
 ENV OPENMT2_WORKSPACE=/workspace
 ENV LD_LIBRARY_PATH=/usr/local/lib
-ENV WINEDEBUG=-all
-ENV WINEDLLOVERRIDES=mscoree,mshtml=
 
 WORKDIR /workspace
 

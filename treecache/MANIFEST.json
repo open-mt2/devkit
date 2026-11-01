@@ -1,0 +1,966 @@
+{
+  "entries": [
+    {
+      "bytes": 31190,
+      "file": "924bb001.tree",
+      "fnv1a32": "924bb001",
+      "sha256": "e69bc724449048996fb8b4b0740b1f7c9337bbafa5bf6c3753f98401462e1f53",
+      "spt": "Tree/ymir work/tree/b1_baobab_rt.spt",
+      "spt_bytes": 6689
+    },
+    {
+      "bytes": 32564,
+      "file": "7fcb5f45.tree",
+      "fnv1a32": "7fcb5f45",
+      "sha256": "f6cd0de147824886ef2c714b56062d3e03945003a60211a35130da052310cd10",
+      "spt": "Tree/ymir work/tree/b1_baobab_rt2.spt",
+      "spt_bytes": 6689
+    },
+    {
+      "bytes": 32149,
+      "file": "df1ec849.tree",
+      "fnv1a32": "df1ec849",
+      "sha256": "adae4ab74dc7add79ac25366dd1bdb139f32cde353f198759d84375d0a39a59c",
+      "spt": "Tree/ymir work/tree/b1_beech_rt.spt",
+      "spt_bytes": 6796
+    },
+    {
+      "bytes": 35973,
+      "file": "e2a568d4.tree",
+      "fnv1a32": "e2a568d4",
+      "sha256": "bfd6ec3a6186ec65693f80584b96830457a9dbf48b0a7e2f468cd98b353cd74f",
+      "spt": "Tree/ymir work/tree/b1_beech_rt2.spt",
+      "spt_bytes": 6796
+    },
+    {
+      "bytes": 34911,
+      "file": "c51eefdb.tree",
+      "fnv1a32": "c51eefdb",
+      "sha256": "d8e5b493cb0fe26a4644b0de38eaa1b8500152ecb302531c435b1612a7ba6e9e",
+      "spt": "Tree/ymir work/tree/b1_beech_rt3.spt",
+      "spt_bytes": 6796
+    },
+    {
+      "bytes": 31729,
+      "file": "e84f5ff6.tree",
+      "fnv1a32": "e84f5ff6",
+      "sha256": "e89da19a825d53d8415a926cf038cd82adaa937d42e91bb399fa27c55627024d",
+      "spt": "Tree/ymir work/tree/b1_beech_rt4.spt",
+      "spt_bytes": 6796
+    },
+    {
+      "bytes": 43445,
+      "file": "a742c72b.tree",
+      "fnv1a32": "a742c72b",
+      "sha256": "6e8a78ba1d10081351de4b0ae1c78359f78f1ca7f19a3295970e0bf0ef3cc2d1",
+      "spt": "Tree/ymir work/tree/b1_montereycypress_rt.spt",
+      "spt_bytes": 8873
+    },
+    {
+      "bytes": 43777,
+      "file": "d7dfb6d4.tree",
+      "fnv1a32": "d7dfb6d4",
+      "sha256": "c053e90ae44648e8c0bb59af8bdbec1239971c6774e25e1b298fdba30194116c",
+      "spt": "Tree/ymir work/tree/b1_montereycypress_rt2.spt",
+      "spt_bytes": 8873
+    },
+    {
+      "bytes": 70319,
+      "file": "eb2ec298.tree",
+      "fnv1a32": "eb2ec298",
+      "sha256": "20355237fd838c955f14828edf35a2c321feedaf85a3771833722397dfc00688",
+      "spt": "Tree/ymir work/tree/b1_montereycypress_rt3.spt",
+      "spt_bytes": 8873
+    },
+    {
+      "bytes": 41223,
+      "file": "5ffe87cb.tree",
+      "fnv1a32": "5ffe87cb",
+      "sha256": "2bc3b624eb5d9c158fc9497ce74d054732ecc6d90c4a1bc2d0c8d04d476f7911",
+      "spt": "Tree/ymir work/tree/b1_montereycypress_rt4.spt",
+      "spt_bytes": 8873
+    },
+    {
+      "bytes": 61013,
+      "file": "7b0e0366.tree",
+      "fnv1a32": "7b0e0366",
+      "sha256": "c419e86c6cac0c80ef6761f1724244c37e118f511278f96aedfbe84504b8fe39",
+      "spt": "Tree/ymir work/tree/b1_montereycypress_rt5.spt",
+      "spt_bytes": 8873
+    },
+    {
+      "bytes": 41534,
+      "file": "bb6bcd6b.tree",
+      "fnv1a32": "bb6bcd6b",
+      "sha256": "bf9f2f83a7a9570fa5d023071ed48c06c4f546beff9026e594038fb2a17c82d1",
+      "spt": "Tree/ymir work/tree/b1_pagodatree_rt.spt",
+      "spt_bytes": 8071
+    },
+    {
+      "bytes": 45216,
+      "file": "fdd4a902.tree",
+      "fnv1a32": "fdd4a902",
+      "sha256": "93e375fc94c7f80976d44a35070347a7656f75ea5e89961384e49bbfeafbf988",
+      "spt": "Tree/ymir work/tree/b1_pagodatree_rt2.spt",
+      "spt_bytes": 8091
+    },
+    {
+      "bytes": 38342,
+      "file": "97ec527d.tree",
+      "fnv1a32": "97ec527d",
+      "sha256": "83e853d6f38cad1b1b339f2c4518dbc4189bdd9265b7df20c4cad21a6c896c93",
+      "spt": "Tree/ymir work/tree/b1_pagodatree_rt3.spt",
+      "spt_bytes": 8071
+    },
+    {
+      "bytes": 32489,
+      "file": "1b779b2d.tree",
+      "fnv1a32": "1b779b2d",
+      "sha256": "7bb9187f859e582949c41e6b6ed3c0fa5648d274c2968d2952f2e60d395a85c6",
+      "spt": "Tree/ymir work/tree/b1_sassafras_rt_fall.spt",
+      "spt_bytes": 6672
+    },
+    {
+      "bytes": 32203,
+      "file": "d05fea5d.tree",
+      "fnv1a32": "d05fea5d",
+      "sha256": "d677fd34b95fcf54140430560aa0f418b7d79efd676520660e56440996f05d38",
+      "spt": "Tree/ymir work/tree/b1_sassafras_rt_fall2.spt",
+      "spt_bytes": 6716
+    },
+    {
+      "bytes": 41154,
+      "file": "9fdf3e46.tree",
+      "fnv1a32": "9fdf3e46",
+      "sha256": "ea7c5f712c0c6818c22dcfabc69440dfccbf17119befecc712102047a374cefb",
+      "spt": "Tree/ymir work/tree/b2_cedaroflebanon_rt.spt",
+      "spt_bytes": 5419
+    },
+    {
+      "bytes": 43116,
+      "file": "b918267b.tree",
+      "fnv1a32": "b918267b",
+      "sha256": "866c6a21f3ff3feff958c4ff03f7c530a8d14ca74eb212acabc4b640469c0160",
+      "spt": "Tree/ymir work/tree/b2_cedaroflebanon_rt2.spt",
+      "spt_bytes": 5419
+    },
+    {
+      "bytes": 40458,
+      "file": "7a973af7.tree",
+      "fnv1a32": "7a973af7",
+      "sha256": "bcd1f90d0417201e823f51b9d8b83b832e8c62a1fe3e83d72ca3b45c77bfaecd",
+      "spt": "Tree/ymir work/tree/b2_cedaroflebanon_rt3.spt",
+      "spt_bytes": 5419
+    },
+    {
+      "bytes": 42952,
+      "file": "33d2383f.tree",
+      "fnv1a32": "33d2383f",
+      "sha256": "becee78a34cb6cef02c996c6f501428b4e50e72f7f286207b3669f1ae52781b0",
+      "spt": "Tree/ymir work/tree/b2_ivyspy_rt.spt",
+      "spt_bytes": 6657
+    },
+    {
+      "bytes": 46138,
+      "file": "274bd473.tree",
+      "fnv1a32": "274bd473",
+      "sha256": "9c10e72f9a7a4bd3748f4fb37a7c91c930affd21282dcd0305f4a542bc770654",
+      "spt": "Tree/ymir work/tree/b2_ivyspy_rt2.spt",
+      "spt_bytes": 6657
+    },
+    {
+      "bytes": 41582,
+      "file": "422822b6.tree",
+      "fnv1a32": "422822b6",
+      "sha256": "44e213e38e34136212dffd273a6426f4528a125cece170ffba5b66082e07c94b",
+      "spt": "Tree/ymir work/tree/b2_ivyspy_rt3.spt",
+      "spt_bytes": 6657
+    },
+    {
+      "bytes": 44654,
+      "file": "d713bb51.tree",
+      "fnv1a32": "d713bb51",
+      "sha256": "3470917aa066c0ad178d40d7acf642c3743b52071526483f54daeb4d35c64e9b",
+      "spt": "Tree/ymir work/tree/b2_ivyspy_rt4.spt",
+      "spt_bytes": 6657
+    },
+    {
+      "bytes": 42204,
+      "file": "c64fc2ff.tree",
+      "fnv1a32": "c64fc2ff",
+      "sha256": "2d1ec02a45b2fc07137c0a488c42e598f554d523d8600447e6cb504042bcfe32",
+      "spt": "Tree/ymir work/tree/b2_ivyspy_rt5.spt",
+      "spt_bytes": 6657
+    },
+    {
+      "bytes": 30417,
+      "file": "e070e58c.tree",
+      "fnv1a32": "e070e58c",
+      "sha256": "735e968e06b510d9548c5cd5f30f014f050f8914cfa58f379c3b9af05a5d4172",
+      "spt": "Tree/ymir work/tree/b2_ivyspy_rt_winter.spt",
+      "spt_bytes": 6580
+    },
+    {
+      "bytes": 31525,
+      "file": "f4fc6769.tree",
+      "fnv1a32": "f4fc6769",
+      "sha256": "3402ec4f1907df834465dc1d07c53f00c43c3f77ef5e2e5c7f889415fe76b979",
+      "spt": "Tree/ymir work/tree/b2_ivyspy_rt_winter2.spt",
+      "spt_bytes": 6560
+    },
+    {
+      "bytes": 21889,
+      "file": "42f68bb6.tree",
+      "fnv1a32": "42f68bb6",
+      "sha256": "022095dd437fce3e7a70ac2c3abdd6dec5a97ce50eeb600906fb27fe66b2105a",
+      "spt": "Tree/ymir work/tree/b2_japanesemaple_rt_fall.spt",
+      "spt_bytes": 6616
+    },
+    {
+      "bytes": 18745,
+      "file": "139d2858.tree",
+      "fnv1a32": "139d2858",
+      "sha256": "8c8b62425f8c03b87649e8d0f09e2e4fe92c0b04dca3e2b688807b2fc5157ddf",
+      "spt": "Tree/ymir work/tree/b2_japanesemaple_rt_fall2.spt",
+      "spt_bytes": 6616
+    },
+    {
+      "bytes": 54080,
+      "file": "b5556709.tree",
+      "fnv1a32": "b5556709",
+      "sha256": "2e7c3ce712f9e15265e8523c0ec22a2b9982dbe7c1f303d9e0c52744a32e13f6",
+      "spt": "Tree/ymir work/tree/b2_redoak_rt.spt",
+      "spt_bytes": 8762
+    },
+    {
+      "bytes": 44178,
+      "file": "2a007f78.tree",
+      "fnv1a32": "2a007f78",
+      "sha256": "8819634fbc51383f66aab833148949e9db263df7662b875e0421d0490b6816c7",
+      "spt": "Tree/ymir work/tree/b2_redoak_rt2.spt",
+      "spt_bytes": 8762
+    },
+    {
+      "bytes": 52826,
+      "file": "cfd2f4f9.tree",
+      "fnv1a32": "cfd2f4f9",
+      "sha256": "e7e78a344c1f491d967f356ced26bf63ddf216b233375d7d5efec25cba7b2734",
+      "spt": "Tree/ymir work/tree/b2_redoak_rt3.spt",
+      "spt_bytes": 8762
+    },
+    {
+      "bytes": 49372,
+      "file": "93ae32a4.tree",
+      "fnv1a32": "93ae32a4",
+      "sha256": "cda3abf99bf95ba9ee30f359abc10683495b6b8ea69aa531e9d2851b97c071c8",
+      "spt": "Tree/ymir work/tree/b2_redoak_rt4.spt",
+      "spt_bytes": 8762
+    },
+    {
+      "bytes": 32149,
+      "file": "5dd70ea6.tree",
+      "fnv1a32": "5dd70ea6",
+      "sha256": "f97fb74a85659e3cfff853b38a8ceedacff1ad010aa902b3c5806be89e4aca0a",
+      "spt": "Tree/ymir work/tree/b3_beech_rt.spt",
+      "spt_bytes": 6796
+    },
+    {
+      "bytes": 35781,
+      "file": "b19b4d6f.tree",
+      "fnv1a32": "b19b4d6f",
+      "sha256": "5c0a0de6349abbe348d5c4e975527c4b73ddab695207d9ed58e836572ebd5abe",
+      "spt": "Tree/ymir work/tree/b3_beech_rt2.spt",
+      "spt_bytes": 6796
+    },
+    {
+      "bytes": 28801,
+      "file": "4a350039.tree",
+      "fnv1a32": "4a350039",
+      "sha256": "29dbf6b1ff04ee813405ab68f02cd5f17fdba12961f291453987b6ea8400cd50",
+      "spt": "Tree/ymir work/tree/b3_beech_rt3.spt",
+      "spt_bytes": 6796
+    },
+    {
+      "bytes": 32725,
+      "file": "d7eeb4bf.tree",
+      "fnv1a32": "d7eeb4bf",
+      "sha256": "a38563e6c413ceb7519f981965f4a3b9e9425c8d5a96592697b24a96d8c63856",
+      "spt": "Tree/ymir work/tree/b3_beech_rt_fall.spt",
+      "spt_bytes": 6805
+    },
+    {
+      "bytes": 28755,
+      "file": "d3184e3a.tree",
+      "fnv1a32": "d3184e3a",
+      "sha256": "b9344b3fcc4ae6270551ccaeb96dce4d1fedf6a5b1ec39c427033e5ebf4793af",
+      "spt": "Tree/ymir work/tree/b3_beech_rt_fall2.spt",
+      "spt_bytes": 6805
+    },
+    {
+      "bytes": 24668,
+      "file": "16f640dc.tree",
+      "fnv1a32": "16f640dc",
+      "sha256": "f1acb3ca57356e903d4041f3f4144b6bec95328d39ba77c702b33efcdf54c3f0",
+      "spt": "Tree/ymir work/tree/b3_pagodatree_rt_winter.spt",
+      "spt_bytes": 7951
+    },
+    {
+      "bytes": 24068,
+      "file": "ed463e3a.tree",
+      "fnv1a32": "ed463e3a",
+      "sha256": "f39655ae57910f327b25541e107d7ddebe5a28a128c0dcf67c996a8cacc207c5",
+      "spt": "Tree/ymir work/tree/b3_pagodatree_rt_winter2.spt",
+      "spt_bytes": 7951
+    },
+    {
+      "bytes": 154308,
+      "file": "3c38cc83.tree",
+      "fnv1a32": "3c38cc83",
+      "sha256": "674b8e0b0ddc250ebf9353b92478a82b18d6c6e24fcf7248dc8ab5cd3e0c9ef2",
+      "spt": "Tree/ymir work/tree/b3_shingleoak_rt.spt",
+      "spt_bytes": 6550
+    },
+    {
+      "bytes": 123934,
+      "file": "2b0e6868.tree",
+      "fnv1a32": "2b0e6868",
+      "sha256": "153ac8a011c534c09bee8513c07ef0a3465e2b272bfcfef7980554f61615866e",
+      "spt": "Tree/ymir work/tree/b3_shingleoak_rt2.spt",
+      "spt_bytes": 6550
+    },
+    {
+      "bytes": 135248,
+      "file": "3ca16c3c.tree",
+      "fnv1a32": "3ca16c3c",
+      "sha256": "ef96e7a9fd4c0b22bcd705635dc65f7b9bb3c848a08bc8456facdd42afbe1ce1",
+      "spt": "Tree/ymir work/tree/b3_shingleoak_rt3.spt",
+      "spt_bytes": 6550
+    },
+    {
+      "bytes": 176246,
+      "file": "6f6d59f7.tree",
+      "fnv1a32": "6f6d59f7",
+      "sha256": "94ed1e5b81c8c80257748dc1303c856c5bb532676a885377d7ccc4d5d829a944",
+      "spt": "Tree/ymir work/tree/b3_shingleoak_rt4.spt",
+      "spt_bytes": 6550
+    },
+    {
+      "bytes": 147922,
+      "file": "aa3d0c2b.tree",
+      "fnv1a32": "aa3d0c2b",
+      "sha256": "7ac997faa079ac444e4c5bcb2a634c04660614ba2e3fc05e1a8dc9a58b8a3ec0",
+      "spt": "Tree/ymir work/tree/b3_shingleoak_rt5.spt",
+      "spt_bytes": 6550
+    },
+    {
+      "bytes": 27039,
+      "file": "d6c99bc1.tree",
+      "fnv1a32": "d6c99bc1",
+      "sha256": "670738788d20145ad48614f7f07ed2174c8a324f6e79e6653535a4dae8d34284",
+      "spt": "Tree/ymir work/tree/b3_umbrellathorn_rt_flowers.spt",
+      "spt_bytes": 8371
+    },
+    {
+      "bytes": 26185,
+      "file": "448475bc.tree",
+      "fnv1a32": "448475bc",
+      "sha256": "470f3144d54d7b15331fc421380574947a23e49da241f8b00e383e2c7b0f127e",
+      "spt": "Tree/ymir work/tree/b3_umbrellathorn_rt_flowers2.spt",
+      "spt_bytes": 8351
+    },
+    {
+      "bytes": 31355,
+      "file": "ab386b5b.tree",
+      "fnv1a32": "ab386b5b",
+      "sha256": "568c5e556c02f118a10c802efe9b2a077f08a2a5701c92950def0f895fa34ad0",
+      "spt": "Tree/ymir work/tree/b3_umbrellathorn_rt_flowers3.spt",
+      "spt_bytes": 8351
+    },
+    {
+      "bytes": 39095,
+      "file": "03fc3a09.tree",
+      "fnv1a32": "03fc3a09",
+      "sha256": "0a902bcd3989f512df5d45d6d6f0c2f121f8d485109a504aefd55ac0386e5ba3",
+      "spt": "Tree/ymir work/tree/b3_umbrellathorn_rt_flowers4.spt",
+      "spt_bytes": 8351
+    },
+    {
+      "bytes": 113630,
+      "file": "7b6c3197.tree",
+      "fnv1a32": "7b6c3197",
+      "sha256": "71434a2c5e04d5b6e612963997c7da75cc3e0f2894734ea1a62f63f8ac82ae7a",
+      "spt": "Tree/ymir work/tree/christmastree1.spt",
+      "spt_bytes": 6774
+    },
+    {
+      "bytes": 113630,
+      "file": "21f8cf97.tree",
+      "fnv1a32": "21f8cf97",
+      "sha256": "47411ce3762c598fa9efcdd9f52b38fd8ef5f54f524f2e301c626128d30b401c",
+      "spt": "Tree/ymir work/tree/christmastree2.spt",
+      "spt_bytes": 6775
+    },
+    {
+      "bytes": 113630,
+      "file": "aed2bb64.tree",
+      "fnv1a32": "aed2bb64",
+      "sha256": "5688ee8b2de7faae30d450fe88a36f5c594b781d10cdf34d1631540c793fe0b8",
+      "spt": "Tree/ymir work/tree/christmastree3.spt",
+      "spt_bytes": 6775
+    },
+    {
+      "bytes": 24590,
+      "file": "53e77e5f.tree",
+      "fnv1a32": "53e77e5f",
+      "sha256": "3ad9e23d7c60d91ed7edc6b4af7c0427ef4be6a653e16d001cf7125f7a000bfb",
+      "spt": "Tree/ymir work/tree/n1_baobab_rt_winter.spt",
+      "spt_bytes": 6448
+    },
+    {
+      "bytes": 25297,
+      "file": "8f3a79ea.tree",
+      "fnv1a32": "8f3a79ea",
+      "sha256": "c16190bc8b2636a9d955b6458254f5bf90826b3f05ee872a14e8fee88b24f3d6",
+      "spt": "Tree/ymir work/tree/n1_beech_rt_winter.spt",
+      "spt_bytes": 6682
+    },
+    {
+      "bytes": 24529,
+      "file": "91987a68.tree",
+      "fnv1a32": "91987a68",
+      "sha256": "2a46df29faf1a01ccb7a590271c634632e5122fa4b56389f7dbd77b94abc0c7f",
+      "spt": "Tree/ymir work/tree/n1_beech_rt_winter02.spt",
+      "spt_bytes": 6682
+    },
+    {
+      "bytes": 26309,
+      "file": "55030a4d.tree",
+      "fnv1a32": "55030a4d",
+      "sha256": "5b6c418c74bc25339b427b7f9bdd0dd49be63f066a03e7ea1f6edef4a1854f32",
+      "spt": "Tree/ymir work/tree/n1_beech_rt_winter03.spt",
+      "spt_bytes": 6682
+    },
+    {
+      "bytes": 102556,
+      "file": "adc5f15b.tree",
+      "fnv1a32": "adc5f15b",
+      "sha256": "db797c28bc3f0d3567a3b851ba66f327fe5dabee72bf55d6ae4e29819164bc89",
+      "spt": "Tree/ymir work/tree/n1_coloradobluespruce_rt_01.spt",
+      "spt_bytes": 5332
+    },
+    {
+      "bytes": 94524,
+      "file": "97541d99.tree",
+      "fnv1a32": "97541d99",
+      "sha256": "376bb3999e838b5222a72e4e6dc14449376064b5c6cf59e7eff3b5fb0f232790",
+      "spt": "Tree/ymir work/tree/n1_coloradobluespruce_rt_02.spt",
+      "spt_bytes": 5332
+    },
+    {
+      "bytes": 99192,
+      "file": "5366fad5.tree",
+      "fnv1a32": "5366fad5",
+      "sha256": "c1f97875998d7813660de5557df228bf3d49eed2287a280570a611d707692945",
+      "spt": "Tree/ymir work/tree/n1_coloradobluespruce_rt_03.spt",
+      "spt_bytes": 5332
+    },
+    {
+      "bytes": 31315,
+      "file": "51b1c9dd.tree",
+      "fnv1a32": "51b1c9dd",
+      "sha256": "29c0fa26b0c948da292198aa77e453429a13e076eb86708c07d872c942e56b9f",
+      "spt": "Tree/ymir work/tree/n1_commonolive_rt_winter.spt",
+      "spt_bytes": 6562
+    },
+    {
+      "bytes": 43085,
+      "file": "1ad25440.tree",
+      "fnv1a32": "1ad25440",
+      "sha256": "a644dda5188a003f85591e5ded9983d35510a811731b95e5847f503df1f1e46b",
+      "spt": "Tree/ymir work/tree/n1_montereycypress_rt_winter_01.spt",
+      "spt_bytes": 8844
+    },
+    {
+      "bytes": 45283,
+      "file": "f644ac1e.tree",
+      "fnv1a32": "f644ac1e",
+      "sha256": "bd43850fb628cf94e455e5ed2ab21a479acf4455d56e6d05432eb43639b88c61",
+      "spt": "Tree/ymir work/tree/n1_montereycypress_rt_winter_02.spt",
+      "spt_bytes": 8844
+    },
+    {
+      "bytes": 36829,
+      "file": "4a94aaa6.tree",
+      "fnv1a32": "4a94aaa6",
+      "sha256": "844e955808b0e828884cb21af6704024e545eeaf870cb48764c7e9d0e4024663",
+      "spt": "Tree/ymir work/tree/n1_montereycypress_rt_winter_03.spt",
+      "spt_bytes": 8844
+    },
+    {
+      "bytes": 339769,
+      "file": "7a822379.tree",
+      "fnv1a32": "7a822379",
+      "sha256": "96890d3721999c88bba02060a694adaaec6ef95061e11fba9cdab6ff899d9a62",
+      "spt": "Tree/ymir work/tree/n1_tulip_rt_winter_01.spt",
+      "spt_bytes": 6545
+    },
+    {
+      "bytes": 14896,
+      "file": "a63e2e24.tree",
+      "fnv1a32": "a63e2e24",
+      "sha256": "682d6550ff0f57fcfea5da70ef675eb56a6366ee9953784010498e85f43895b0",
+      "spt": "Tree/ymir work/tree/n1_whitepine_rt_low_01.spt",
+      "spt_bytes": 5198
+    },
+    {
+      "bytes": 15522,
+      "file": "777b72af.tree",
+      "fnv1a32": "777b72af",
+      "sha256": "53824203f3ee616d2a941e49c9dddb71bb57a4244eb0940266ff549206dcfb1b",
+      "spt": "Tree/ymir work/tree/n1_whitepine_rt_low_02.spt",
+      "spt_bytes": 5198
+    },
+    {
+      "bytes": 18294,
+      "file": "9dc915a1.tree",
+      "fnv1a32": "9dc915a1",
+      "sha256": "79254c8df3a8c64203c5d5fc2859a9e1641c988ace930e9b4ea99e1700f1f862",
+      "spt": "Tree/ymir work/tree/n2_aloevera_rt_flowers_01.spt",
+      "spt_bytes": 5155
+    },
+    {
+      "bytes": 18294,
+      "file": "85abcfa8.tree",
+      "fnv1a32": "85abcfa8",
+      "sha256": "36f1f85419dff83b8ba2d22bfaa6ad35185094e4e27631ee2aac22f249a2f004",
+      "spt": "Tree/ymir work/tree/n2_aloevera_rt_flowers_02.spt",
+      "spt_bytes": 5155
+    },
+    {
+      "bytes": 27811,
+      "file": "31c8db8d.tree",
+      "fnv1a32": "31c8db8d",
+      "sha256": "bcb046b98b9d6829891ee35c58cfbdcf7a5cde0d12eb15606981a30ea5def092",
+      "spt": "Tree/ymir work/tree/n2_bananatree_rt_01.spt",
+      "spt_bytes": 5484
+    },
+    {
+      "bytes": 27811,
+      "file": "830b2dfa.tree",
+      "fnv1a32": "830b2dfa",
+      "sha256": "7d230d4ed49a2ad365e709407092e3d9b3b8ed6953077360bf41a19ce25cba97",
+      "spt": "Tree/ymir work/tree/n2_bananatree_rt_02.spt",
+      "spt_bytes": 5484
+    },
+    {
+      "bytes": 1606,
+      "file": "985a997d.tree",
+      "fnv1a32": "985a997d",
+      "sha256": "edc7e87440a5c5222db3a9653c84155ab54719c96c283efdd477e8facf81fcf1",
+      "spt": "Tree/ymir work/tree/n2_cinnamonfern_rt_01.spt",
+      "spt_bytes": 4937
+    },
+    {
+      "bytes": 1606,
+      "file": "38cb44c8.tree",
+      "fnv1a32": "38cb44c8",
+      "sha256": "59ccb9ec8d279553cfa9d54e972b48f416c1f2a8cfed0596ef8eee96d746cfda",
+      "spt": "Tree/ymir work/tree/n2_cinnamonfern_rt_02.spt",
+      "spt_bytes": 4937
+    },
+    {
+      "bytes": 1606,
+      "file": "31512195.tree",
+      "fnv1a32": "31512195",
+      "sha256": "bcefac2de1a8e20cb2404b96550620f035a7b80f2205a12137201d6d6294e08c",
+      "spt": "Tree/ymir work/tree/n2_cinnamonfern_rt_03.spt",
+      "spt_bytes": 4937
+    },
+    {
+      "bytes": 26931,
+      "file": "4188516c.tree",
+      "fnv1a32": "4188516c",
+      "sha256": "cf418cbb442bb7c5a3031ab2dbbac9baa927fe713a02162c75f72ea68be6e8a4",
+      "spt": "Tree/ymir work/tree/n2_coconutpalm_rt_01.spt",
+      "spt_bytes": 5262
+    },
+    {
+      "bytes": 29069,
+      "file": "69ac9b6f.tree",
+      "fnv1a32": "69ac9b6f",
+      "sha256": "fbd87ba8caabbb6b5224a0b470db39451bc4dfc6b040ecebbb53632bb3a10c23",
+      "spt": "Tree/ymir work/tree/n2_coconutpalm_rt_02.spt",
+      "spt_bytes": 5262
+    },
+    {
+      "bytes": 26931,
+      "file": "56364395.tree",
+      "fnv1a32": "56364395",
+      "sha256": "2dde748abc01fd6accb76984510b6d618e7eee7a65865fdf2bb3704545d36719",
+      "spt": "Tree/ymir work/tree/n2_coconutpalm_rt_03.spt",
+      "spt_bytes": 5262
+    },
+    {
+      "bytes": 32595,
+      "file": "eaedd49e.tree",
+      "fnv1a32": "eaedd49e",
+      "sha256": "8dab9f80f1be400dc77b61977d154b5b82de84fdf482a6256e677fbf2d7c6524",
+      "spt": "Tree/ymir work/tree/n2_curlypalm_rt_01.spt",
+      "spt_bytes": 5242
+    },
+    {
+      "bytes": 32595,
+      "file": "34f60b7b.tree",
+      "fnv1a32": "34f60b7b",
+      "sha256": "f8d305cc210f60f813629601caee88cac7402a9eee15b8208103e32527f917cb",
+      "spt": "Tree/ymir work/tree/n2_curlypalm_rt_02.spt",
+      "spt_bytes": 5242
+    },
+    {
+      "bytes": 32595,
+      "file": "ee1edf60.tree",
+      "fnv1a32": "ee1edf60",
+      "sha256": "caf07980b8c0e3e0a015accb98d77244c23a148d3dceb2be26e4a2f3d4bdd5f1",
+      "spt": "Tree/ymir work/tree/n2_curlypalm_rt_03.spt",
+      "spt_bytes": 5242
+    },
+    {
+      "bytes": 37290,
+      "file": "30f6281e.tree",
+      "fnv1a32": "30f6281e",
+      "sha256": "adc6e768d1591c08704219b87744f9a7aabf1967ea24607dfe65609b9470dda1",
+      "spt": "Tree/ymir work/tree/n2_datepalm_rt_01.spt",
+      "spt_bytes": 5233
+    },
+    {
+      "bytes": 37290,
+      "file": "b4a881c7.tree",
+      "fnv1a32": "b4a881c7",
+      "sha256": "6ec209bc9819413881b00fb08a5f3f26a21adb3ed2c9f279d5c52daf9895d14b",
+      "spt": "Tree/ymir work/tree/n2_datepalm_rt_02.spt",
+      "spt_bytes": 5233
+    },
+    {
+      "bytes": 37290,
+      "file": "083f7548.tree",
+      "fnv1a32": "083f7548",
+      "sha256": "f7d985804f32b272176a0fa43f76c3e8d63e7299e524a36a40d37054c0e9ffb5",
+      "spt": "Tree/ymir work/tree/n2_datepalm_rt_03.spt",
+      "spt_bytes": 5233
+    },
+    {
+      "bytes": 33980,
+      "file": "9aa59bd6.tree",
+      "fnv1a32": "9aa59bd6",
+      "sha256": "8c57b85780774f59a8747e2ff2732f15bbfe0aaedf9a486c14aea7376b9a4769",
+      "spt": "Tree/ymir work/tree/n2_joshuatree_rt_01.spt",
+      "spt_bytes": 8405
+    },
+    {
+      "bytes": 42474,
+      "file": "707136d3.tree",
+      "fnv1a32": "707136d3",
+      "sha256": "11dda557f0518f298d97b8e630c42e1c7cb8f1e1bc4f180605d8457fc7c1f946",
+      "spt": "Tree/ymir work/tree/n2_joshuatree_rt_02.spt",
+      "spt_bytes": 8405
+    },
+    {
+      "bytes": 41934,
+      "file": "cc673b12.tree",
+      "fnv1a32": "cc673b12",
+      "sha256": "05fb578f8f03267b9aff448565a7f61b74df64901de76b8310729f15e8968a7b",
+      "spt": "Tree/ymir work/tree/n2_joshuatree_rt_03.spt",
+      "spt_bytes": 8636
+    },
+    {
+      "bytes": 76840,
+      "file": "ec60b813.tree",
+      "fnv1a32": "ec60b813",
+      "sha256": "af268b3a53dec86a2524690fac3b0ebafe2436af9a77f11de53752b641eaa663",
+      "spt": "Tree/ymir work/tree/n2_palmetto_rt_01.spt",
+      "spt_bytes": 5580
+    },
+    {
+      "bytes": 76954,
+      "file": "8a64bdcd.tree",
+      "fnv1a32": "8a64bdcd",
+      "sha256": "aa11114fc80fe48b583d5d3ef690763fc92f6a6f92280e79213fd995843aee59",
+      "spt": "Tree/ymir work/tree/n2_palmetto_rt_02.spt",
+      "spt_bytes": 5580
+    },
+    {
+      "bytes": 77524,
+      "file": "19ef2665.tree",
+      "fnv1a32": "19ef2665",
+      "sha256": "0d1f732efad282d645d0a2d3297985145c5efd40690f153ba62531d2223d27ed",
+      "spt": "Tree/ymir work/tree/n2_palmetto_rt_03.spt",
+      "spt_bytes": 5580
+    },
+    {
+      "bytes": 31186,
+      "file": "9cad056b.tree",
+      "fnv1a32": "9cad056b",
+      "sha256": "c8864159a3c26dfb11d202d79bb8a7984e2cd5455d398758d8e1f9c66210bad7",
+      "spt": "Zone/ymir work/zone/b/tree/1/baobab_rt.spt",
+      "spt_bytes": 6629
+    },
+    {
+      "bytes": 32674,
+      "file": "9ec31727.tree",
+      "fnv1a32": "9ec31727",
+      "sha256": "84244a6ebe697274625baeb8976770f41ff36daab625c385f9fc66593ab5aa43",
+      "spt": "Zone/ymir work/zone/b/tree/1/baobab_rt2.spt",
+      "spt_bytes": 6629
+    },
+    {
+      "bytes": 32145,
+      "file": "66b8ca83.tree",
+      "fnv1a32": "66b8ca83",
+      "sha256": "ec0e62c7beeda0b4fa9c6d4d2b371b85843094ac31373de52007e92e344561ca",
+      "spt": "Zone/ymir work/zone/b/tree/1/beech_rt.spt",
+      "spt_bytes": 6736
+    },
+    {
+      "bytes": 35969,
+      "file": "71aa9ee7.tree",
+      "fnv1a32": "71aa9ee7",
+      "sha256": "57a790d83983731dfdfd702586b18c25e234f7f6ab1a618b2e58a4863a2c60c7",
+      "spt": "Zone/ymir work/zone/b/tree/1/beech_rt2.spt",
+      "spt_bytes": 6736
+    },
+    {
+      "bytes": 34907,
+      "file": "90ee70ba.tree",
+      "fnv1a32": "90ee70ba",
+      "sha256": "7360a0355d8495b676645d6c3ea64e1ae027a59274f7e4aae5bcb31b548bcad3",
+      "spt": "Zone/ymir work/zone/b/tree/1/beech_rt3.spt",
+      "spt_bytes": 6736
+    },
+    {
+      "bytes": 31725,
+      "file": "4e3c347f.tree",
+      "fnv1a32": "4e3c347f",
+      "sha256": "c31c24f0ee49cff886f0b93a920f634b0bb060b68e3b96c7b3dcfd1e96e89af6",
+      "spt": "Zone/ymir work/zone/b/tree/1/beech_rt4.spt",
+      "spt_bytes": 6736
+    },
+    {
+      "bytes": 43441,
+      "file": "a7e985d7.tree",
+      "fnv1a32": "a7e985d7",
+      "sha256": "87c4ed6794fa51eae04e4bce1965eb3d7ec5754e70cf2ed8dcec4a2b1e7008cf",
+      "spt": "Zone/ymir work/zone/b/tree/1/montereycypress_rt.spt",
+      "spt_bytes": 8813
+    },
+    {
+      "bytes": 43853,
+      "file": "5015213b.tree",
+      "fnv1a32": "5015213b",
+      "sha256": "2df43af580caab1bf87551d468e0a14362159487daaf4b0bdd5ee2868602a181",
+      "spt": "Zone/ymir work/zone/b/tree/1/montereycypress_rt2.spt",
+      "spt_bytes": 8813
+    },
+    {
+      "bytes": 69859,
+      "file": "989b5e82.tree",
+      "fnv1a32": "989b5e82",
+      "sha256": "c8fa36db7213eb2af0187d31ca59800d2df7696bab826902f97007747b208058",
+      "spt": "Zone/ymir work/zone/b/tree/1/montereycypress_rt3.spt",
+      "spt_bytes": 8813
+    },
+    {
+      "bytes": 41219,
+      "file": "7a693695.tree",
+      "fnv1a32": "7a693695",
+      "sha256": "321b8cddd1d14cbed0d3b8447d53193365b894aede8de3e9dbc1577181efb25c",
+      "spt": "Zone/ymir work/zone/b/tree/1/montereycypress_rt4.spt",
+      "spt_bytes": 8813
+    },
+    {
+      "bytes": 61009,
+      "file": "b5c130bf.tree",
+      "fnv1a32": "b5c130bf",
+      "sha256": "286071d1b1538e88252f4eca957692a44a1f7355b7940ecfd62991a893e18627",
+      "spt": "Zone/ymir work/zone/b/tree/1/montereycypress_rt5.spt",
+      "spt_bytes": 8813
+    },
+    {
+      "bytes": 41338,
+      "file": "bcd934c0.tree",
+      "fnv1a32": "bcd934c0",
+      "sha256": "e862a7a1f5f42aefc7591303bfd2ac6d1705b32764b1ecec5eea4c62f44a93f3",
+      "spt": "Zone/ymir work/zone/b/tree/1/pagodatree_rt.spt",
+      "spt_bytes": 8011
+    },
+    {
+      "bytes": 45212,
+      "file": "42070d9a.tree",
+      "fnv1a32": "42070d9a",
+      "sha256": "ec18920385255c8ad4fcc403d2d12e2693c72d07addfa6bb0e08917d3093684a",
+      "spt": "Zone/ymir work/zone/b/tree/1/pagodatree_rt2.spt",
+      "spt_bytes": 8031
+    },
+    {
+      "bytes": 38338,
+      "file": "26bc2f2d.tree",
+      "fnv1a32": "26bc2f2d",
+      "sha256": "059ad6f7d2cb901844c2350aa3ae2baf62403befc7c775860a581934763da26e",
+      "spt": "Zone/ymir work/zone/b/tree/1/pagodatree_rt3.spt",
+      "spt_bytes": 8011
+    },
+    {
+      "bytes": 32485,
+      "file": "39002627.tree",
+      "fnv1a32": "39002627",
+      "sha256": "5be7b5cbaf6b9dc48b0230d7ef8e2d7255366331979f4e2c0655c5d0c03f6b4a",
+      "spt": "Zone/ymir work/zone/b/tree/1/sassafras_rt_fall.spt",
+      "spt_bytes": 6612
+    },
+    {
+      "bytes": 32143,
+      "file": "209d2181.tree",
+      "fnv1a32": "209d2181",
+      "sha256": "8322bcfd41441a444fc28fcc3b8c7513f3416f3ea3b65199770f295fa2d78036",
+      "spt": "Zone/ymir work/zone/b/tree/1/sassafras_rt_fall2.spt",
+      "spt_bytes": 6612
+    },
+    {
+      "bytes": 72528,
+      "file": "b9e29e56.tree",
+      "fnv1a32": "b9e29e56",
+      "sha256": "69b1433bccdb3b804c879e5060111c18405d74062ba328dc00067edb65f4dcde",
+      "spt": "Zone/ymir work/zone/b/tree/c/englishoak_rt_low_01.spt",
+      "spt_bytes": 5409
+    },
+    {
+      "bytes": 72528,
+      "file": "c2df036b.tree",
+      "fnv1a32": "c2df036b",
+      "sha256": "054b28e1e9e72abe4ae4d4a34491292d8f4ea2b6376d8688fa0b8f2a783fcad4",
+      "spt": "Zone/ymir work/zone/b/tree/c/englishoak_rt_low_02.spt",
+      "spt_bytes": 5341
+    },
+    {
+      "bytes": 71436,
+      "file": "c6fec4c4.tree",
+      "fnv1a32": "c6fec4c4",
+      "sha256": "d55e635a1dfa3b5c072ab721c4e1fbf03bfbfe76f6da43bd8967d26a39cccaa8",
+      "spt": "Zone/ymir work/zone/b/tree/c/englishoak_rt_low_03.spt",
+      "spt_bytes": 5337
+    },
+    {
+      "bytes": 48896,
+      "file": "6fc940f6.tree",
+      "fnv1a32": "6fc940f6",
+      "sha256": "441d56872ba7e2941694f42ab0b91e85cea86d1f1fee431871bcaa79f91d921f",
+      "spt": "Zone/ymir work/zone/b/tree/c/greenash_rt_01.spt",
+      "spt_bytes": 7057
+    },
+    {
+      "bytes": 44510,
+      "file": "989dbafc.tree",
+      "fnv1a32": "989dbafc",
+      "sha256": "a68d51f31b8b8a73cd982187157ef6eb330961e1ddeb43a7f54db6e4f79fa2bb",
+      "spt": "Zone/ymir work/zone/b/tree/c/greenash_rt_02.spt",
+      "spt_bytes": 7056
+    },
+    {
+      "bytes": 45656,
+      "file": "663da133.tree",
+      "fnv1a32": "663da133",
+      "sha256": "cbcad849803b1796189da9cc9490484d33533a774c87b93903af1678e277c5a2",
+      "spt": "Zone/ymir work/zone/b/tree/c/greenash_rt_03.spt",
+      "spt_bytes": 7061
+    },
+    {
+      "bytes": 69902,
+      "file": "32e8cfef.tree",
+      "fnv1a32": "32e8cfef",
+      "sha256": "71148c73325ea4b203a0c0709392e156aba82647cdf9d5c6f90c6d21871e2f67",
+      "spt": "Zone/ymir work/zone/b/tree/c/redmaple_rt_01.spt",
+      "spt_bytes": 5323
+    },
+    {
+      "bytes": 67052,
+      "file": "c64740b9.tree",
+      "fnv1a32": "c64740b9",
+      "sha256": "dac446f1ef5fc30532074b19b1e1a4bde12cffea34f572838021033a9e6e3a98",
+      "spt": "Zone/ymir work/zone/b/tree/c/redmaple_rt_02.spt",
+      "spt_bytes": 5322
+    },
+    {
+      "bytes": 69228,
+      "file": "e91b930f.tree",
+      "fnv1a32": "e91b930f",
+      "sha256": "a5b33d396ecd19630a9174770487d07932d115602109f433779d84a3b8c224f1",
+      "spt": "Zone/ymir work/zone/b/tree/c/redmaple_rt_03.spt",
+      "spt_bytes": 5323
+    },
+    {
+      "bytes": 91344,
+      "file": "ea9c417e.tree",
+      "fnv1a32": "ea9c417e",
+      "sha256": "9b19cabe1836e3fbecf9bf6f42ca48653dbda9ce3eb1a4c2a812f73adbd732d3",
+      "spt": "Zone/ymir work/zone/b/tree/c/riverbirch_rt_01.spt",
+      "spt_bytes": 6522
+    },
+    {
+      "bytes": 91666,
+      "file": "b6c3d01d.tree",
+      "fnv1a32": "b6c3d01d",
+      "sha256": "b5db540541d08941bcfd53375e43f8c2f60eceeef6555d9e06da90835f984868",
+      "spt": "Zone/ymir work/zone/b/tree/c/riverbirch_rt_02.spt",
+      "spt_bytes": 6522
+    },
+    {
+      "bytes": 96308,
+      "file": "63942d29.tree",
+      "fnv1a32": "63942d29",
+      "sha256": "1c96b9eb6778022381b70b95550431e7ca5ac56b82bd5e3bef49420851ddb64f",
+      "spt": "Zone/ymir work/zone/b/tree/c/riverbirch_rt_03.spt",
+      "spt_bytes": 6522
+    },
+    {
+      "bytes": 83936,
+      "file": "fd48510e.tree",
+      "fnv1a32": "fd48510e",
+      "sha256": "df1fe8a0ff8f916a67903b3c5fbe316675f0c7df0a32785342a1d3aaf5e905df",
+      "spt": "Zone/ymir work/zone/b/tree/c/sugarmaple_rt_01.spt",
+      "spt_bytes": 5207
+    },
+    {
+      "bytes": 87208,
+      "file": "96474463.tree",
+      "fnv1a32": "96474463",
+      "sha256": "62e92a0c90d81b9a6044068a83af526cf92d06aad7346b93d2529ee11f6dd077",
+      "spt": "Zone/ymir work/zone/b/tree/c/sugarmaple_rt_02.spt",
+      "spt_bytes": 5215
+    },
+    {
+      "bytes": 73706,
+      "file": "b030576e.tree",
+      "fnv1a32": "b030576e",
+      "sha256": "3d98f1adeb7610a49cb0b7411b91a43aac5a26eedb010200f5b8c8dffc473a6e",
+      "spt": "Zone/ymir work/zone/b/tree/c/sugarmaple_rt_03.spt",
+      "spt_bytes": 5248
+    }
+  ],
+  "format": 1,
+  "generator": {
+    "baked_at": "2026-11-01T18:44:29Z",
+    "dll_sha256": "ddba9b9b427d541ebc0bf1221fffc5d56a85d7b8ee0dfe6370a83a133da6967b",
+    "dumper": "speedtree_dumper.exe",
+    "dumper_sha256": "218a046911ea7af4efe2a23e6b5ec6fe84543de4df19a9b740c952fe0b0d46fe",
+    "seed": 1,
+    "tool": "open-mt2/speedtreebkr",
+    "tool_version": "1.0.0",
+    "tree_format": 1
+  },
+  "source": {
+    "assets": 118,
+    "duplicate_assets": 0,
+    "patterns": [
+      "bin/pack/**/*.spt"
+    ]
+  }
+}
