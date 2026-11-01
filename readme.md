@@ -10,17 +10,13 @@
 The repository contains no game code. The Docker image assembles a complete
 client workspace from the OpenMT2 projects:
 
-- every `pkg_*` repository from
-  [github.com/orgs/open-mt2](https://github.com/orgs/open-mt2/repositories) is
-  cloned into `src/<Package>/`;
 - the original client assets (`bin/`) are fetched from
   [git.old-metin2.com](https://git.old-metin2.com/metin2/client/src/branch/master/bin)
   when reachable;
-- [speedtreebkr](https://github.com/open-mt2/speedtreebkr) is placed in
-  `tools/speedtree_baker/` and its 32-bit dumper is built;
 - the build scripts from `scripts/` are installed at the workspace root.
 
-Starting the image immediately builds the client and assembles `dist/`.
+The image does not build anything on start. It ships the toolchain, sources and
+build scripts; run the build yourself when you are ready.
 
 ## Build the image
 
@@ -77,20 +73,20 @@ files or baked tree data are included.
 
 ## Compile and package
 
-With no arguments the entrypoint runs `build.sh`:
+Run the `build` command explicitly (no arguments just prints the usage):
 
 ```bash
-docker run --rm -v "$PWD/dist:/workspace/dist" openmt2/client
+docker run --rm -v "$PWD/dist:/workspace/dist" openmt2/client build
 ```
 
 `build.sh` options are forwarded:
 
 ```bash
 # Fast rebuild without re-zipping the packs
-docker run --rm -v "$PWD/dist:/workspace/dist" openmt2/client --skip-pack
+docker run --rm -v "$PWD/dist:/workspace/dist" openmt2/client build --skip-pack
 
-# Clean build and run the CTest suites
-docker run --rm -v "$PWD/dist:/workspace/dist" openmt2/client --clean -t
+# Clean build
+docker run --rm -v "$PWD/dist:/workspace/dist" openmt2/client build --clean
 ```
 
 The resulting package is written to the mounted `dist/` directory:
@@ -121,64 +117,15 @@ The tree mirrors the Linux package: same assets, same `pack/*.zip` archives,
 plus `metin2client.exe` and its runtime DLLs (`python27.dll`, `msvcr90.dll`,
 `libstdc++-6.dll`, `libgcc_s_seh-1.dll`). SDL2 is linked statically.
 
-Build both targets side by side and compare them:
+Build both targets side by side:
 
 ```bash
-OPENMT2_DIST_DIR=dist-linux  docker run ... openmt2/client --skip-pack
+OPENMT2_DIST_DIR=dist-linux   docker run ... openmt2/client build --skip-pack
 OPENMT2_DIST_DIR=dist-windows docker run ... openmt2/client windows --skip-pack
-python3 scripts/dist-diff.py dist-linux dist-windows
 ```
 
 Keep the C++ runtime DLLs and the Python runtime next to the executable when
 copying `dist/` to a Windows machine.
-
-## Smoke test
-
-`scripts/smoke.sh` boots a packaged tree under Xvfb (and Wine for the Windows
-build), screenshots it and fails on crashes, fatal `syserr.txt` lines or a
-blank screen:
-
-```bash
-docker run --rm --tmpfs /tmp/smoke-home:size=2g,mode=1777,uid=1000,gid=1000 \
-  -v "$PWD/scripts:/workspace/scripts" \
-  -v "$PWD/dist:/workspace/dist" \
-  -v "$PWD/smoke-artifacts:/workspace/smoke-artifacts" \
-  openmt2/client shell bash /workspace/scripts/smoke.sh linux --home /tmp/smoke-home
-```
-
-Use `windows` instead of `linux` for the cross-built tree; `--reference PNG`
-compares the captured screenshot with `scripts/render-diff.py`.
-
-## Test server
-
-`scripts/server.sh` runs the
-[old-metin2 deployment](https://git.old-metin2.com/metin2/deploy) (MySQL 5.5,
-web app, db/auth/game cores) with Docker Compose on the host, so the packaged
-client has a server to log in to. The deploy repository is cloned into the
-`server/` directory next to the devkit checkout (`../server`, outside this
-repository; set `SERVER_DIR` to use another path) and its `.env` is generated
-on first use.
-
-```bash
-scripts/server.sh up                         # fetch, configure, start, wait for auth/CH1
-scripts/server.sh account devtest devtest123 # create a login (or reset its password)
-scripts/server.sh status                     # containers; `logs [service]` follows logs
-scripts/server.sh down                       # stop; data stays in ../server/storage
-```
-
-The shipped `serverinfo.py` already targets `127.0.0.1` (auth `11000`, CH1
-`13000`), so a client on the Docker host connects without changes; only CH1 is
-served. For a client on another machine, advertise and package a reachable
-address:
-
-```bash
-SERVER_PUBLIC_IP=192.168.1.20 scripts/server.sh up
-scripts/server.sh client dist 192.168.1.20   # rewrites serverinfo.py in dist/pack/root.zip
-```
-
-The web app listens on `http://localhost:8080` and MySQL on `3306`
-(root / `metin2`); override them with `SERVER_WEB_PORT` and
-`SERVER_MYSQL_PORT`. `scripts/server.sh help` lists every option.
 
 ## Other commands
 
@@ -195,22 +142,6 @@ docker run --rm -v "$PWD/treecache:/workspace/treecache" openmt2/client bake --f
 # Help
 docker run --rm openmt2/client help
 ```
-
-## Platform parity
-
-There is one pipeline for both targets: the image builds Linux natively and
-cross-builds Windows with MinGW-w64, and both run the same CMake project,
-renderer (OpenGL compatibility via SDL2), Python 2.7 runtime and packaging
-scripts. The differences are limited to the binary itself, the runtime
-libraries and platform extension modules; `scripts/dist-diff.py` enforces that.
-
-Current state (see https://github.com/open-mt2/agent-docs/blob/main/parity/docs/planning/windows-parity-tasks.md for the archived sheet):
-
-- both targets compile, link and boot to the login flow (`scripts/smoke.sh`);
-- `metin2client.exe` has no DirectX SDK dependency and no unresolved `gl*`;
-- the legacy MSVC `build.bat` path is retired;
-- IME/text input is still Linux-incomplete (T1.6) and the Windows login
-  background scene is black (tracked with the Wave 5 renderer work).
 
 ## Related links
 

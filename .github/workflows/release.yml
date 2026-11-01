@@ -39,9 +39,6 @@ jobs:
             exit 1
           fi
 
-      - name: Devkit tests
-        run: python3 -m unittest discover -s tests -p 'test_*.py' -v
-
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 

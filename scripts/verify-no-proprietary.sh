@@ -41,8 +41,6 @@ check_dir "$ROOT/bin" "original client assets"
 check_dir "$ROOT/dist" "packaged client"
 check_dir "$ROOT/treecache" "baked SpeedTree cache"
 
-# Packs can also appear outside bin/ when a prepared workspace is copied into
-# the build context, so look for the archive/index formats anywhere.
 while IFS= read -r -d '' path; do
     failures+=("${path#"$ROOT"/} (pack archive)")
 done < <(

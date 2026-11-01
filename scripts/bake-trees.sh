@@ -63,9 +63,6 @@ patch_baker_toolchain() {
     fi
     cat >> "$toolchain" <<'EOF'
 
-# Added by the OpenMT2 client build image. The dumper is linked with
-# -nostdlib, which also drops the compiler's default libgcc. Point CMake at
-# the MinGW libgcc that the image installs when OPENMT2_MINGW_LIBGCC is set.
 if(DEFINED ENV{OPENMT2_MINGW_LIBGCC})
     set(CMAKE_C_STANDARD_LIBRARIES "$ENV{OPENMT2_MINGW_LIBGCC}" CACHE STRING "" FORCE)
     set(CMAKE_CXX_STANDARD_LIBRARIES "$ENV{OPENMT2_MINGW_LIBGCC}" CACHE STRING "" FORCE)
@@ -113,9 +110,6 @@ build_baker() {
         warn "Install wine32 + libwine-dev:i386 or set WINE_LIBS."
         return 1
     fi
-    # The dumper is linked with -nostdlib and only with Wine's kernel32 import
-    # library. The compiler therefore has to be pointed at the MinGW libgcc for
-    # 64-bit integer helpers (__udivdi3) used by the cache writer.
     local mingw_libgcc
     if mingw_libgcc="$(detect_mingw_libgcc)"; then
         patch_baker_toolchain

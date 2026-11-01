@@ -6,7 +6,7 @@
 # Mirrors scripts/build.sh for the x86_64 MinGW-w64 target: the same asset
 # tree and pack archives, plus the Windows binary and its runtime DLLs.
 # Point OPENMT2_DIST_DIR somewhere else to build both distributions side by
-# side for the parity diff.
+# side.
 
 set -euo pipefail
 
@@ -40,9 +40,25 @@ if [ "$CLEAN" = true ]; then
     rm -rf "$BUILD_DIR"
 fi
 
-export PKG_CONFIG_LIBDIR=/opt/openmt2/win64/lib/pkgconfig:/usr/x86_64-w64-mingw32/lib/pkgconfig
-cmake --preset windows
-cmake --build --preset windows --parallel "$JOBS"
+WIN64_PREFIX="${OPENMT2_WIN64_DEPS_PREFIX:-/opt/openmt2/win64}"
+export PKG_CONFIG_LIBDIR="$WIN64_PREFIX/lib/pkgconfig:/usr/x86_64-w64-mingw32/lib/pkgconfig"
+
+cmake -S "$PROJECT_ROOT" -B "$BUILD_DIR" -G Ninja \
+    -DCMAKE_SYSTEM_NAME=Windows \
+    -DCMAKE_SYSTEM_PROCESSOR=x86_64 \
+    -DCMAKE_C_COMPILER=x86_64-w64-mingw32-gcc \
+    -DCMAKE_CXX_COMPILER=x86_64-w64-mingw32-g++ \
+    -DCMAKE_RC_COMPILER=x86_64-w64-mingw32-windres \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DBUILD_ARCH_X86=OFF \
+    -DOPENMT2_WIN64_DEPS_PREFIX="$WIN64_PREFIX" \
+    -DCMAKE_FIND_ROOT_PATH="$WIN64_PREFIX;/usr/x86_64-w64-mingw32" \
+    -DCMAKE_FIND_ROOT_PATH_MODE_PROGRAM=NEVER \
+    -DCMAKE_FIND_ROOT_PATH_MODE_LIBRARY=ONLY \
+    -DCMAKE_FIND_ROOT_PATH_MODE_INCLUDE=ONLY \
+    -DCMAKE_FIND_ROOT_PATH_MODE_PACKAGE=ONLY \
+    -DCMAKE_TRY_COMPILE_TARGET_TYPE=STATIC_LIBRARY
+cmake --build "$BUILD_DIR" --parallel "$JOBS"
 
 mkdir -p "$DIST_DIR"
 for pair in "metin2client:src/ui/metin2client.exe" "config:src/Config/config.exe"; do
@@ -58,9 +74,6 @@ if [ ! -f "$DIST_DIR/metin2client.exe" ]; then
     exit 1
 fi
 
-# Python 2.7 runtime (T2.4) and the MinGW C++ runtime. Both are REQUIRED by
-# metin2client.exe (DT_NEEDED), unlike SDL2 which is linked statically.
-WIN64_PREFIX="${OPENMT2_WIN64_DEPS_PREFIX:-/opt/openmt2/win64}"
 for dll in python27.dll msvcr90.dll; do
     if [ -f "$WIN64_PREFIX/bin/$dll" ]; then
         cp "$WIN64_PREFIX/bin/$dll" "$DIST_DIR/"
@@ -80,21 +93,10 @@ for dll in libstdc++-6.dll libgcc_s_seh-1.dll; do
     fi
 done
 
-# Same asset tree as the Linux package (T3.1).
 if [ -d bin ]; then
     bash "$PROJECT_ROOT/scripts/copy-assets.sh" --dist "$DIST_DIR" --bin bin --treecache treecache
 fi
 
-# Ship the checked-in release configuration (same file as the Linux package).
-if [ -f "$PROJECT_ROOT/metin2.cfg" ]; then
-    cp -f "$PROJECT_ROOT/metin2.cfg" "$DIST_DIR/metin2.cfg"
-    echo "  - Installed release configuration: metin2.cfg"
-else
-    echo "  - WARNING: metin2.cfg not found; the client will create one on first run" >&2
-fi
-
-# Pack metadata, as in the Linux package: the client registers the archives
-# from pack/Index and refuses to start without it.
 mkdir -p "$DIST_DIR/pack"
 if [ -d bin/pack ]; then
     [ ! -f bin/pack/Index ] || cp bin/pack/Index "$DIST_DIR/pack/"
@@ -102,7 +104,6 @@ if [ -d bin/pack ]; then
     cp bin/pack/*.rdch "$DIST_DIR/pack/" 2>/dev/null || true
 fi
 
-# Same pack archives as the Linux package.
 if [ "$SKIP_PACK" = false ] && [ -d bin/pack ]; then
     bash "$PROJECT_ROOT/scripts/pack-assets.sh" bin/pack "$DIST_DIR/pack" "${PACK_ARCHIVER:-zip}"
 elif [ -d bin/pack ]; then

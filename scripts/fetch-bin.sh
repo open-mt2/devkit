@@ -101,7 +101,6 @@ if [ -n "${BIN_ARCHIVE_URL:-}" ]; then
         if copy_bin_from "$tmp/extracted"; then
             finish
         fi
-        # Some archives contain the contents of bin/ directly.
         if [ -n "$(find "$tmp/extracted" -mindepth 1 -maxdepth 1 -print -quit)" ]; then
             log "Copying extracted archive contents"
             mkdir -p "$BIN_DIR"
@@ -115,8 +114,6 @@ if [ -n "${BIN_ARCHIVE_URL:-}" ]; then
     trap - EXIT
 fi
 
-# Credentials are optional; anonymous git access to the old-metin2 repository
-# currently works even though its web UI requires a login.
 clone_url="$BIN_REPO_URL"
 if [ -n "${BIN_GIT_TOKEN:-${GITEA_TOKEN:-}}" ] && [[ "$clone_url" == https://* ]]; then
     token="${BIN_GIT_TOKEN:-${GITEA_TOKEN:-}}"

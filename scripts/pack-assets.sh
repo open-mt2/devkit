@@ -64,8 +64,6 @@ pack_entry() {
     local -a archives=()
     local stage
 
-    # Index names are authoritative. Match directories and prebuilt archives
-    # case-insensitively, exactly like the client's FindCaseInsensitiveFile().
     mapfile -t matches < <(
         find "$SOURCE" -mindepth 1 -maxdepth 1 -type d -iname "$name" -print \
             | LC_ALL=C sort
@@ -92,8 +90,6 @@ pack_entry() {
         return 0
     fi
 
-    # More than one spelling of the same name. Windows treats them as one
-    # directory, so merge them into the Index-named archive in sorted order.
     stage="$(mktemp -d)"
     STAGE="$stage"
     local dir
