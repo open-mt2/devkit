@@ -76,12 +76,7 @@ RUN cmake --version \
     && python3 --version
 
 # ---------------------------------------------------------------------------
-# Python 2.7 (required by neoeter-python: the client embeds CPython 2.7)
-#
-# Built from source here, once per base rebuild, instead of on every client
-# image build. --enable-shared produces the libpython2.7.so.1.0 that the
-# client links and that scripts/build.sh bundles into dist/runtime.
-# --with-ensurepip=no keeps pip/setuptools out of the shipped stdlib.
+# Python 2.7
 # ---------------------------------------------------------------------------
 ARG PYTHON27_VERSION=2.7.18
 RUN curl -fsSL "https://www.python.org/ftp/python/${PYTHON27_VERSION}/Python-${PYTHON27_VERSION}.tgz" \
@@ -125,10 +120,6 @@ RUN mkdir -p /usr/local/include/miniaudio /usr/local/lib/pkgconfig \
 
 # ---------------------------------------------------------------------------
 # Windows cross-build dependency set
-#
-# Only these two scripts are needed to build the prefix; the client image
-# installs the full scripts/ tree at /workspace. Rebuild this image manually
-# when either script changes (see AGENTS.md).
 # ---------------------------------------------------------------------------
 COPY scripts/build-windows-deps.sh scripts/fetch-windows-python.sh /usr/local/lib/openmt2/
 
