@@ -66,12 +66,6 @@ RUN if [ "${WITH_BIN}" = "1" ]; then \
 
 # ---------------------------------------------------------------------------
 # Tree geometry cache
-#
-# treecache/ is vendored in this repository (see treecache/README.md) and is
-# copied into the image in the scaffolding stage above. It was generated once
-# with open-mt2/speedtreebkr from bin/pack/**/*.spt; the image build never
-# compiles the dumper and never runs Wine. Verify the manifest and, when bin/
-# was fetched, that every .spt still has a matching cache entry.
 # ---------------------------------------------------------------------------
 RUN python3 /workspace/scripts/verify-treecache.py \
     --treecache /workspace/treecache --bin /workspace/bin

@@ -9,79 +9,35 @@ vendored tree geometry cache. It does not build anything on start; run the
 - Docker (BuildKit)
 - Git
 
-## Quick start
-
-```bash
-# The toolchain base is a private GHCR package: log in first with a token that
-# has read:packages, then pull it and build the client image
-echo "$GHCR_TOKEN" | docker login ghcr.io -u <user> --password-stdin
-docker pull ghcr.io/open-mt2/devkit-base:bookworm
-docker build -f dockerfile -t openmt2/client .
-
-# Compile and assemble dist/
-docker run --rm -v "$PWD/dist:/workspace/dist" openmt2/client build
-```
-
-Code-only image without the ~2.3 GB `bin/` asset tree:
-
-```bash
-docker build -f dockerfile --build-arg WITH_BIN=0 -t openmt2/client:slim .
-```
-
-Rebuild the base locally (it is built and published manually; there is no CI
-job for it):
-
-```bash
-docker build -f dockerfile.base -t ghcr.io/open-mt2/devkit-base:bookworm .
-docker build -f dockerfile -t openmt2/client .
-```
-
 ## Commands
 
-| Command | Purpose |
-| --- | --- |
-| `build [build.sh options]` | Compile and assemble `dist/` |
-| `windows [options]` | Cross-build the Windows client |
-| `fetch` | Refresh `pkg_*` sources and `bin/` assets |
-| `shell` | Interactive shell in the workspace |
-| `help` | Show usage |
+| Command                    | Purpose                            |
+| -------------------------- | ---------------------------------- |
+| `build [build.sh options]` | Compile and assemble `dist/`       |
+| `windows [options]`        | Cross-build the Windows client     |
+| `fetch`                    | Refresh sources and `bin/` assets  |
+| `shell`                    | Interactive shell in the workspace |
+| `help`                     | Show usage                         |
 
 ```bash
+# Build the client
 docker run --rm -v "$PWD/dist:/workspace/dist" openmt2/client build --clean
+
+# Build the client without packs
 docker run --rm -v "$PWD/dist:/workspace/dist" openmt2/client build --skip-pack
+
+# Fetch the external client files
 docker run --rm -it openmt2/client fetch
-docker run --rm --entrypoint python3 openmt2/client \
-  scripts/verify-treecache.py --bin bin --strict
 ```
 
 ## Build arguments
 
-| Argument | Default | Purpose |
-| --- | --- | --- |
-| `DEVKIT_BASE` | `ghcr.io/open-mt2/devkit-base:bookworm` | Toolchain base image |
-| `SRC_ORG` / `SRC_REF` | `open-mt2` / `main` | Source organization and branch |
-| `WITH_BIN` | `1` | Fetch the original `bin/` assets |
-| `BIN_REF` | `master` | Branch used for `bin/` |
-| `BIN_REPO_URL` | old-metin2 Gitea repo | Alternative asset repository |
-| `BIN_ARCHIVE_URL` | empty | Optional asset archive |
-| `BIN_REQUIRED` | `0` | Fail when no assets can be fetched |
-
-## Tree geometry cache
-
-`treecache/` is vendored in this repository and copied into the image;
-`build.sh` copies it to `dist/treecache/`. Normal builds do not compile the
-SpeedTree dumper and do not need Wine, `clang` or `lld`.
-
-Regenerate it with [speedtreebkr](https://github.com/open-mt2/speedtreebkr)
-when adding or editing trees; see [`treecache/README.md`](treecache/README.md).
-
-## Published image
-
-Tagging pushes `ghcr.io/open-mt2/client`. The image contains the sources, the
-toolchain, the build scripts and `treecache/`; it does not contain `bin/`, the
-pack archives or `dist/`.
+```
+WITH_BIN: Fetch external game assets (required to build a full client)
+BIN_REF: Branch used for BIN
+BIN_REPO_URL: Alternative asset repository (Defaults link to old-metin2 files)
+```
 
 ## Links
 
 - [OpenMT2 documentation](https://github.com/open-mt2/docs)
-- [Client packages](https://github.com/orgs/open-mt2/repositories?q=pkg_)
