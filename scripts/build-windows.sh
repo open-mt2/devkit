@@ -61,18 +61,14 @@ cmake -S "$PROJECT_ROOT" -B "$BUILD_DIR" -G Ninja \
 cmake --build "$BUILD_DIR" --parallel "$JOBS"
 
 mkdir -p "$DIST_DIR"
-for pair in "metin2client:src/ui/metin2client.exe" "config:src/Config/config.exe"; do
-    name="${pair%%:*}"
-    path="${pair#*:}"
-    if [ -f "$BUILD_DIR/$path" ]; then
-        cp "$BUILD_DIR/$path" "$DIST_DIR/$name.exe"
-        echo "  - Installed executable: $(basename "$DIST_DIR")/$name.exe"
-    fi
-done
-if [ ! -f "$DIST_DIR/metin2client.exe" ]; then
-    echo "ERROR: Windows executable '$BUILD_DIR/src/ui/metin2client.exe' not found after build" >&2
+OPENMT2_EXE="$BUILD_DIR/openmt2.exe"
+if [ ! -f "$OPENMT2_EXE" ]; then
+    echo "ERROR: Windows executable '$OPENMT2_EXE' not found after build" >&2
     exit 1
 fi
+rm -f "$DIST_DIR/openmt2.exe" "$DIST_DIR/metin2client.exe"
+cp "$OPENMT2_EXE" "$DIST_DIR/openmt2.exe"
+echo "  - Installed executable: $(basename "$DIST_DIR")/openmt2.exe"
 
 for dll in python27.dll msvcr90.dll; do
     if [ -f "$WIN64_PREFIX/bin/$dll" ]; then

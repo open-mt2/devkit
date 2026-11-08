@@ -27,7 +27,7 @@ if(WIN32)
         add_compile_options(-Werror=return-type)
     endif()
 
-    # Cross-built dependency prefix (T2.3): zlib, lzo2, libzip, SDL2, miniaudio.
+    # Cross-built dependency prefix (T2.3): zlib, lzo2, libzip, SDL2.
     if(DEFINED OPENMT2_WIN64_DEPS_PREFIX AND EXISTS "${OPENMT2_WIN64_DEPS_PREFIX}")
         include_directories(SYSTEM "${OPENMT2_WIN64_DEPS_PREFIX}/include")
         link_directories("${OPENMT2_WIN64_DEPS_PREFIX}/lib")

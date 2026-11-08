@@ -10,7 +10,7 @@
 #   build [build.sh options]   Compile and assemble dist/
 #   windows [options]          Cross-build Windows client and assemble dist/
 #   shell                      Open an interactive shell
-#   fetch                      Refresh pkg_* sources and bin/ assets
+#   fetch                      Refresh source repositories and bin/ assets
 #   help                       Show this help
 #
 # Any other first argument is treated as a build.sh option, e.g.

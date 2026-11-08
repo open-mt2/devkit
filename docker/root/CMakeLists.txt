@@ -15,7 +15,7 @@ include(Platform)
 
 # The Linux package is relocatable: build.sh copies the non-system runtime
 # libraries (libzip, libpython2.7) into dist/runtime. Resolve them relative to
-# the executable so `cd dist && ./metin2client` works outside the image.
+# the executable so `cd dist && ./openmt2` works outside the image.
 # Build-tree binaries keep CMake's automatic RPATH.
 if(UNIX AND NOT APPLE)
     set(CMAKE_BUILD_RPATH "$ORIGIN/runtime")
@@ -23,20 +23,22 @@ if(UNIX AND NOT APPLE)
 endif()
 
 # Windows cross builds resolve most dependencies through the toolchain's
-# OPENMT2_WIN64_DEPS_PREFIX, but packages that link via pkg-config (-lminiaudio,
-# -lzip) only contribute the library name. Make the prefix a link directory
-# (T1.9).
+# OPENMT2_WIN64_DEPS_PREFIX, but packages that link via pkg-config (-lzip)
+# only contribute the library name. Make the prefix a link directory (T1.9).
 if(WIN32 AND OPENMT2_WIN64_DEPS_PREFIX)
     link_directories("${OPENMT2_WIN64_DEPS_PREFIX}/lib")
 endif()
 
 # Three consolidated source repositories (TB.3). Each repository adds its own
-# packages in dependency order and pins the historic build/src/<Package>
-# binary directories, so build.sh and the dist assembly keep their paths.
+# packages in dependency order.
 set(OPENMT2_SOURCE_REPOS neoeter neoeter-python client)
 
+option(OPENMT2_NEOETER_PREBUILT "Use an installed Neoeter instead of src/neoeter" OFF)
+
 foreach(_repo IN LISTS OPENMT2_SOURCE_REPOS)
-    if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/src/${_repo}/CMakeLists.txt")
+    if(_repo STREQUAL "neoeter" AND OPENMT2_NEOETER_PREBUILT)
+        find_package(Neoeter CONFIG REQUIRED)
+    elseif(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/src/${_repo}/CMakeLists.txt")
         add_subdirectory("src/${_repo}" "${CMAKE_BINARY_DIR}/src/${_repo}")
     else()
         message(FATAL_ERROR "OpenMT2 source repository '${_repo}' is missing under src/${_repo}. Run scripts/fetch-sources.sh.")

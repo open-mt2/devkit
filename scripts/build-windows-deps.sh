@@ -122,27 +122,5 @@ cmake -S SDL2-2.30.9 -B build-sdl2 -G Ninja \
 cmake --build build-sdl2 --parallel "$JOBS" >/dev/null
 cmake --install build-sdl2 >/dev/null
 
-MINIAUDIO_VERSION=0.11.25
-fetch "https://raw.githubusercontent.com/mackron/miniaudio/${MINIAUDIO_VERSION}/miniaudio.h" \
-      "miniaudio.h" \
-      "ac7af4de748b7e26b777f37e01cee313a308a7296a3eb080e2906b320cc55c89"
-install -Dm644 miniaudio.h "$PREFIX/include/miniaudio/miniaudio.h"
-printf '#define MINIAUDIO_IMPLEMENTATION\n#include <miniaudio/miniaudio.h>\n' > miniaudio_impl.c
-"$CC" -O2 -I"$PREFIX/include" -c miniaudio_impl.c -o miniaudio_impl.o
-"$AR" rcs "$PREFIX/lib/libminiaudio.a" miniaudio_impl.o
-cat > "$PREFIX/lib/pkgconfig/miniaudio.pc" <<PC
-prefix=$PREFIX
-exec_prefix=\${prefix}
-libdir=\${exec_prefix}/lib
-includedir=\${prefix}/include
-
-Name: miniaudio
-Description: Single-file audio playback and capture library
-Version: ${MINIAUDIO_VERSION}
-Cflags: -I\${includedir}
-Libs: -L\${libdir} -lminiaudio
-Libs.private: -lwinmm -lole32 -luuid -loleaut32
-PC
-
 echo "[deps] installed into $PREFIX:"
 find "$PREFIX" -name '*.a' -printf '  %P\n' | sort

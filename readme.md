@@ -11,13 +11,13 @@ vendored tree geometry cache. It does not build anything on start; run the
 
 ## Commands
 
-| Command                    | Purpose                            |
-| -------------------------- | ---------------------------------- |
-| `build [build.sh options]` | Compile and assemble `dist/`       |
-| `windows [options]`        | Cross-build the Windows client     |
-| `fetch`                    | Refresh sources and `bin/` assets  |
-| `shell`                    | Interactive shell in the workspace |
-| `help`                     | Show usage                         |
+| Command                    | Purpose                             |
+| -------------------------- | ----------------------------------- |
+| `build [build.sh options]` | Compile and assemble `dist/openmt2` |
+| `windows [options]`        | Cross-build the Windows client      |
+| `fetch`                    | Refresh sources and `bin/` assets   |
+| `shell`                    | Interactive shell in the workspace  |
+| `help`                     | Show usage                          |
 
 ```bash
 # Build the client
@@ -25,6 +25,10 @@ docker run --rm -v "$PWD/dist:/workspace/dist" openmt2/client build --clean
 
 # Build the client without packs
 docker run --rm -v "$PWD/dist:/workspace/dist" openmt2/client build --skip-pack
+
+# Build against an installed Neoeter package
+docker run --rm -v "$PWD/dist:/workspace/dist" -v "/path/to/neoeter:/opt/neoeter" \
+    openmt2/client build --neoeter-prefix /opt/neoeter
 
 # Fetch the external client files
 docker run --rm -it openmt2/client fetch

@@ -24,6 +24,7 @@ BUILD_DIR="${PROJECT_ROOT}/build"
 DIST_DIR="${OPENMT2_DIST_DIR:-${PROJECT_ROOT}/dist}"
 PACK_ARCHIVES=true
 CLEAN_BUILD=false
+NEOETER_PREFIX=""
 NUM_JOBS="$(nproc 2>/dev/null || echo 4)"
 
 BUNDLED_RUNTIME_LIBS="${BUNDLED_RUNTIME_LIBS:-libzip.so.4 libpython2.7.so.1.0}"
@@ -33,7 +34,7 @@ resolve_library() {
     path="$(ldconfig -p 2>/dev/null \
         | awk -v name="$soname" '$1 == name { print $NF; exit }')"
     if [ -z "$path" ] || [ ! -f "$path" ]; then
-        path="$(ldd "${BUILD_DIR}/src/ui/metin2client" 2>/dev/null \
+        path="$(ldd "${BUILD_DIR}/openmt2" 2>/dev/null \
             | awk -v name="$soname" '$1 == name { print $3; exit }')"
     fi
     [ -n "$path" ] && [ -f "$path" ] && printf '%s\n' "$path"
@@ -95,6 +96,7 @@ Options:
   -b, --build-type <TYPE>   CMake build type (Release, Debug, RelWithDebInfo). Default: Release
   -j, --jobs <N>            Number of parallel build jobs. Default: $NUM_JOBS
   --clean                   Remove existing build directory before configuring
+  --neoeter-prefix <PATH>   Use an installed Neoeter package instead of src/neoeter
   --skip-pack               Skip packing bin/pack/* zip archives (faster build for code iteration)
   -h, --help                Show this help message
 EOF
@@ -113,6 +115,10 @@ while [[ $# -gt 0 ]]; do
         --clean)
             CLEAN_BUILD=true
             shift
+            ;;
+        --neoeter-prefix)
+            NEOETER_PREFIX="$2"
+            shift 2
             ;;
         --skip-pack)
             PACK_ARCHIVES=false
@@ -157,42 +163,40 @@ echo "  - CMake Generator: $BUILD_GENERATOR"
 echo "  - Build Type:      $BUILD_TYPE"
 echo "  - Parallel Jobs:   $NUM_JOBS"
 echo "  - Pack Archiver:   ${ARCHIVER:-None}"
+echo "  - Neoeter:         ${NEOETER_PREFIX:-src/neoeter}"
 
 if [ "$CLEAN_BUILD" = true ] && [ -d "$BUILD_DIR" ]; then
     echo "Cleaning build directory: $BUILD_DIR"
-    rm -rf "$BUILD_DIR"
+    find "$BUILD_DIR" -mindepth 1 -maxdepth 1 -exec rm -rf {} +
+fi
+
+CMAKE_ARGS=()
+if [ -n "$NEOETER_PREFIX" ]; then
+    CMAKE_ARGS+=("-DOPENMT2_NEOETER_PREBUILT=ON" "-DCMAKE_PREFIX_PATH=$NEOETER_PREFIX")
 fi
 
 echo ""
 echo "[2/5] Configuring and building client binaries..."
-cmake -B "$BUILD_DIR" -G "$BUILD_GENERATOR" -DCMAKE_BUILD_TYPE="$BUILD_TYPE"
+cmake -B "$BUILD_DIR" -G "$BUILD_GENERATOR" -DCMAKE_BUILD_TYPE="$BUILD_TYPE" "${CMAKE_ARGS[@]}"
 cmake --build "$BUILD_DIR" --parallel "$NUM_JOBS"
 
 echo ""
 echo "[3/5] Assembling client distribution directory in '$DIST_DIR'..."
-if [ "$CLEAN_BUILD" = true ]; then
-    rm -rf "$DIST_DIR"
+if [ "$CLEAN_BUILD" = true ] && [ -d "$DIST_DIR" ]; then
+    find "$DIST_DIR" -mindepth 1 -maxdepth 1 -exec rm -rf {} +
 fi
 mkdir -p "$DIST_DIR"
 
-METIN2_BIN="$BUILD_DIR/src/ui/metin2client"
-if [ -f "$METIN2_BIN" ]; then
-    rm -f "$DIST_DIR/metin2client"
-    cp "$METIN2_BIN" "$DIST_DIR/metin2client"
-    chmod +x "$DIST_DIR/metin2client"
-    ln -sf metin2client "$DIST_DIR/metin2"
-    echo "  - Installed executable: dist/metin2client"
+OPENMT2_BIN="$BUILD_DIR/openmt2"
+if [ -f "$OPENMT2_BIN" ]; then
+    rm -f "$DIST_DIR/openmt2" "$DIST_DIR/metin2client" "$DIST_DIR/metin2"
+    cp "$OPENMT2_BIN" "$DIST_DIR/openmt2"
+    chmod +x "$DIST_DIR/openmt2"
+    echo "  - Installed executable: dist/openmt2"
     install_runtime_libs
 else
-    echo "ERROR: Executable '$METIN2_BIN' not found after build!"
+    echo "ERROR: Executable '$OPENMT2_BIN' not found after build!"
     exit 1
-fi
-
-CONFIG_BIN="$BUILD_DIR/src/Config/config"
-if [ -f "$CONFIG_BIN" ]; then
-    cp "$CONFIG_BIN" "$DIST_DIR/config"
-    chmod +x "$DIST_DIR/config"
-    echo "  - Installed configuration utility: dist/config"
 fi
 
 echo ""
@@ -240,5 +244,5 @@ echo "Client package successfully assembled!"
 echo "Location: ${DIST_DIR}"
 echo ""
 echo "To run the client:"
-echo "  cd dist && ./metin2client"
+echo "  cd dist && ./openmt2"
 echo "======================================================"
