@@ -21,17 +21,17 @@ vendored tree geometry cache. It does not build anything on start; run the
 
 ```bash
 # Build the client
-docker run --rm -v "$PWD/dist:/workspace/dist" openmt2/client build --clean
+docker run --rm -v "$PWD/dist:/workspace/dist" openmt2/devkit build --clean
 
 # Build the client without packs
-docker run --rm -v "$PWD/dist:/workspace/dist" openmt2/client build --skip-pack
+docker run --rm -v "$PWD/dist:/workspace/dist" openmt2/devkit build --skip-pack
 
 # Build against an installed Neoeter package
 docker run --rm -v "$PWD/dist:/workspace/dist" -v "/path/to/neoeter:/opt/neoeter" \
-    openmt2/client build --neoeter-prefix /opt/neoeter
+    openmt2/devkit build --neoeter-prefix /opt/neoeter
 
 # Fetch the external client files
-docker run --rm -it openmt2/client fetch
+docker run --rm -it openmt2/devkit fetch
 ```
 
 ## Build arguments

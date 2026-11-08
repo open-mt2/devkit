@@ -163,5 +163,5 @@ fi
 log "imported $count_merged/$count_entries repositories into $TARGET"
 log "next:"
 printf '    1. review:  git -C %s log --oneline --graph | head\n' "$TARGET"
-printf '    2. sources: docker run ... openmt2/client --skip-pack\n'
+printf '    2. sources: docker run ... openmt2/devkit --skip-pack\n'
 printf '    3. update the devkit wiring (TB.3) before pushing\n'

@@ -13,7 +13,7 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  IMAGE: ghcr.io/open-mt2/client
+  IMAGE: ghcr.io/open-mt2/devkit
 
 jobs:
   publish:

@@ -14,7 +14,7 @@
 #   help                       Show this help
 #
 # Any other first argument is treated as a build.sh option, e.g.
-#   docker run ... openmt2/client --clean --skip-pack
+#   docker run ... openmt2/devkit --clean --skip-pack
 
 set -euo pipefail
 

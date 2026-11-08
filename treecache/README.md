@@ -28,7 +28,7 @@ that policy is tightened again.
 ## Provenance
 
 This snapshot was generated on 2026-11-01 from the 118 `.spt` assets in
-`bin/pack` (local `openmt2/client:buildonly-eaa9495` build), seed 1, with
+`bin/pack` (local devkit build), seed 1, with
 `speedtreebkr` 1.0.0. The dumper and `SpeedTreeRT.dll` hashes are recorded in
 `MANIFEST.json`.
 

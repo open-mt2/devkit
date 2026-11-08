@@ -8,7 +8,7 @@
 # rebuilds do not reinstall the toolchain or recompile the Windows deps.
 #
 #   docker build -f dockerfile.base -t ghcr.io/open-mt2/devkit-base:bookworm .
-#   docker build -f dockerfile -t openmt2/client .
+#   docker build -f dockerfile -t openmt2/devkit .
 #
 # Override DEVKIT_BASE to use a locally built base image.
 
@@ -17,7 +17,7 @@ FROM ${DEVKIT_BASE}
 
 LABEL org.opencontainers.image.title="OpenMT2 Client Development Kit"
 LABEL org.opencontainers.image.description="Build and package the OpenMT2 client"
-LABEL org.opencontainers.image.source="https://github.com/open-mt2/client"
+LABEL org.opencontainers.image.source="https://github.com/open-mt2/devkit"
 LABEL org.opencontainers.image.licenses="GPL-2.0-or-later"
 
 SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
