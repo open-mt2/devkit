@@ -32,7 +32,25 @@ docker run --rm -v "$PWD/dist:/workspace/dist" -v "/path/to/neoeter:/opt/neoeter
 
 # Fetch the external client files
 docker run --rm -it openmt2/devkit fetch
+
+# Fetch a specific branch, tag or commit per repository
+docker run --rm -v "$PWD/src:/workspace/src" openmt2/devkit fetch \
+    --ref client=3f2a1b9c4d5e6f708192a3b4c5d6e7f8091a2b3c \
+    --ref neoeter=v0.4.1
+
+# Fetch all repositories and record the resolved commit hashes
+docker run --rm -v "$PWD/src:/workspace/src" openmt2/devkit fetch \
+    --write-lock src/sources.lock
+
+# Build against the fetched sources
+docker run --rm -v "$PWD/src:/workspace/src" -v "$PWD/dist:/workspace/dist" \
+    openmt2/devkit build --clean
 ```
+
+`--ref` accepts `neoeter`, `neoeter-python` and `client`. Refs can be branches,
+tags or full 40-character commit hashes. Commit hashes can also be provided per
+repository through `SRC_REF_CLIENT`, `SRC_REF_NEOETER` and
+`SRC_REF_NEOETER_PYTHON`; `SRC_REF` remains the default for every repository.
 
 ## Build arguments
 

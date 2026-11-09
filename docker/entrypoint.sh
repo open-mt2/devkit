@@ -10,7 +10,8 @@
 #   build [build.sh options]   Compile and assemble dist/
 #   windows [options]          Cross-build Windows client and assemble dist/
 #   shell                      Open an interactive shell
-#   fetch                      Refresh source repositories and bin/ assets
+#   fetch [options]            Refresh source repositories and bin/ assets
+#                              (source options: --ref REPO=REF, --write-lock FILE)
 #   help                       Show this help
 #
 # Any other first argument is treated as a build.sh option, e.g.
@@ -64,7 +65,7 @@ case "${1:-}" in
     fetch)
         shift
         "$(require_script fetch-sources.sh)" "$@"
-        exec "$(require_script fetch-bin.sh)" "$@"
+        exec "$(require_script fetch-bin.sh)"
         ;;
     help|-h|--help)
         usage
