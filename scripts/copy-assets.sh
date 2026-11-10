@@ -51,6 +51,8 @@ fi
 find "$BIN_DIR" -maxdepth 1 -type f ! -iname "*.dll" ! -name ".gitignore" \
     -exec cp {} "$DIST_DIR/" \;
 
+rm -rf "$DIST_DIR/lib"
+
 for dir in BGM lib mark miles screenshot upload; do
     mkdir -p "$DIST_DIR/$dir"
     if [ -d "$BIN_DIR/$dir" ]; then

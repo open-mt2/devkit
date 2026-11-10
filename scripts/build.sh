@@ -63,7 +63,7 @@ install_runtime_libs() {
     fi
 }
 
-install_python_stdlib() {
+install_python_runtime() {
     command -v python2.7 >/dev/null 2>&1 || {
         echo "  - WARNING: python2.7 not found; dist/lib may be incomplete"
         return 0
@@ -76,15 +76,13 @@ install_python_stdlib() {
         return 0
     fi
 
-    echo "  - Installing CPython 2.7 stdlib from $stdlib"
+    echo "  - Installing CPython 2.7 runtime modules from $stdlib"
     mkdir -p "$DIST_DIR/lib"
-    (
-        cd "$stdlib"
-        find . -mindepth 1 -maxdepth 1 ! -name lib-dynload \
-            -exec cp -a {} "$DIST_DIR/lib/" \;
-    )
+    find "$stdlib" -maxdepth 1 -type f -name '*.pyc' \
+        -exec cp -a {} "$DIST_DIR/lib/" \;
     if [ -d "$stdlib/lib-dynload" ]; then
-        cp -a "$stdlib/lib-dynload"/. "$DIST_DIR/lib/" 2>/dev/null || true
+        find "$stdlib/lib-dynload" -maxdepth 1 -type f -name '*.so' \
+            -exec cp -a {} "$DIST_DIR/lib/" \;
     fi
 }
 
@@ -216,7 +214,7 @@ else
     echo "WARNING: 'bin/' directory not found. Skipping asset copy."
 fi
 
-install_python_stdlib
+install_python_runtime
 
 echo ""
 if [ "$PACK_ARCHIVES" = true ] && [ -d "bin/pack" ]; then
