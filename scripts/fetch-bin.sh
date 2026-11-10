@@ -47,6 +47,69 @@ have_bin() {
         && [ -n "$(find "$BIN_DIR" -mindepth 1 ! -name .gitignore -print -quit 2>/dev/null)" ]
 }
 
+declare -a MERGE_COLLISION_DIRS=()
+
+prepare_merge() {
+    local source="$1"
+    mapfile -t MERGE_COLLISION_DIRS < <(
+        find "$source" -mindepth 1 -print \
+            | tr '[:upper:]' '[:lower:]' \
+            | sort | uniq -d \
+            | sed 's#/[^/]*$##' \
+            | sort -u
+    )
+}
+
+needs_merge() {
+    local directory="${1,,}" collision
+    for collision in "${MERGE_COLLISION_DIRS[@]}"; do
+        if [ "$directory" = "$collision" ] || [[ "$collision" == "$directory"/* ]]; then
+            return 0
+        fi
+    done
+    return 1
+}
+
+merge_tree() {
+    local source="$1" target="$2"
+    local entry name key existing
+    local -A seen=()
+
+    mkdir -p "$target"
+    shopt -s nullglob dotglob
+
+    for existing in "$target"/*; do
+        name="${existing##*/}"
+        seen["${name,,}"]="$existing"
+    done
+
+    for entry in "$source"/*; do
+        name="${entry##*/}"
+        key="${name,,}"
+        if [ -n "${seen[$key]+x}" ]; then
+            existing="${seen[$key]}"
+            if [ -d "$entry" ] && [ ! -L "$entry" ] \
+                && [ -d "$existing" ] && [ ! -L "$existing" ]; then
+                if [ "$name" != "${existing##*/}" ]; then
+                    log "Merging ${entry#"$source"/} into ${existing#"$target"/}"
+                fi
+                merge_tree "$entry" "$existing"
+            elif [ "$name" != "${existing##*/}" ]; then
+                warn "Keeping ${existing#"$target"/} instead of ${entry#"$source"/}"
+            fi
+            continue
+        fi
+        existing="$target/$name"
+        if [ -d "$entry" ] && [ ! -L "$entry" ] && needs_merge "$entry"; then
+            mkdir -p "$existing"
+            merge_tree "$entry" "$existing"
+        else
+            cp -a "$entry" "$existing"
+        fi
+        seen["$key"]="$existing"
+    done
+}
+
 copy_bin_from() {
     local source="$1"
     if [ -d "$source/bin" ]; then
@@ -57,7 +120,8 @@ copy_bin_from() {
     fi
     log "Copying assets from $source"
     mkdir -p "$BIN_DIR"
-    cp -a "$source/." "$BIN_DIR/"
+    prepare_merge "$source"
+    merge_tree "$source" "$BIN_DIR"
 }
 
 finish() {
@@ -104,7 +168,8 @@ if [ -n "${BIN_ARCHIVE_URL:-}" ]; then
         if [ -n "$(find "$tmp/extracted" -mindepth 1 -maxdepth 1 -print -quit)" ]; then
             log "Copying extracted archive contents"
             mkdir -p "$BIN_DIR"
-            cp -a "$tmp/extracted/." "$BIN_DIR/"
+            prepare_merge "$tmp/extracted"
+            merge_tree "$tmp/extracted" "$BIN_DIR"
             finish
         fi
     else
@@ -129,7 +194,8 @@ if GIT_TERMINAL_PROMPT=0 git clone --depth 1 --filter=blob:none --sparse \
    && git -C "$tmp/client" sparse-checkout set bin >/dev/null 2>&1 \
    && [ -d "$tmp/client/bin" ]; then
     mkdir -p "$BIN_DIR"
-    cp -a "$tmp/client/bin/." "$BIN_DIR/"
+    prepare_merge "$tmp/client/bin"
+    merge_tree "$tmp/client/bin" "$BIN_DIR"
     finish
 fi
 
