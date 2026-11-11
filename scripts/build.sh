@@ -1,9 +1,4 @@
 #!/usr/bin/env bash
-# ======================================================
-# The Old Metin2 Project - Automated client build script
-# Linux Build & Packaging Script
-# ======================================================
-
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -15,8 +10,7 @@ fi
 cd "$PROJECT_ROOT"
 
 echo "======================================================"
-echo "The Old Metin2 Project - Automated client build script"
-echo "Linux Build Environment"
+echo "OpenMT2 Linux Build Environment"
 echo "======================================================"
 
 BUILD_TYPE="Release"
@@ -239,8 +233,4 @@ fi
 echo ""
 echo "======================================================"
 echo "Client package successfully assembled!"
-echo "Location: ${DIST_DIR}"
-echo ""
-echo "To run the client:"
-echo "  cd dist && ./openmt2"
 echo "======================================================"

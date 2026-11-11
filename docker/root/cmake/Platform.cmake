@@ -46,7 +46,7 @@ else()
         -Wall
         -Wextra
         -Wno-unused-parameter
-        -Wno-invalid-offsetof
+        $<$<COMPILE_LANGUAGE:CXX>:-Wno-invalid-offsetof>
         -Wno-multichar
         -Wno-sign-compare
         -Werror=return-type
