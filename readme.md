@@ -15,6 +15,7 @@ vendored tree geometry cache. It does not build anything on start; run the
 | -------------------------- | ----------------------------------- |
 | `build [build.sh options]` | Compile and assemble `dist/openmt2` |
 | `windows [options]`        | Cross-build the Windows client      |
+| `pack [entry ...]`         | Repack `dist/pack` archives         |
 | `fetch`                    | Refresh sources and `bin/` assets   |
 | `shell`                    | Interactive shell in the workspace  |
 | `help`                     | Show usage                          |
@@ -45,12 +46,36 @@ docker run --rm -v "$PWD/src:/workspace/src" openmt2/devkit fetch \
 # Build against the fetched sources
 docker run --rm -v "$PWD/src:/workspace/src" -v "$PWD/dist:/workspace/dist" \
     openmt2/devkit build --clean
+
+# Repack one archive (matches Index names case-insensitively)
+docker run --rm -v "$PWD/dist:/workspace/dist" openmt2/devkit pack ETC
+
+# Repack several archives
+docker run --rm -v "$PWD/dist:/workspace/dist" openmt2/devkit pack bgm sound
+
+# Regenerate every archive in dist/pack/
+docker run --rm -v "$PWD/dist:/workspace/dist" openmt2/devkit pack
 ```
 
 `--ref` accepts `neoeter`, `neoeter-python` and `client`. Refs can be branches,
 tags or full 40-character commit hashes. Commit hashes can also be provided per
 repository through `SRC_REF_CLIENT`, `SRC_REF_NEOETER` and
 `SRC_REF_NEOETER_PYTHON`; `SRC_REF` remains the default for every repository.
+
+## Manual packs
+
+`pack` reads the unpacked asset directories from `bin/pack/`, packs the ones
+named on the command line (or every entry in `bin/pack/Index` when none are
+given) and replaces only the corresponding `dist/pack/<name>.zip` files. An
+entry name that does not appear in `Index` is an error.
+
+Mount `bin/pack` as well when the assets were changed on the host:
+
+```bash
+docker run --rm -v "$PWD/bin/pack:/workspace/bin/pack" \
+    -v "$PWD/dist:/workspace/dist" openmt2/devkit pack ETC
+```
+
 
 ## Build arguments
 
