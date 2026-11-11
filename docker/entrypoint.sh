@@ -9,6 +9,8 @@
 # Commands:
 #   build [build.sh options]   Compile and assemble dist/
 #   windows [options]          Cross-build Windows client and assemble dist/
+#   pack [entry ...]           Repack dist/pack archives from bin/pack
+#                              (no entry: regenerate every archive)
 #   shell                      Open an interactive shell
 #   fetch [options]            Refresh source repositories and bin/ assets
 #                              (source options: --ref REPO=REF, --write-lock FILE)
@@ -57,6 +59,10 @@ case "${1:-}" in
     windows)
         shift
         exec "$(require_script build-windows.sh)" "$@"
+        ;;
+    pack)
+        shift
+        exec "$(require_script pack.sh)" "$@"
         ;;
     shell|bash|sh)
         shift
