@@ -100,10 +100,18 @@ if [ -d bin/pack ]; then
     cp bin/pack/*.rdch "$DIST_DIR/pack/" 2>/dev/null || true
 fi
 
+INJECT_HELPER="$PROJECT_ROOT/scripts/inject-pack-manifest.sh"
+if [ -x "$INJECT_HELPER" ] && [ -d bin/pack ]; then
+    bash "$INJECT_HELPER" --bin bin/pack
+fi
+
 if [ "$SKIP_PACK" = false ] && [ -d bin/pack ]; then
     bash "$PROJECT_ROOT/scripts/pack-assets.sh" bin/pack "$DIST_DIR/pack" "${PACK_ARCHIVER:-zip}"
 elif [ -d bin/pack ]; then
     cp bin/pack/*.zip "$DIST_DIR/pack/" 2>/dev/null || true
+    if [ -x "$INJECT_HELPER" ] && [ -f "$DIST_DIR/pack/root.zip" ]; then
+        bash "$INJECT_HELPER" --bin bin/pack --archive "$DIST_DIR/pack/root.zip"
+    fi
 fi
 
 echo "Windows client package assembled in $DIST_DIR"

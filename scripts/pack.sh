@@ -91,6 +91,18 @@ if [ ! -x "$HELPER" ]; then
     exit 1
 fi
 
+INJECT_HELPER="$PROJECT_ROOT/scripts/inject-pack-manifest.sh"
+if [ -x "$INJECT_HELPER" ]; then
+    INJECT_ARGS=(--bin "$BIN_DIR")
+    if [ -f "$BIN_DIR/root.zip" ]; then
+        INJECT_ARGS+=(--archive "$BIN_DIR/root.zip")
+    fi
+    bash "$INJECT_HELPER" "${INJECT_ARGS[@]}"
+else
+    echo "pack: inject-pack-manifest.sh not found" >&2
+    exit 1
+fi
+
 PACK_DIR="$DIST_ROOT/pack"
 echo "OpenMT2 pack: $BIN_DIR -> $PACK_DIR"
 

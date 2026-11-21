@@ -216,6 +216,13 @@ fi
 
 install_python_runtime
 
+INJECT_HELPER="$PROJECT_ROOT/scripts/inject-pack-manifest.sh"
+if [ -x "$INJECT_HELPER" ] && [ -d "bin/pack" ]; then
+    bash "$INJECT_HELPER" --bin bin/pack
+else
+    echo "WARNING: inject-pack-manifest.sh not found; the client will refuse to boot without pack/manifest"
+fi
+
 echo ""
 if [ "$PACK_ARCHIVES" = true ] && [ -d "bin/pack" ]; then
     echo "[5/5] Compressing and installing pack archives into dist/pack/..."
@@ -233,6 +240,9 @@ else
     mkdir -p "${DIST_DIR}/pack"
     if [ -d "bin/pack" ]; then
         cp bin/pack/*.zip "${DIST_DIR}/pack/" 2>/dev/null || true
+    fi
+    if [ -x "$INJECT_HELPER" ] && [ -f "${DIST_DIR}/pack/root.zip" ]; then
+        bash "$INJECT_HELPER" --bin bin/pack --archive "${DIST_DIR}/pack/root.zip"
     fi
 fi
 
