@@ -26,6 +26,8 @@ PACK_ARCHIVES=true
 CLEAN_BUILD=false
 NEOETER_PREFIX=""
 NUM_JOBS="$(nproc 2>/dev/null || echo 4)"
+SCRIPT_DOTNET=true
+BUNDLE_DOTNET="${OPENMT2_BUNDLE_DOTNET:-false}"
 
 BUNDLED_RUNTIME_LIBS="${BUNDLED_RUNTIME_LIBS:-libzip.so.4 libpython2.7.so.1.0}"
 
@@ -86,6 +88,46 @@ install_python_runtime() {
     fi
 }
 
+# Neoeter.Scripting (the managed half of the .NET script runtime) goes to
+# dist/dotnet, where the client looks for it. With --bundle-dotnet the .NET
+# runtime itself is copied to dist/dotnet/runtime, so players need no install.
+install_dotnet_runtime() {
+    [ "$SCRIPT_DOTNET" = true ] || return 0
+
+    local staged="$BUILD_DIR/dotnet"
+    if [ ! -f "$staged/Neoeter.Scripting.dll" ]; then
+        echo "  - WARNING: $staged/Neoeter.Scripting.dll not found; the .NET script runtime will be unavailable"
+        return 0
+    fi
+
+    mkdir -p "$DIST_DIR/dotnet"
+    find "$staged" -maxdepth 1 -type f \( -name '*.dll' -o -name '*.json' -o -name '*.pdb' \) \
+        -exec cp -f {} "$DIST_DIR/dotnet/" \;
+    echo "  - Installed Neoeter.Scripting: dist/dotnet"
+
+    [ "$BUNDLE_DOTNET" = true ] || return 0
+
+    local dotnet_bin dotnet_root fxr shared
+    dotnet_bin="$(command -v dotnet || true)"
+    if [ -z "$dotnet_bin" ]; then
+        echo "  - WARNING: dotnet not found; cannot bundle the .NET runtime"
+        return 0
+    fi
+    dotnet_root="${DOTNET_ROOT:-$(dirname "$(readlink -f "$dotnet_bin")")}"
+    fxr="$(find "$dotnet_root/host/fxr" -mindepth 1 -maxdepth 1 -type d -name '10.*' | sort -V | tail -n 1)"
+    shared="$(find "$dotnet_root/shared/Microsoft.NETCore.App" -mindepth 1 -maxdepth 1 -type d -name '10.*' | sort -V | tail -n 1)"
+    if [ -z "$fxr" ] || [ -z "$shared" ]; then
+        echo "  - WARNING: no .NET 10 runtime under $dotnet_root; not bundled"
+        return 0
+    fi
+
+    rm -rf "$DIST_DIR/dotnet/runtime"
+    mkdir -p "$DIST_DIR/dotnet/runtime/host/fxr" "$DIST_DIR/dotnet/runtime/shared/Microsoft.NETCore.App"
+    cp -a "$fxr" "$DIST_DIR/dotnet/runtime/host/fxr/"
+    cp -a "$shared" "$DIST_DIR/dotnet/runtime/shared/Microsoft.NETCore.App/"
+    echo "  - Bundled .NET runtime $(basename "$shared"): dist/dotnet/runtime"
+}
+
 show_help() {
     cat << EOF
 Usage: $(basename "$0") [OPTIONS]
@@ -96,6 +138,8 @@ Options:
   --clean                   Remove existing build directory before configuring
   --neoeter-prefix <PATH>   Use an installed Neoeter package instead of src/neoeter
   --skip-pack               Skip packing bin/pack/* zip archives (faster build for code iteration)
+  --no-dotnet               Build without the .NET script runtime (Python only)
+  --bundle-dotnet           Copy the .NET 10 runtime into dist/dotnet/runtime
   -h, --help                Show this help message
 EOF
 }
@@ -120,6 +164,14 @@ while [[ $# -gt 0 ]]; do
             ;;
         --skip-pack)
             PACK_ARCHIVES=false
+            shift
+            ;;
+        --no-dotnet)
+            SCRIPT_DOTNET=false
+            shift
+            ;;
+        --bundle-dotnet)
+            BUNDLE_DOTNET=true
             shift
             ;;
         -h|--help)
@@ -162,6 +214,7 @@ echo "  - Build Type:      $BUILD_TYPE"
 echo "  - Parallel Jobs:   $NUM_JOBS"
 echo "  - Pack Archiver:   ${ARCHIVER:-None}"
 echo "  - Neoeter:         ${NEOETER_PREFIX:-src/neoeter}"
+echo "  - .NET scripts:    $SCRIPT_DOTNET (bundle runtime: $BUNDLE_DOTNET)"
 
 if [ "$CLEAN_BUILD" = true ] && [ -d "$BUILD_DIR" ]; then
     echo "Cleaning build directory: $BUILD_DIR"
@@ -169,6 +222,11 @@ if [ "$CLEAN_BUILD" = true ] && [ -d "$BUILD_DIR" ]; then
 fi
 
 CMAKE_ARGS=()
+if [ "$SCRIPT_DOTNET" = true ]; then
+    CMAKE_ARGS+=("-DOPENMT2_SCRIPT_DOTNET=ON")
+else
+    CMAKE_ARGS+=("-DOPENMT2_SCRIPT_DOTNET=OFF")
+fi
 if [ -n "$NEOETER_PREFIX" ]; then
     CMAKE_ARGS+=("-DOPENMT2_NEOETER_PREBUILT=ON" "-DCMAKE_PREFIX_PATH=$NEOETER_PREFIX")
 fi
@@ -215,6 +273,7 @@ else
 fi
 
 install_python_runtime
+install_dotnet_runtime
 
 echo ""
 if [ "$PACK_ARCHIVES" = true ] && [ -d "bin/pack" ]; then

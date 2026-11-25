@@ -3,8 +3,8 @@
 # OpenMT2 client - consolidated source fetcher (TB.3)
 # ======================================================
 #
-# Clones or updates the three consolidated repositories (neoeter,
-# neoeter-python, client) into <root>/src/<name>. Each repository can be pinned
+# Clones or updates the consolidated repositories (neoeter, neoeter-python,
+# neoeter-dotnet, client) into <root>/src/<name>. Each repository can be pinned
 # to its own branch, tag or full commit hash.
 #
 # Usage:
@@ -12,7 +12,8 @@
 #
 # Options:
 #   --ref REPO=REF       Pin one repository (repeatable). REPO is one of
-#                        neoeter, neoeter-python, client. REF is a branch, tag
+#                        neoeter, neoeter-python, neoeter-dotnet, client. REF
+#                        is a branch, tag
 #                        or full 40-character commit hash.
 #   --write-lock FILE    Write the resolved commit hashes to FILE. Relative
 #                        paths are resolved against ROOT.
@@ -23,7 +24,7 @@
 # Environment:
 #   SRC_REF          default ref for every repository (default: main)
 #   SRC_REF_<NAME>   per-repository default, e.g. SRC_REF_CLIENT,
-#                    SRC_REF_NEOETER_PYTHON
+#                    SRC_REF_NEOETER_PYTHON, SRC_REF_NEOETER_DOTNET
 #   SRC_ORG          GitHub organization (default: open-mt2)
 #   SRC_DEPTH        clone depth (default: 1; 0 = full history)
 #   GITHUB_TOKEN     optional token, used for private clones
@@ -38,6 +39,7 @@ DEFAULT_ROOT="$(dirname "$SCRIPT_DIR")"
 SOURCES=(
     neoeter=neoeter
     neoeter-python=neoeter-python
+    neoeter-dotnet=neoeter-dotnet
     client=client
 )
 
@@ -194,7 +196,7 @@ if [ "${#REF_OVERRIDES[@]}" -gt 0 ]; then
         repo="${entry%%=*}"
         ref="${entry#*=}"
         if [ -z "$repo" ] || [ -z "$ref" ] || ! is_known_repo "$repo"; then
-            die "invalid --ref '$entry' (repositories: neoeter, neoeter-python, client)"
+            die "invalid --ref '$entry' (repositories: neoeter, neoeter-python, neoeter-dotnet, client)"
         fi
     done
 fi

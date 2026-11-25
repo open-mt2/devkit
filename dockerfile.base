@@ -4,8 +4,8 @@
 # ======================================================
 #
 # Everything the client build needs that does not depend on the OpenMT2
-# sources: the Debian toolchain, CPython 2.7 and the Windows cross-build
-# dependency set.
+# sources: the Debian toolchain, CPython 2.7, the .NET 10 SDK and the Windows
+# cross-build dependency set.
 #
 # No Wine, clang or lld: the tree geometry cache is vendored in the client
 # image (treecache/), so nothing here builds or runs speedtree_dumper.exe.
@@ -21,7 +21,7 @@
 FROM debian:bookworm
 
 LABEL org.opencontainers.image.title="OpenMT2 Client Development Kit - base"
-LABEL org.opencontainers.image.description="Toolchain, CPython 2.7 and Windows cross-build dependencies for the OpenMT2 client"
+LABEL org.opencontainers.image.description="Toolchain, CPython 2.7, .NET 10 SDK and Windows cross-build dependencies for the OpenMT2 client"
 LABEL org.opencontainers.image.source="https://github.com/open-mt2/devkit"
 LABEL org.opencontainers.image.licenses="GPL-2.0-or-later"
 
@@ -91,6 +91,20 @@ RUN curl -fsSL "https://www.python.org/ftp/python/${PYTHON27_VERSION}/Python-${P
     && ldconfig \
     && rm -rf "/tmp/Python-${PYTHON27_VERSION}" /tmp/python27.tgz \
     && python2.7 -c 'import sys; print(sys.version)'
+
+# ---------------------------------------------------------------------------
+# .NET 10 SDK (LTS): neoeter-dotnet, the .NET script runtime
+# ---------------------------------------------------------------------------
+ARG DOTNET_CHANNEL=10.0
+ENV DOTNET_ROOT=/usr/share/dotnet
+ENV DOTNET_NOLOGO=1
+ENV DOTNET_CLI_TELEMETRY_OPTOUT=1
+ENV DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1
+RUN curl -fsSL https://dot.net/v1/dotnet-install.sh -o /tmp/dotnet-install.sh \
+    && bash /tmp/dotnet-install.sh --channel "${DOTNET_CHANNEL}" --install-dir "${DOTNET_ROOT}" \
+    && ln -sf "${DOTNET_ROOT}/dotnet" /usr/local/bin/dotnet \
+    && rm -f /tmp/dotnet-install.sh \
+    && dotnet --info | head -n 20
 
 # ---------------------------------------------------------------------------
 # Windows cross-build dependency set

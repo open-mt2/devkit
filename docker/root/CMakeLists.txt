@@ -29,14 +29,25 @@ if(WIN32 AND OPENMT2_WIN64_DEPS_PREFIX)
     link_directories("${OPENMT2_WIN64_DEPS_PREFIX}/lib")
 endif()
 
-# Three consolidated source repositories (TB.3). Each repository adds its own
-# packages in dependency order.
-set(OPENMT2_SOURCE_REPOS neoeter neoeter-python client)
+# Consolidated source repositories (TB.3). Each repository adds its own
+# packages in dependency order. neoeter-dotnet (the .NET 10 script runtime)
+# sits next to neoeter-python; the client can run its scripts on either.
+set(OPENMT2_SOURCE_REPOS neoeter neoeter-python neoeter-dotnet client)
 
 option(OPENMT2_NEOETER_PREBUILT "Use an installed Neoeter instead of src/neoeter" OFF)
 
+# The Windows cross toolchain has no win-x64 .NET host pack; opt in there.
+if(WIN32 AND CMAKE_CROSSCOMPILING)
+    set(_openmt2_dotnet_default OFF)
+else()
+    set(_openmt2_dotnet_default ON)
+endif()
+option(OPENMT2_SCRIPT_DOTNET "Build the .NET script runtime (neoeter-dotnet, needs the .NET 10 SDK)" ${_openmt2_dotnet_default})
+
 foreach(_repo IN LISTS OPENMT2_SOURCE_REPOS)
-    if(_repo STREQUAL "neoeter" AND OPENMT2_NEOETER_PREBUILT)
+    if(_repo STREQUAL "neoeter-dotnet" AND NOT OPENMT2_SCRIPT_DOTNET)
+        message(STATUS "OpenMT2: .NET script runtime disabled (OPENMT2_SCRIPT_DOTNET=OFF)")
+    elseif(_repo STREQUAL "neoeter" AND OPENMT2_NEOETER_PREBUILT)
         find_package(Neoeter CONFIG REQUIRED)
     elseif(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/src/${_repo}/CMakeLists.txt")
         add_subdirectory("src/${_repo}" "${CMAKE_BINARY_DIR}/src/${_repo}")

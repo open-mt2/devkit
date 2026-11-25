@@ -57,10 +57,32 @@ docker run --rm -v "$PWD/dist:/workspace/dist" openmt2/devkit pack bgm sound
 docker run --rm -v "$PWD/dist:/workspace/dist" openmt2/devkit pack
 ```
 
-`--ref` accepts `neoeter`, `neoeter-python` and `client`. Refs can be branches,
-tags or full 40-character commit hashes. Commit hashes can also be provided per
-repository through `SRC_REF_CLIENT`, `SRC_REF_NEOETER` and
-`SRC_REF_NEOETER_PYTHON`; `SRC_REF` remains the default for every repository.
+`--ref` accepts `neoeter`, `neoeter-python`, `neoeter-dotnet` and `client`.
+Refs can be branches, tags or full 40-character commit hashes. Commit hashes can
+also be provided per repository through `SRC_REF_CLIENT`, `SRC_REF_NEOETER`,
+`SRC_REF_NEOETER_PYTHON` and `SRC_REF_NEOETER_DOTNET`; `SRC_REF` remains the
+default for every repository.
+
+## Script runtimes (Python and .NET)
+
+The client runs its game scripts on either the embedded Python 2.7 runtime
+(`system.py`, the default today) or the .NET 10 runtime from `neoeter-dotnet`
+(`scripts/OpenMT2.Scripts.dll`). Both expose the same native modules, so the
+scripts can be migrated gradually. `build` stages the managed host in
+`dist/dotnet`:
+
+```bash
+# Python only (no .NET SDK needed)
+docker run --rm -v "$PWD/dist:/workspace/dist" openmt2/devkit build --no-dotnet
+
+# Also copy the .NET runtime into dist/dotnet/runtime (no install for players)
+docker run --rm -v "$PWD/dist:/workspace/dist" openmt2/devkit build --bundle-dotnet
+```
+
+At run time `./openmt2 --script-runtime=auto|python|dotnet` (or
+`OPENMT2_SCRIPT_RUNTIME`) selects the runtime; `auto` picks .NET when
+`scripts/OpenMT2.Scripts.dll` exists in the packs (or as a loose file) and
+Python otherwise. Windows cross builds default to `OPENMT2_SCRIPT_DOTNET=OFF`.
 
 ## Manual packs
 
